@@ -7,8 +7,13 @@
 #include "GameFramework/Character.h"
 #include "ADCharacter.generated.h"
 
+class UInputMappingContext;
+class UGameplayAbility;
+class UADInputData;
+class UInputAction;
 class UCameraComponent;
 class USpringArmComponent;
+struct FGameplayTag;
 
 UCLASS()
 class ASHENDUEL_API AADCharacter : public ACharacter, public IAbilitySystemInterface
@@ -33,5 +38,39 @@ protected:
 	
 	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<UAbilitySystemComponent> ASC;
+#pragma endregion
+	
+#pragma region Input
+protected:
+	UFUNCTION()
+	void Move(const FInputActionValue& Value);
+	
+	UFUNCTION()
+	void Look(const FInputActionValue& Value);
+	
+	void Input_AbilityInputTagPressed(FGameplayTag InputTag);
+	void Input_AbilityInputTagReleased(FGameplayTag InputTag);
+	
+protected:
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<UInputAction> MoveAction;
+	
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<UInputAction> LookAction;
+	
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<UADInputData> InputData;
+	
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<UInputMappingContext> DefaultMappingContext;
+#pragma endregion
+	
+#pragma region Abilities
+protected:
+	void GiveDefaultAbilities();	
+	
+protected:
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	TArray<TSubclassOf<UGameplayAbility>> DefaultAbilities;
 #pragma endregion
 };

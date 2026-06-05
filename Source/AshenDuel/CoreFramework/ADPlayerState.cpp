@@ -4,10 +4,11 @@
 #include "ADPlayerState.h"
 
 #include "AbilitySystemComponent.h"
+#include "AshenDuel/GAS/Component/ADAbilitySystemComponent.h"
 
 AADPlayerState::AADPlayerState()
 {
-	AbilitySystemComponent = CreateDefaultSubobject<UAbilitySystemComponent>(TEXT("ASC"));
+	AbilitySystemComponent = CreateDefaultSubobject<UADAbilitySystemComponent>(TEXT("ASC"));
 }
 
 UAbilitySystemComponent* AADPlayerState::GetAbilitySystemComponent() const
