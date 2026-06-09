@@ -8,6 +8,7 @@
 #include "AshenDuel/Input/ADEnhancedInputComponent.h"
 #include "Camera/CameraComponent.h"
 #include "Component/LockOnComponent.h"
+#include "Component/WeaponComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 
 AADCharacter::AADCharacter()
@@ -21,6 +22,7 @@ AADCharacter::AADCharacter()
 	Camera->SetupAttachment(SpringArm);
 	
 	LockOnComponent = CreateDefaultSubobject<ULockOnComponent>(TEXT("LockOnComponent"));
+	WeaponComponent = CreateDefaultSubobject<UWeaponComponent>(TEXT("WeaponComponent"));
 }
 
 void AADCharacter::BeginPlay()

@@ -7,6 +7,7 @@
 #include "GameFramework/Character.h"
 #include "ADCharacter.generated.h"
 
+class UWeaponComponent;
 class ULockOnComponent;
 class UInputMappingContext;
 class UGameplayAbility;
@@ -43,6 +44,9 @@ protected:
 	
 	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<ULockOnComponent> LockOnComponent;
+	
+	UPROPERTY(EditDefaultsOnly)
+	TObjectPtr<UWeaponComponent> WeaponComponent;
 #pragma endregion
 	
 #pragma region Input

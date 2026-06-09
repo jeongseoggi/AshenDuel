@@ -24,8 +24,6 @@ void ULockOnComponent::PostInitProperties()
 	SetComponentTickEnabled(false);
 }
 
-
-// Called when the game starts
 void ULockOnComponent::BeginPlay()
 {
 	Super::BeginPlay();
@@ -47,7 +45,6 @@ void ULockOnComponent::TickComponent(float DeltaTime, ELevelTick TickType,
 		return;
 	}
 	
-	//타겟 대상 사이의 거리 계산
 	const float Dist = FVector::Distance(OwnerChar->GetActorLocation(), LockOnTargetActor->GetActorLocation());
 	
 	if (Dist > LockOnReleaseDist)
@@ -104,7 +101,6 @@ TArray<AActor*> ULockOnComponent::FindTargets()
 	return TargetingActors;
 }
 
-#pragma optimize("", off)
 AActor* ULockOnComponent::FindClosestTarget(const TArray<AActor*>& TargetActors)
 {
 	float TargetDotCompareValue = 0.f;
@@ -144,7 +140,6 @@ AActor* ULockOnComponent::FindClosestTarget(const TArray<AActor*>& TargetActors)
     
 	return ClosestTargetActor;
 }
-#pragma optimize("", on)
 
 void ULockOnComponent::LockOn()
 {
