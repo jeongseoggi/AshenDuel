@@ -7,6 +7,7 @@
 #include "AshenDuel/GAS/Component/ADAbilitySystemComponent.h"
 #include "AshenDuel/Input/ADEnhancedInputComponent.h"
 #include "Camera/CameraComponent.h"
+#include "Component/LockOnComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 
 AADCharacter::AADCharacter()
@@ -18,6 +19,8 @@ AADCharacter::AADCharacter()
 	
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	Camera->SetupAttachment(SpringArm);
+	
+	LockOnComponent = CreateDefaultSubobject<ULockOnComponent>(TEXT("LockOnComponent"));
 }
 
 void AADCharacter::BeginPlay()
@@ -46,6 +49,7 @@ void AADCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 	{
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AADCharacter::Move);
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &AADCharacter::Look);
+		EnhancedInputComponent->BindAction(LockOnAction, ETriggerEvent::Started, this, &AADCharacter::LockOn);
 	}
 	
 	UADEnhancedInputComponent* ADInputComp = CastChecked<UADEnhancedInputComponent>(PlayerInputComponent);
@@ -95,6 +99,11 @@ void AADCharacter::Look(const FInputActionValue& Value)
 		AddControllerYawInput(LookVec.X);
 		AddControllerPitchInput(-LookVec.Y);
 	}
+}
+
+void AADCharacter::LockOn(const FInputActionValue& Value)
+{
+	LockOnComponent->ToggleLockOn();
 }
 
 void AADCharacter::Input_AbilityInputTagPressed(FGameplayTag InputTag)

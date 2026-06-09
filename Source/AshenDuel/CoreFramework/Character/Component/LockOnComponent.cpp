@@ -1,17 +1,27 @@
-﻿// Fill out your copyright notice in the Description page of Project Settings.
+﻿#include "LockOnComponent.h"
 
+#include "AbilitySystemBlueprintLibrary.h"
+#include "AbilitySystemComponent.h"
+#include "AshenDuel/AshenDuel.h"
+#include "AshenDuel/ADGameplayTag/GameplayTags.h"
+#include "AshenDuel/CoreFramework/Character/ADCharacter.h"
+#include "AshenDuel/Interface/IEnemyHelper.h"
+#include "Camera/CameraComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
+#include "Kismet/KismetMathLibrary.h"
 
-#include "LockOnComponent.h"
-
-
-// Sets default values for this component's properties
 ULockOnComponent::ULockOnComponent()
 {
-	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
-	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
+	ObjectTypes.Add(UEngineTypes::ConvertToObjectType(COLLISION_OBJECT_TARGETING));
+	ActorsToIgnore.Add(GetOwner());
+}
 
-	// ...
+void ULockOnComponent::PostInitProperties()
+{
+	Super::PostInitProperties();
+	
+	SetComponentTickEnabled(false);
 }
 
 
@@ -19,18 +29,169 @@ ULockOnComponent::ULockOnComponent()
 void ULockOnComponent::BeginPlay()
 {
 	Super::BeginPlay();
-
-	// ...
 	
+	OwnerASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(GetOwner());
+	OwnerChar = Cast<AADCharacter>(GetOwner());
+	OwnerCamera = OwnerChar->GetCameraComponent();
 }
 
 
-// Called every frame
 void ULockOnComponent::TickComponent(float DeltaTime, ELevelTick TickType,
-                                     FActorComponentTickFunction* ThisTickFunction)
+									 FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
-	// ...
+	
+	if (!LockOnTargetActor)
+	{
+		StopLockOn();
+		return;
+	}
+	
+	//타겟 대상 사이의 거리 계산
+	const float Dist = FVector::Distance(OwnerChar->GetActorLocation(), LockOnTargetActor->GetActorLocation());
+	
+	if (Dist > LockOnReleaseDist)
+	{
+		StopLockOn();
+	}
+	else
+	{
+		LockOn();
+	}
 }
+
+void ULockOnComponent::ToggleLockOn()
+{
+	if (OwnerASC->HasMatchingGameplayTag(GameplayTags::State::LockOn))
+	{
+		StopLockOn();
+	}
+	else
+	{
+		StartLockOn();
+	}
+}
+
+TArray<AActor*> ULockOnComponent::FindTargets()
+{
+	TArray<AActor*> TargetingActors;
+	
+	const FVector Start = OwnerChar->GetActorLocation();
+	const FVector End = Start;
+	
+	const bool bHit = UKismetSystemLibrary::SphereTraceMultiForObjects(
+		GetOwner(),
+		Start,
+		End,
+		MinLockOnDist,
+		ObjectTypes,
+		false,
+		ActorsToIgnore,
+		DrawDebugType,
+		OutHits,
+		true
+		);
+	
+	if (bHit)
+	{
+		for (const FHitResult& HitResult : OutHits)
+		{
+			AActor* HitActor = HitResult.GetActor();
+			TargetingActors.Add(HitActor);
+		}
+	}
+	
+	return TargetingActors;
+}
+
+#pragma optimize("", off)
+AActor* ULockOnComponent::FindClosestTarget(const TArray<AActor*>& TargetActors)
+{
+	float TargetDotCompareValue = 0.f;
+	AActor* ClosestTargetActor = nullptr;
+	FHitResult OutHit;
+	
+	for (const AActor* TargetActor : TargetActors)
+	{
+		const FVector Start = OwnerCamera->GetComponentLocation();
+		const FVector End = TargetActor->GetActorLocation();
+		
+		const bool bHit = UKismetSystemLibrary::LineTraceSingle(
+			GetOwner(),
+			Start,
+			End,
+			UEngineTypes::ConvertToTraceType(ECC_Visibility),
+			false,
+			ActorsToIgnore,
+			DrawDebugType,
+			OutHit,
+			true);
+       
+		if (bHit)
+		{
+			AActor* HitActor = OutHit.GetActor();
+
+			const FRotator LookAtRotation = UKismetMathLibrary::FindLookAtRotation(OwnerChar->GetActorLocation(), HitActor->GetActorLocation());
+			float CheckValue = FVector::DotProduct(OwnerCamera->GetForwardVector(), LookAtRotation.Vector());
+			
+			if (CheckValue > TargetDotCompareValue)
+			{
+				TargetDotCompareValue = CheckValue;
+				ClosestTargetActor = HitActor;
+			}
+		}
+	}
+    
+	return ClosestTargetActor;
+}
+#pragma optimize("", on)
+
+void ULockOnComponent::LockOn()
+{
+	const FRotator CurrentControlRotation = OwnerChar->GetControlRotation();
+	const FVector TargetLocation = LockOnTargetActor->GetActorLocation() - FVector(0.f,  0.f, 150.0f);
+	const FRotator TargetLookAtRotation = UKismetMathLibrary::FindLookAtRotation(OwnerChar->GetActorLocation(), TargetLocation);
+	
+	const FRotator InterpRotation = FMath::RInterpTo(CurrentControlRotation, TargetLookAtRotation, GetWorld()->GetDeltaSeconds(), LockOnRotateSpeed);
+	OwnerChar->GetController()->SetControlRotation(FRotator(InterpRotation.Pitch, InterpRotation.Yaw, CurrentControlRotation.Roll));
+}
+
+void ULockOnComponent::StartLockOn()
+{
+	TArray<AActor*> TargetingActors = FindTargets();
+	if (TargetingActors.IsEmpty()) return;
+	
+	AActor* ClosestTargetActor = FindClosestTarget(TargetingActors);
+	if (!ClosestTargetActor) return;
+
+	LockOnTargetActor = ClosestTargetActor;
+	if (IIEnemyHelper* Targeting = Cast<IIEnemyHelper>(LockOnTargetActor))
+	{
+		Targeting->OnTargeted(true);
+	}
+	
+	OwnerASC->AddLooseGameplayTag(GameplayTags::State::LockOn);
+	
+	OwnerChar->GetCharacterMovement()->bOrientRotationToMovement = false;
+	OwnerChar->GetCharacterMovement()->bUseControllerDesiredRotation = true;
+	
+	SetComponentTickEnabled(true);
+}
+
+void ULockOnComponent::StopLockOn()
+{
+	SetComponentTickEnabled(false);
+	
+	if (IIEnemyHelper* Targeting = Cast<IIEnemyHelper>(LockOnTargetActor))
+	{
+		Targeting->OnTargeted(false);
+	}
+	LockOnTargetActor = nullptr;
+	
+	OwnerChar->GetCharacterMovement()->bOrientRotationToMovement = true;
+	OwnerChar->GetCharacterMovement()->bUseControllerDesiredRotation = false;
+	
+	OwnerASC->RemoveLooseGameplayTag(GameplayTags::State::LockOn);
+}
+
 

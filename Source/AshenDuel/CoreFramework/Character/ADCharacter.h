@@ -7,6 +7,7 @@
 #include "GameFramework/Character.h"
 #include "ADCharacter.generated.h"
 
+class ULockOnComponent;
 class UInputMappingContext;
 class UGameplayAbility;
 class UADInputData;
@@ -24,6 +25,7 @@ public:
 	AADCharacter();
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
+	FORCEINLINE UCameraComponent* GetCameraComponent() const { return Camera; }
 
 protected:
 	virtual void BeginPlay() override;
@@ -38,6 +40,9 @@ protected:
 	
 	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<UAbilitySystemComponent> ASC;
+	
+	UPROPERTY(EditDefaultsOnly)
+	TObjectPtr<ULockOnComponent> LockOnComponent;
 #pragma endregion
 	
 #pragma region Input
@@ -48,20 +53,26 @@ protected:
 	UFUNCTION()
 	void Look(const FInputActionValue& Value);
 	
+	UFUNCTION()
+	void LockOn(const FInputActionValue& Value);
+	
 	void Input_AbilityInputTagPressed(FGameplayTag InputTag);
 	void Input_AbilityInputTagReleased(FGameplayTag InputTag);
 	
 protected:
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere,Category = "Input")
 	TObjectPtr<UInputAction> MoveAction;
 	
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere,Category = "Input")
 	TObjectPtr<UInputAction> LookAction;
 	
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere,Category = "Input")
+	TObjectPtr<UInputAction> LockOnAction;
+	
+	UPROPERTY(EditAnywhere,Category = "Input")
 	TObjectPtr<UADInputData> InputData;
 	
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere,Category = "Input")
 	TObjectPtr<UInputMappingContext> DefaultMappingContext;
 #pragma endregion
 	

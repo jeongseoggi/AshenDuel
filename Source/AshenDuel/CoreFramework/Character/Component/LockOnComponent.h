@@ -19,8 +19,10 @@ class ASHENDUEL_API ULockOnComponent : public UActorComponent
 
 public:
 	ULockOnComponent();
+	virtual void PostInitProperties() override;
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType,
 							   FActorComponentTickFunction* ThisTickFunction) override;
+	
 protected:
 	virtual void BeginPlay() override;
 	
@@ -29,7 +31,7 @@ public:
 	void ToggleLockOn();
 	
 private:
-	TArray<AActor*> TargetActors;
+	TArray<AActor*> FindTargets();
 	
 	AActor* FindClosestTarget(const TArray<AActor*>& TargetActors);
 	
