@@ -50,6 +50,9 @@ protected:
 #pragma endregion
 	
 #pragma region Input
+public:
+	void SetLockOnState(bool LockOnState);
+	
 protected:
 	UFUNCTION()
 	void Move(const FInputActionValue& Value);
@@ -62,6 +65,8 @@ protected:
 	
 	void Input_AbilityInputTagPressed(FGameplayTag InputTag);
 	void Input_AbilityInputTagReleased(FGameplayTag InputTag);
+	
+
 	
 protected:
 	UPROPERTY(EditAnywhere,Category = "Input")

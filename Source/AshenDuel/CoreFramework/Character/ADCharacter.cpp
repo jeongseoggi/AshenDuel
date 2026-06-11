@@ -9,6 +9,7 @@
 #include "Camera/CameraComponent.h"
 #include "Component/LockOnComponent.h"
 #include "Component/WeaponComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 
 AADCharacter::AADCharacter()
@@ -29,6 +30,7 @@ void AADCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	SetLockOnState(false);
 	ASC = GetAbilitySystemComponent();
 }
 
@@ -121,6 +123,17 @@ void AADCharacter::Input_AbilityInputTagReleased(FGameplayTag InputTag)
 	if (UADAbilitySystemComponent* ADASC = Cast<UADAbilitySystemComponent>(GetAbilitySystemComponent()))
 	{
 		ADASC->AbilityInputTagReleased(InputTag);
+	}
+}
+
+void AADCharacter::SetLockOnState(bool LockOnState)
+{
+	bUseControllerRotationYaw = LockOnState;
+	GetCharacterMovement()->bOrientRotationToMovement = !LockOnState;
+	
+	if (SpringArm)
+	{
+		SpringArm->TargetArmLength = LockOnState ? 450.f : 300.f;
 	}
 }
 

@@ -149,6 +149,7 @@ void ULockOnComponent::LockOn()
 	
 	const FRotator InterpRotation = FMath::RInterpTo(CurrentControlRotation, TargetLookAtRotation, GetWorld()->GetDeltaSeconds(), LockOnRotateSpeed);
 	OwnerChar->GetController()->SetControlRotation(FRotator(InterpRotation.Pitch, InterpRotation.Yaw, CurrentControlRotation.Roll));
+	OwnerChar->SetLockOnState(true);
 }
 
 void ULockOnComponent::StartLockOn()
@@ -187,6 +188,7 @@ void ULockOnComponent::StopLockOn()
 	OwnerChar->GetCharacterMovement()->bUseControllerDesiredRotation = false;
 	
 	OwnerASC->RemoveLooseGameplayTag(GameplayTags::State::LockOn);
+	OwnerChar->SetLockOnState(false);
 }
 
 
