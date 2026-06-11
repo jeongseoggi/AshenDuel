@@ -25,11 +25,13 @@ void UADAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	if (IsValid(OwnerCharacter))
 	{
 		Velocity = OwnerMovementComp->Velocity;
+		PrevGroundSpeed = GroundSpeed;
 		GroundSpeed = FVector(Velocity.X, Velocity.Y, 0).Size();
 		bHasAcceleration = !OwnerMovementComp->GetCurrentAcceleration().IsNearlyZero();
 		bShouldMove = bHasAcceleration;
 		bIsFalling = OwnerMovementComp->IsFalling();
 		Direction = CalculateDirection(Velocity, OwnerCharacter->GetActorRotation());
+		bIsStarting = GroundSpeed >= 0.01f && PrevGroundSpeed < 0.01f;
 	}
 	
 }

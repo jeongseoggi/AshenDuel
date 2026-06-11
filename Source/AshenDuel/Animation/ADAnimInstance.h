@@ -34,6 +34,9 @@ protected:
 	float GroundSpeed;
 	
 	UPROPERTY(VisibleAnywhere,BlueprintReadOnly)
+	float PrevGroundSpeed;
+	
+	UPROPERTY(VisibleAnywhere,BlueprintReadOnly)
 	bool bShouldMove;
 	
 	UPROPERTY(VisibleAnywhere,BlueprintReadOnly)
@@ -45,4 +48,6 @@ protected:
 	UPROPERTY(VisibleAnywhere,BlueprintReadOnly)
 	float Direction;
 	
+	UPROPERTY(VisibleAnywhere,BlueprintReadOnly)
+	bool bIsStarting;
 };

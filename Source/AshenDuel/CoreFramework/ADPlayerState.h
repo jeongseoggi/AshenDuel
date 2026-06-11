@@ -7,6 +7,7 @@
 #include "GameFramework/PlayerState.h"
 #include "ADPlayerState.generated.h"
 
+class UADAttributeSet;
 class UADAbilitySystemComponent;
 /**
  * 
@@ -24,5 +25,8 @@ public:
 protected:
 	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<UADAbilitySystemComponent> AbilitySystemComponent;
+	
+	UPROPERTY(EditDefaultsOnly)
+	TObjectPtr<UADAttributeSet> BasicAttributeSet;
 #pragma endregion
 };
