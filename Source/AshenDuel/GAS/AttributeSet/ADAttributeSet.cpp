@@ -50,6 +50,19 @@ void UADAttributeSet::PostGameplayEffectExecute(const struct FGameplayEffectModC
 void UADAttributeSet::PostAttributeChange(const FGameplayAttribute& Attribute, float OldValue, float NewValue)
 {
 	Super::PostAttributeChange(Attribute, OldValue, NewValue);
+	
+	if (Attribute == GetMoveSpeedAttribute())
+	{
+		UAbilitySystemComponent* ASC = GetOwningAbilitySystemComponent();
+		if (ASC && ASC->GetAvatarActor())
+		{
+			ACharacter* Character = Cast<ACharacter>(ASC->GetAvatarActor());
+			if (Character && Character->GetCharacterMovement())
+			{
+				Character->GetCharacterMovement()->MaxWalkSpeed = NewValue;
+			}
+		}
+	}
 }
 
 void UADAttributeSet::OwnerCharacterMoveSpeedSet(const struct FGameplayEffectModCallbackData& Data)
@@ -66,6 +79,7 @@ void UADAttributeSet::OwnerCharacterMoveSpeedSet(const struct FGameplayEffectMod
 		if (Data.EvaluatedData.Attribute == GetMoveSpeedAttribute())
 		{
 			TargetCharacter->GetCharacterMovement()->MaxWalkSpeed = GetMoveSpeed();
+			UE_LOG(LogTemp, Warning, TEXT("%f"), TargetCharacter->GetCharacterMovement()->MaxWalkSpeed);
 		}
 	}
 }

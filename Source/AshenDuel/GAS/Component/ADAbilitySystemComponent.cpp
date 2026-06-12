@@ -3,7 +3,7 @@
 
 void UADAbilitySystemComponent::AbilityInputTagPressed(const FGameplayTag& InputTag)
 {
-	if (!InputTag.IsValid())
+	if (InputTag.IsValid())
 	{
 		ABILITYLIST_SCOPE_LOCK();
 		

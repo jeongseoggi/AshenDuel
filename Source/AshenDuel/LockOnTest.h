@@ -4,13 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
-#include "Interface/IEnemyHelper.h"
+#include "Interface/EnemyHelper.h"
 #include "LockOnTest.generated.h"
 
 class USphereComponent;
 
 UCLASS()
-class ASHENDUEL_API ALockOnTest : public ACharacter, public IIEnemyHelper
+class ASHENDUEL_API ALockOnTest : public ACharacter, public IEnemyHelper
 {
 	GENERATED_BODY()
 

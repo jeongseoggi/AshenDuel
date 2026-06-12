@@ -19,7 +19,7 @@ void UADAnimInstance::NativeInitializeAnimation()
 }
 
 void UADAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
-{
+{	
 	Super::NativeUpdateAnimation(DeltaSeconds);
 	
 	if (IsValid(OwnerCharacter))

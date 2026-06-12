@@ -7,6 +7,7 @@
 #include "GameFramework/PlayerState.h"
 #include "ADPlayerState.generated.h"
 
+class UAttributeSet;
 class UADAttributeSet;
 class UADAbilitySystemComponent;
 /**
@@ -16,7 +17,7 @@ UCLASS()
 class ASHENDUEL_API AADPlayerState : public APlayerState, public IAbilitySystemInterface
 {
 	GENERATED_BODY()
-	
+	 
 public:
 	AADPlayerState();
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const;
@@ -26,7 +27,7 @@ protected:
 	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<UADAbilitySystemComponent> AbilitySystemComponent;
 	
-	UPROPERTY(EditDefaultsOnly)
-	TObjectPtr<UADAttributeSet> BasicAttributeSet;
+	UPROPERTY()
+	TObjectPtr<UAttributeSet> BasicAttributeSet;
 #pragma endregion
 };

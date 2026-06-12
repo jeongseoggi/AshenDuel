@@ -4,16 +4,16 @@
 
 #include "CoreMinimal.h"
 #include "UObject/Interface.h"
-#include "IEnemyHelper.generated.h"
+#include "EnemyHelper.generated.h"
 
 // This class does not need to be modified.
 UINTERFACE()
-class UIEnemyHelper : public UInterface
+class UEnemyHelper : public UInterface
 {
 	GENERATED_BODY()
 };
 
-class ASHENDUEL_API IIEnemyHelper
+class ASHENDUEL_API IEnemyHelper
 {
 	GENERATED_BODY()
 public:

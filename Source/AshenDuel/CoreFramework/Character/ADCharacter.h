@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "AbilitySystemInterface.h"
+#include "AshenDuel/Interface/CombatInterface.h"
 #include "GameFramework/Character.h"
 #include "ADCharacter.generated.h"
 
@@ -18,7 +19,7 @@ class USpringArmComponent;
 struct FGameplayTag;
 
 UCLASS()
-class ASHENDUEL_API AADCharacter : public ACharacter, public IAbilitySystemInterface
+class ASHENDUEL_API AADCharacter : public ACharacter, public IAbilitySystemInterface, public ICombatInterface
 {
 	GENERATED_BODY()
 
@@ -30,6 +31,7 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
+	void GiveDefaultAbilites();
 	
 #pragma region Default
 protected:
@@ -79,6 +81,9 @@ protected:
 	TObjectPtr<UInputAction> LockOnAction;
 	
 	UPROPERTY(EditAnywhere,Category = "Input")
+	TObjectPtr<UInputAction> SprintAction;
+	
+	UPROPERTY(EditAnywhere,Category = "Input")
 	TObjectPtr<UADInputData> InputData;
 	
 	UPROPERTY(EditAnywhere,Category = "Input")
@@ -92,5 +97,13 @@ protected:
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	TArray<TSubclassOf<UGameplayAbility>> DefaultAbilities;
+#pragma endregion
+	
+	
+	
+#pragma region Interface
+public:
+	virtual void RemoveEffectWithTag(const FGameplayTag& TagToRemove) override;
+	virtual FActiveGameplayEffectHandle ApplyGameplayEffectToSelf(TSubclassOf<class UGameplayEffect> EffectClass, float Level = 1, FGameplayEffectContextHandle Context = FGameplayEffectContextHandle()) override;
 #pragma endregion
 };

@@ -32,6 +32,37 @@ void AADCharacter::BeginPlay()
 	
 	SetLockOnState(false);
 	ASC = GetAbilitySystemComponent();
+	
+	if (ASC)
+	{
+		ASC->InitAbilityActorInfo(this, this);
+		GiveDefaultAbilites();
+	}
+}
+
+void AADCharacter::GiveDefaultAbilites()
+{
+	check(ASC);
+	
+	for (TSubclassOf<UGameplayAbility> AbilityClass : DefaultAbilities)
+	{
+		if (ASC->FindAbilitySpecFromClass(AbilityClass))
+		{
+			continue;
+		}
+		
+		FGameplayAbilitySpec Spec(AbilityClass, 1, INDEX_NONE, this);
+		
+		if (const UADGameplayAbility* ADAbility = Cast<UADGameplayAbility>(AbilityClass->GetDefaultObject()))
+		{
+			if (ADAbility->StartupInputTag.IsValid())
+			{
+				Spec.DynamicAbilityTags.AddTag(ADAbility->StartupInputTag);
+			}
+		}
+		
+		ASC->GiveAbility(Spec);
+	}
 }
 
 void AADCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -160,5 +191,28 @@ void AADCharacter::GiveDefaultAbilities()
 		
 		ASC->GiveAbility(Spec);
 	}
+}
+
+void AADCharacter::RemoveEffectWithTag(const FGameplayTag& TagToRemove)
+{
+	if (ASC)
+	{
+		ASC->RemoveActiveEffectsWithGrantedTags(FGameplayTagContainer(TagToRemove));
+	}
+}
+
+FActiveGameplayEffectHandle AADCharacter::ApplyGameplayEffectToSelf(TSubclassOf<class UGameplayEffect> EffectClass, float Level,
+	FGameplayEffectContextHandle Context)
+{
+	if (ASC && EffectClass)
+	{
+		FGameplayEffectSpecHandle SpecHandle = ASC->MakeOutgoingSpec(EffectClass, Level, Context);
+		if (SpecHandle.IsValid())
+		{
+			return ASC->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get());
+		}
+	}
+	
+	return FActiveGameplayEffectHandle();
 }
 

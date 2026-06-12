@@ -5,7 +5,7 @@
 #include "AshenDuel/AshenDuel.h"
 #include "AshenDuel/ADGameplayTag/GameplayTags.h"
 #include "AshenDuel/CoreFramework/Character/ADCharacter.h"
-#include "AshenDuel/Interface/IEnemyHelper.h"
+#include "AshenDuel/Interface/EnemyHelper.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/KismetMathLibrary.h"
@@ -161,7 +161,7 @@ void ULockOnComponent::StartLockOn()
 	if (!ClosestTargetActor) return;
 
 	LockOnTargetActor = ClosestTargetActor;
-	if (IIEnemyHelper* Targeting = Cast<IIEnemyHelper>(LockOnTargetActor))
+	if (IEnemyHelper* Targeting = Cast<IEnemyHelper>(LockOnTargetActor))
 	{
 		Targeting->OnTargeted(true);
 	}
@@ -178,7 +178,7 @@ void ULockOnComponent::StopLockOn()
 {
 	SetComponentTickEnabled(false);
 	
-	if (IIEnemyHelper* Targeting = Cast<IIEnemyHelper>(LockOnTargetActor))
+	if (IEnemyHelper* Targeting = Cast<IEnemyHelper>(LockOnTargetActor))
 	{
 		Targeting->OnTargeted(false);
 	}
