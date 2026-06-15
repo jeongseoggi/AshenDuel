@@ -60,6 +60,7 @@ void UADAttributeSet::PostAttributeChange(const FGameplayAttribute& Attribute, f
 			if (Character && Character->GetCharacterMovement())
 			{
 				Character->GetCharacterMovement()->MaxWalkSpeed = NewValue;
+				UE_LOG(LogTemp, Warning, TEXT("%f"), Character->GetCharacterMovement()->MaxWalkSpeed);
 			}
 		}
 	}

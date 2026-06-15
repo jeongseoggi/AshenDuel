@@ -65,6 +65,9 @@ protected:
 	UFUNCTION()
 	void LockOn(const FInputActionValue& Value);
 	
+	UFUNCTION()
+	void Input_Attack(const FInputActionValue& Value);
+	
 	void Input_AbilityInputTagPressed(FGameplayTag InputTag);
 	void Input_AbilityInputTagReleased(FGameplayTag InputTag);
 	
@@ -82,6 +85,9 @@ protected:
 	
 	UPROPERTY(EditAnywhere,Category = "Input")
 	TObjectPtr<UInputAction> SprintAction;
+	
+	UPROPERTY(EditAnywhere,Category = "Input")
+	TObjectPtr<UInputAction> AttackAction;
 	
 	UPROPERTY(EditAnywhere,Category = "Input")
 	TObjectPtr<UADInputData> InputData;

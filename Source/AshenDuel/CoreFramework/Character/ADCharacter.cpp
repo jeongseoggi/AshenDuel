@@ -2,6 +2,7 @@
 
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "AshenDuel/ADGameplayTag/GameplayTags.h"
 #include "AshenDuel/CoreFramework/ADPlayerState.h"
 #include "AshenDuel/GAS/Ability/ADGameplayAbility.h"
 #include "AshenDuel/GAS/Component/ADAbilitySystemComponent.h"
@@ -85,6 +86,7 @@ void AADCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AADCharacter::Move);
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &AADCharacter::Look);
 		EnhancedInputComponent->BindAction(LockOnAction, ETriggerEvent::Started, this, &AADCharacter::LockOn);
+		EnhancedInputComponent->BindAction(AttackAction, ETriggerEvent::Started, this, &AADCharacter::Input_Attack);
 	}
 	
 	UADEnhancedInputComponent* ADInputComp = CastChecked<UADEnhancedInputComponent>(PlayerInputComponent);
@@ -139,6 +141,19 @@ void AADCharacter::Look(const FInputActionValue& Value)
 void AADCharacter::LockOn(const FInputActionValue& Value)
 {
 	LockOnComponent->ToggleLockOn();
+}
+
+void AADCharacter::Input_Attack(const FInputActionValue& Value)
+{
+	if (ASC)
+	{
+		FGameplayEventData Payload;
+		Payload.EventTag = GameplayTags::Event::Combo::InputPressed;
+		Payload.Instigator = this;
+		Payload.Target = this;
+
+		ASC->HandleGameplayEvent(GameplayTags::Event::Combo::InputPressed, &Payload);
+	}
 }
 
 void AADCharacter::Input_AbilityInputTagPressed(FGameplayTag InputTag)
