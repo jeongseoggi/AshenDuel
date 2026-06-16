@@ -7,6 +7,8 @@
 #include "Abilities/Tasks/AbilityTask_PlayMontageAndWait.h"
 #include "Abilities/Tasks/AbilityTask_WaitGameplayEvent.h"
 #include "AshenDuel/ADGameplayTag/GameplayTags.h"
+#include "AshenDuel/GAS/AttributeSet/ADAttributeSet.h"
+#include "AshenDuel/Interface/CombatInterface.h"
 #include "GameFramework/Character.h"
 
 
@@ -19,13 +21,21 @@ void UADGA_Attack::ActivateAbility(const FGameplayAbilitySpecHandle Handle, cons
 {
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 	
-	if (!CommitAbility(Handle, ActorInfo, ActivationInfo))
+	ICombatInterface* CombatInterface = Cast<ICombatInterface>(GetAvatarActorFromActorInfo());
+	
+	if (CombatInterface)
+	{
+		CombatInterface->ApplyGameplayEffectToSelf(StaminaBlockGE);
+	}
+	
+	CurrentComboIndex = 1;
+	if (!ApplyComboStaminaCost(CurrentComboIndex))
 	{
 		EndAbility(Handle, ActorInfo, ActivationInfo, true, true);
 		return;
 	}
 	
-	CurrentComboIndex = 1;
+	
 	bIsComboWindowOpen = false;
 	bComboBuffer = false;
 	
@@ -62,21 +72,73 @@ void UADGA_Attack::ActivateAbility(const FGameplayAbilitySpecHandle Handle, cons
 void UADGA_Attack::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
 	const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled)
 {
+	ICombatInterface* CombatInterface = Cast<ICombatInterface>(GetAvatarActorFromActorInfo());
+	
+	if (CombatInterface)
+	{
+		CombatInterface->RemoveEffectWithTag(GameplayTags::State::Stamina::RegenBlocked);
+	}
+	
 	Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
 }
 
 void UADGA_Attack::ExecuteComboJump()
 {
-	if (CurrentComboIndex >= MaxComboCount) return; 
+	if (CurrentComboIndex >= MaxComboCount)
+	{
+		return;
+	}
 
-	CurrentComboIndex++;
+	const int32 NextComboIndex = CurrentComboIndex + 1;
+
+	if (!ApplyComboStaminaCost(NextComboIndex))
+	{
+		bComboBuffer = false;
+		bIsComboWindowOpen = false;
+		return;
+	}
+
+	CurrentComboIndex = NextComboIndex;
+
 	FName NextSection = FName(*FString::Printf(TEXT("Attack%d"), CurrentComboIndex));
-	
 	MontageJumpToSection(NextSection);
-	
+
 	bIsComboWindowOpen = false;
 	bComboBuffer = false;
+}
+
+bool UADGA_Attack::ApplyComboStaminaCost(int32 ComboIndex)
+{
+	if (!ComboStaminaCostEffect) return true;
 	
+	const int32 CostIndex = ComboIndex - 1;
+	
+	if (!ComboStaminaCosts.IsValidIndex(CostIndex)) return false;
+	
+	const float Cost = ComboStaminaCosts[CostIndex];
+	
+	UAbilitySystemComponent* ASC = GetAbilitySystemComponentFromActorInfo();
+	if (!ASC) return false;
+	
+	const float CurrentStamina = ASC->GetNumericAttribute(UADAttributeSet::GetStaminaAttribute());
+	if (CurrentStamina < Cost) return false;
+	
+	FGameplayEffectSpecHandle SpecHandle = MakeOutgoingGameplayEffectSpec(ComboStaminaCostEffect, GetAbilityLevel());
+	if (!SpecHandle.IsValid()) return false;
+	
+	SpecHandle.Data->SetSetByCallerMagnitude(
+		GameplayTags::Data::Cost::Stamina,
+		-Cost
+		);
+	
+	ApplyGameplayEffectSpecToOwner(
+	 CurrentSpecHandle,
+	 CurrentActorInfo,
+	 CurrentActivationInfo,
+	 SpecHandle
+ );
+	
+	return true;
 }
 
 void UADGA_Attack::OnComboWindowOpened(FGameplayEventData Payload)

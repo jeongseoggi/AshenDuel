@@ -13,6 +13,11 @@ namespace GameplayTags
 		{
 			ASHENDUEL_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(ComboWindow);
 		}
+		
+		namespace Stamina
+		{
+			ASHENDUEL_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(RegenBlocked);
+		}
 	}
 	
 	namespace Input
@@ -27,6 +32,14 @@ namespace GameplayTags
 		{
 			ASHENDUEL_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(WindowOpen);
 			ASHENDUEL_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputPressed);
+		}
+	}
+
+	namespace Data
+	{
+		namespace Cost
+		{
+			ASHENDUEL_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Stamina);
 		}
 	}
 }

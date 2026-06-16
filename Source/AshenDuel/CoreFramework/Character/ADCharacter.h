@@ -96,13 +96,17 @@ protected:
 	TObjectPtr<UInputMappingContext> DefaultMappingContext;
 #pragma endregion
 	
-#pragma region Abilities
+#pragma region GAS
 protected:
-	void GiveDefaultAbilities();	
+	void GiveDefaultAbilities();
+	void ApplyStartUpEffects();
 	
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	TArray<TSubclassOf<UGameplayAbility>> DefaultAbilities;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	TArray<TSubclassOf<UGameplayEffect>> StartupEffects;
 #pragma endregion
 	
 	

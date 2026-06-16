@@ -11,6 +11,8 @@ UADAttributeSet::UADAttributeSet()
 {
 	InitMoveSpeed(300.0f);
 	InitMaxMoveSpeed(1000.0f);
+	InitStamina(50.0f);
+	InitMaxStamina(50.0f);
 }
 
 void UADAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue)
@@ -25,6 +27,11 @@ void UADAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, fl
 	if (Attribute == GetMoveSpeedAttribute())
 	{
 		NewValue = FMath::Clamp(NewValue, 0.0f, GetMaxMoveSpeed());
+	}
+	
+	if (Attribute == GetStaminaAttribute())
+	{
+		NewValue = FMath::Clamp(NewValue, 0.0f, GetMaxStamina());
 	}
 }
 
@@ -43,6 +50,11 @@ void UADAttributeSet::PostGameplayEffectExecute(const struct FGameplayEffectModC
 		SetMoveSpeed(FMath::Clamp(GetMoveSpeed(), 0.0f, GetMaxMoveSpeed()));
 	}
 	
+	if (Data.EvaluatedData.Attribute == GetStaminaAttribute())
+	{
+		SetStamina(FMath::Clamp(GetStamina(), 0.0f, GetMaxStamina()));
+	}
+	
 	OwnerCharacterMoveSpeedSet(Data);
 }
 
@@ -53,16 +65,7 @@ void UADAttributeSet::PostAttributeChange(const FGameplayAttribute& Attribute, f
 	
 	if (Attribute == GetMoveSpeedAttribute())
 	{
-		UAbilitySystemComponent* ASC = GetOwningAbilitySystemComponent();
-		if (ASC && ASC->GetAvatarActor())
-		{
-			ACharacter* Character = Cast<ACharacter>(ASC->GetAvatarActor());
-			if (Character && Character->GetCharacterMovement())
-			{
-				Character->GetCharacterMovement()->MaxWalkSpeed = NewValue;
-				UE_LOG(LogTemp, Warning, TEXT("%f"), Character->GetCharacterMovement()->MaxWalkSpeed);
-			}
-		}
+		OwnerCharacterMoveSpeedSet(NewValue);
 	}
 }
 
@@ -80,7 +83,19 @@ void UADAttributeSet::OwnerCharacterMoveSpeedSet(const struct FGameplayEffectMod
 		if (Data.EvaluatedData.Attribute == GetMoveSpeedAttribute())
 		{
 			TargetCharacter->GetCharacterMovement()->MaxWalkSpeed = GetMoveSpeed();
-			UE_LOG(LogTemp, Warning, TEXT("%f"), TargetCharacter->GetCharacterMovement()->MaxWalkSpeed);
+		}
+	}
+}
+
+void UADAttributeSet::OwnerCharacterMoveSpeedSet(float NewValue)
+{
+	UAbilitySystemComponent* ASC = GetOwningAbilitySystemComponent();
+	if (ASC && ASC->GetAvatarActor())
+	{
+		ACharacter* Character = Cast<ACharacter>(ASC->GetAvatarActor());
+		if (Character && Character->GetCharacterMovement())
+		{
+			Character->GetCharacterMovement()->MaxWalkSpeed = NewValue;
 		}
 	}
 }

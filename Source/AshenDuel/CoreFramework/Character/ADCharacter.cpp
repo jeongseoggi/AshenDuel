@@ -38,6 +38,7 @@ void AADCharacter::BeginPlay()
 	{
 		ASC->InitAbilityActorInfo(this, this);
 		GiveDefaultAbilites();
+		ApplyStartUpEffects();
 	}
 }
 
@@ -205,6 +206,14 @@ void AADCharacter::GiveDefaultAbilities()
 		}
 		
 		ASC->GiveAbility(Spec);
+	}
+}
+
+void AADCharacter::ApplyStartUpEffects()
+{
+	for (auto& Effect : StartupEffects)
+	{
+		ApplyGameplayEffectToSelf(Effect);
 	}
 }
 

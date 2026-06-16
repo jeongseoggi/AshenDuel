@@ -21,8 +21,11 @@ void UANS_ComboWindow::NotifyBegin(USkeletalMeshComponent* MeshComp, UAnimSequen
 	{
 		if (UAbilitySystemComponent* ASC = ASI->GetAbilitySystemComponent())
 		{
-			FGameplayTag WindowOpenTag = GameplayTags::Event::Combo::WindowOpen;
-			ASC->HandleGameplayEvent(WindowOpenTag, nullptr);
+			if (IsValid(ASC))
+			{
+				FGameplayTag WindowOpenTag = GameplayTags::Event::Combo::WindowOpen;
+				ASC->HandleGameplayEvent(WindowOpenTag, nullptr);
+			}
 		}
 	}
 }

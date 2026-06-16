@@ -11,6 +11,11 @@ namespace GameplayTags
 		{
 			ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(ComboWindow, "State.Combat.ComboWindow");
 		}
+
+		namespace Stamina
+		{
+			ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(RegenBlocked, "State.Stamina.RegenBlocked");
+		}
 	}
 	
 	namespace Input
@@ -25,6 +30,14 @@ namespace GameplayTags
 		{
 			ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(WindowOpen, "Event.Combo.WindowOpen");
 			ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(InputPressed, "Event.Combo.InputPressed");
+		}
+	}
+	
+	namespace Data
+	{
+		namespace Cost
+		{
+			ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(Stamina, "Data.Cost.Stamina");
 		}
 	}
 }

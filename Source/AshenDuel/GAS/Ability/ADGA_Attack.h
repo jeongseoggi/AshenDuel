@@ -24,6 +24,8 @@ protected:
 	
 	void ExecuteComboJump();
 	
+	bool ApplyComboStaminaCost(int32 ComboIndex);
+	
 	UFUNCTION() 
 	void OnComboWindowOpened(FGameplayEventData Payload);
 	UFUNCTION() 
@@ -42,7 +44,16 @@ protected:
 
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UAbilityTask_WaitGameplayEvent> CurrentInputTask;
-
+	
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<UGameplayEffect> StaminaBlockGE;
+	
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<UGameplayEffect> ComboStaminaCostEffect;
+	
+	UPROPERTY(EditDefaultsOnly, Category = "Cost")
+	TArray<float> ComboStaminaCosts = {5.f, 7.f, 10.f, 15.f};
+	
 private:
 	int32 CurrentComboIndex;
 	bool bIsComboWindowOpen;
