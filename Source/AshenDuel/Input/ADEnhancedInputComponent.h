@@ -24,18 +24,36 @@ template <class UserClass, typename PressedFuncType, typename ReleasedFuncType>
 void UADEnhancedInputComponent::BindAbilityActions(const UADInputData* InputConfig, UserClass* Object,
 	PressedFuncType PressedFunc, ReleasedFuncType ReleasedFunc, TArray<uint32>& BindHandles)
 {
+	if (!InputConfig) return;
+	
 	for (const FADInputAction& Action : InputConfig->AbilityActions)
 	{
-		if (Action.Action && Action.InputTag.IsValid())
+		if (!Action.Action || !Action.InputTag.IsValid())
 		{
-			if (PressedFunc)
-			{
-				BindAction(Action.Action, ETriggerEvent::Triggered, Object, PressedFunc, Action.InputTag);
-			}
-			if (ReleasedFunc)
-			{
-				BindAction(Action.Action, ETriggerEvent::Completed, Object, ReleasedFunc, Action.InputTag);
-			}
+			continue;
 		}
+		
+		if (PressedFunc && Action.bBindPressed)
+		{
+        	BindAction(
+        		Action.Action,
+        		Action.PressedTriggerEvent,
+        		Object,
+        		PressedFunc,
+        		Action.InputTag
+        	);
+		}
+        
+        if (ReleasedFunc && Action.bBindReleased)
+        {
+        	BindAction(
+        		Action.Action,
+        		Action.ReleasedTriggerEvent,
+        		Object,
+        		ReleasedFunc,
+        		Action.InputTag
+        	);
+        }
 	}
 }
+

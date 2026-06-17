@@ -70,9 +70,7 @@ protected:
 	
 	void Input_AbilityInputTagPressed(FGameplayTag InputTag);
 	void Input_AbilityInputTagReleased(FGameplayTag InputTag);
-	
 
-	
 protected:
 	UPROPERTY(EditAnywhere,Category = "Input")
 	TObjectPtr<UInputAction> MoveAction;
@@ -88,6 +86,9 @@ protected:
 	
 	UPROPERTY(EditAnywhere,Category = "Input")
 	TObjectPtr<UInputAction> AttackAction;
+	
+	UPROPERTY(EditAnywhere,Category = "Input")
+	TObjectPtr<UInputAction> DodgeAction;
 	
 	UPROPERTY(EditAnywhere,Category = "Input")
 	TObjectPtr<UADInputData> InputData;
@@ -108,9 +109,7 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	TArray<TSubclassOf<UGameplayEffect>> StartupEffects;
 #pragma endregion
-	
-	
-	
+
 #pragma region Interface
 public:
 	virtual void RemoveEffectWithTag(const FGameplayTag& TagToRemove) override;

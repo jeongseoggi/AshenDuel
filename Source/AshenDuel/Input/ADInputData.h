@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameplayTagContainer.h"
 #include "Engine/DataAsset.h"
+#include "InputAction.h"
 #include "ADInputData.generated.h"
 
 class UInputAction;
@@ -15,10 +16,22 @@ struct FADInputAction
 	GENERATED_BODY()
 	
 	UPROPERTY(EditDefaultsOnly)
-	const UInputAction* Action = nullptr;
+	TObjectPtr<const UInputAction> Action = nullptr;
 	
 	UPROPERTY(EditDefaultsOnly)
 	FGameplayTag InputTag;
+	
+	UPROPERTY(EditDefaultsOnly)
+	bool bBindPressed = true;
+	
+	UPROPERTY(EditDefaultsOnly)
+	ETriggerEvent PressedTriggerEvent = ETriggerEvent::Triggered;
+	
+	UPROPERTY(EditDefaultsOnly)
+	bool bBindReleased = false;
+	
+	UPROPERTY(EditDefaultsOnly)
+	ETriggerEvent ReleasedTriggerEvent = ETriggerEvent::Completed;
 };
 
 

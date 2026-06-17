@@ -21,11 +21,25 @@ protected:
 	virtual void ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData) override;
 	virtual void InputReleased(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo) override;
 	virtual void EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled) override;
+	bool HasEnoughStamina() const;
+	void OnStaminaChanged(const FOnAttributeChangeData& Data);
+	
+	UFUNCTION()
+	void OnInputReleased(float TimeHeld);
+	
 	
 protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "GAS|Effects")
 	TSubclassOf<UGameplayEffect> SprintEffectClass;
 	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "GAS|Effects")
+	TSubclassOf<UGameplayEffect> SprintConsumeEffectClass;
+	
+	UPROPERTY(EditDefaultsOnly, Category="Sprint")
+	float MinStaminaToKeepSprinting = 0.1f;
+	
 	FActiveGameplayEffectHandle ActiveEffectHandle;
+	
+	FDelegateHandle StaminaChangedDelegateHandle;
 	
 };

@@ -6,6 +6,7 @@
 #include "Animation/AnimInstance.h"
 #include "ADAnimInstance.generated.h"
 
+class UAbilitySystemComponent;
 class UCharacterMovementComponent;
 class AADCharacter;
 /**
@@ -19,6 +20,7 @@ class ASHENDUEL_API UADAnimInstance : public UAnimInstance
 public:
 	virtual void NativeInitializeAnimation() override;
 	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
+	FORCEINLINE bool GetIsSprinting() const { return bIsSprinting; }
 	
 protected:
 	UPROPERTY(VisibleAnywhere,BlueprintReadOnly)
@@ -26,6 +28,9 @@ protected:
 	
 	UPROPERTY(VisibleAnywhere,BlueprintReadOnly)
 	TObjectPtr<UCharacterMovementComponent> OwnerMovementComp;
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	TObjectPtr<UAbilitySystemComponent> OwnerASC;
 	
 	UPROPERTY(VisibleAnywhere,BlueprintReadOnly)
 	FVector Velocity;
@@ -50,4 +55,7 @@ protected:
 	
 	UPROPERTY(VisibleAnywhere,BlueprintReadOnly)
 	bool bIsStarting;
+	
+	UPROPERTY(VisibleAnywhere,BlueprintReadOnly)
+	bool bIsSprinting;
 };
