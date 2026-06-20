@@ -17,13 +17,12 @@ void UADGA_Dodge::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const
     Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
     
 	ACharacter* OwnerChar = Cast<ACharacter>(GetAvatarActorFromActorInfo());
-    if (!OwnerChar || !DodgeMontage) // DodgeMontage는 AM_Dodge 에셋 포인터입니다.
+    if (!OwnerChar || !DodgeMontage)
     {
         EndAbility(Handle, ActorInfo, ActivationInfo, true, true);
         return;
     }
-
-    // 1. 캐릭터 방향 및 입력 방향 계산
+    
     FVector Forward = OwnerChar->GetActorForwardVector();
     FVector InputDir = OwnerChar->GetLastMovementInputVector();
 
@@ -66,7 +65,6 @@ void UADGA_Dodge::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const
     
     if (SelectedMontage)
     {
-        // 몽타주가 완전히 완료되거나 취소되었을 때 동일하게 종료 콜백 지정
         MontageTask->OnCompleted.AddDynamic(this, &UADGA_Dodge::OnDodgeMontageEnded);
         MontageTask->OnInterrupted.AddDynamic(this, &UADGA_Dodge::OnDodgeMontageEnded);
         MontageTask->ReadyForActivation();

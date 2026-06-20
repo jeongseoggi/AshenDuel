@@ -7,6 +7,7 @@ namespace GameplayTags
 		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(LockOn, "State.LockOn");
 		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(Sprinting, "State.Sprinting");
 		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(Dodge, "State.Dodge");
+		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(Invincible, "State.Invincible");
 
 		namespace Combat
 		{
@@ -28,7 +29,8 @@ namespace GameplayTags
 	
 	namespace Event
 	{
-		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(Dodge_End, "Event.Combo.Dodge_End");
+		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(Dodge_End, "Event.Dodge_End");
+		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(HitReact, "Event.HitReact");
 		namespace Combo
 		{
 			ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(WindowOpen, "Event.Combo.WindowOpen");
@@ -42,5 +44,13 @@ namespace GameplayTags
 		{
 			ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(Stamina, "Data.Cost.Stamina");
 		}
+	}
+
+	namespace HitReact
+	{
+		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(Front, "HitReact.Front");
+		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(Back, "HitReact.Back");
+		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(Right, "HitReact.Right");
+		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(Left, "HitReact.Left");
 	}
 }
