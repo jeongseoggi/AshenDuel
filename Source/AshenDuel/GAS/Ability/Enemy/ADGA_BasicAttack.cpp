@@ -4,7 +4,9 @@
 #include "ADGA_BasicAttack.h"
 
 #include "AIController.h"
+#include "MotionWarpingComponent.h"
 #include "Abilities/Tasks/AbilityTask_PlayMontageAndWait.h"
+#include "AshenDuel/CoreFramework/Character/ADBossCharacter.h"
 #include "AshenDuel/CoreFramework/Character/AI/ADAIController.h"
 #include "BehaviorTree/BlackboardComponent.h"
 
@@ -23,6 +25,9 @@ void UADGA_BasicAttack::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
 	if (EBossAttackDirection == EBossAttackDirection::Left) StartSection = TEXT("AttackLeft");
 	else StartSection = TEXT("AttackRight");
 	
+	GetWorld()->GetTimerManager().SetTimer(WarpUpdateTimerHandle, this, &UADGA_BasicAttack::UpdateWarpTargetLoop, 0.02f, true);
+	UpdateWarpTargetLoop();
+
 	UAbilityTask_PlayMontageAndWait* MontageTask = UAbilityTask_PlayMontageAndWait::CreatePlayMontageAndWaitProxy(
 		this, NAME_None, AttackMontage, 1.0f, StartSection);
 	
@@ -72,4 +77,29 @@ void UADGA_BasicAttack::EndAbility(const FGameplayAbilitySpecHandle Handle, cons
 void UADGA_BasicAttack::OnAttackMontageEnded()
 {
 	EndAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, true, false);
+}
+
+void UADGA_BasicAttack::UpdateWarpTargetLoop()
+{
+	AActor* AvatarActor = CurrentActorInfo->AvatarActor.Get();
+	if (!AvatarActor) return;
+
+	AADAIController* AIController = Cast<AADAIController>(AvatarActor->GetInstigatorController());
+	if (!AIController) return;
+
+	UMotionWarpingComponent* MotionWarpingComp = AvatarActor->FindComponentByClass<UMotionWarpingComponent>();
+	AActor* TargetActor = AIController->GetTargetActor();
+
+	if (MotionWarpingComp && TargetActor)
+	{
+		FVector TargetLocation = TargetActor->GetActorLocation();
+		
+		FRotator TargetRotation = (TargetLocation - AvatarActor->GetActorLocation()).Rotation();
+		TargetRotation.Pitch = 0.0f;
+		TargetRotation.Roll = 0.0f;
+		
+		AIController->SetControlRotation(TargetRotation);
+		
+		MotionWarpingComp->AddOrUpdateWarpTargetFromLocationAndRotation(TEXT("CombatTarget"), TargetLocation, TargetRotation);
+	}
 }

@@ -21,6 +21,7 @@ class ASHENDUEL_API AADAIController : public AAIController
 public:
 	AADAIController();
 	EBossAttackDirection CheckPlayerLocation();
+	AActor* GetTargetActor();
 
 protected:
 	virtual void BeginPlay() override;

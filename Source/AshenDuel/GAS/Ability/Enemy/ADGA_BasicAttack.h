@@ -20,8 +20,12 @@ protected:
 	
 	UFUNCTION()
 	void OnAttackMontageEnded();
+	void UpdateWarpTargetLoop();
+
 	
 protected:
 	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<UAnimMontage> AttackMontage;
+	
+	FTimerHandle WarpUpdateTimerHandle;
 };

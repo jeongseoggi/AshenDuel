@@ -34,6 +34,11 @@ EBossAttackDirection AADAIController::CheckPlayerLocation()
 	return EBossAttackDirection::Left;
 }
 
+AActor* AADAIController::GetTargetActor()
+{
+	return PlayerChar;
+}
+
 void AADAIController::BeginPlay()
 {
 	Super::BeginPlay();

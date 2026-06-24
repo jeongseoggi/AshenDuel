@@ -1,6 +1,7 @@
 ﻿#include "ADBossCharacter.h"
 
 #include "AbilitySystemComponent.h"
+#include "MotionWarpingComponent.h"
 #include "AshenDuel/AshenDuel.h"
 #include "AshenDuel/GAS/AttributeSet/ADBossAttributeSet.h"
 #include "Components/SphereComponent.h"
@@ -18,6 +19,7 @@ AADBossCharacter::AADBossCharacter()
 	
 	ASC = CreateDefaultSubobject<UAbilitySystemComponent>(TEXT("ASC"));
 	BossAttributeSet = CreateDefaultSubobject<UADBossAttributeSet>(TEXT("BossAttributeSet"));
+	MotionWarpingComponent = CreateDefaultSubobject<UMotionWarpingComponent>(TEXT("MotionWarpingComponent"));
 }
 
 void AADBossCharacter::BeginPlay()

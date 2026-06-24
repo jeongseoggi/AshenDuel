@@ -7,6 +7,7 @@
 #include "AshenDuel/Interface/EnemyHelper.h"
 #include "ADBossCharacter.generated.h"
 
+class UMotionWarpingComponent;
 class UADBossAttributeSet;
 class USphereComponent;
 
@@ -17,15 +18,19 @@ class ASHENDUEL_API AADBossCharacter : public AADCharacterBase, public IEnemyHel
 
 public:
 	AADBossCharacter();
+	FORCEINLINE UMotionWarpingComponent* GetMotionWarpingComponent() const { return MotionWarpingComponent; }
 
 protected:
 	virtual void BeginPlay() override;
-	
 	
 #pragma region Component
 protected:
 	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<USphereComponent> TargetingSphereComponent;
+
+	UPROPERTY(EditDefaultsOnly)
+	TObjectPtr<UMotionWarpingComponent> MotionWarpingComponent;
+	
 #pragma endregion
 
 #pragma region EnemyHelperInterface
