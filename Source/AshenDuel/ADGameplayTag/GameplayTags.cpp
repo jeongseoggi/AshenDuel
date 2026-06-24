@@ -53,4 +53,23 @@ namespace GameplayTags
 		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(Right, "HitReact.Right");
 		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(Left, "HitReact.Left");
 	}
+
+	namespace Ability
+	{
+		namespace Action
+		{
+			ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(Dodge, "Ability.Action.Dodge");
+			ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(Attack, "Ability.Action.Attack");
+		}
+		
+		namespace Boss
+		{
+			ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(BasicAttack, "Ability.Boss.BasicAttack");
+		}
+	}
+	
+	namespace GameplayEvent
+	{
+		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(HitReact, "GameplayEvent.HitReact");
+	}
 }

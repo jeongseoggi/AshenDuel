@@ -4,12 +4,10 @@
 #include "EnhancedInputSubsystems.h"
 #include "AshenDuel/ADGameplayTag/GameplayTags.h"
 #include "AshenDuel/CoreFramework/ADPlayerState.h"
-#include "AshenDuel/GAS/Ability/ADGameplayAbility.h"
 #include "AshenDuel/GAS/Component/ADAbilitySystemComponent.h"
 #include "AshenDuel/Input/ADEnhancedInputComponent.h"
 #include "Camera/CameraComponent.h"
 #include "Component/LockOnComponent.h"
-#include "Component/WeaponComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 
@@ -24,46 +22,17 @@ AADCharacter::AADCharacter()
 	Camera->SetupAttachment(SpringArm);
 	
 	LockOnComponent = CreateDefaultSubobject<ULockOnComponent>(TEXT("LockOnComponent"));
-	WeaponComponent = CreateDefaultSubobject<UWeaponComponent>(TEXT("WeaponComponent"));
 }
 
 void AADCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	
 	SetLockOnState(false);
-	ASC = GetAbilitySystemComponent();
-	
 	if (ASC)
 	{
-		ASC->InitAbilityActorInfo(this, this);
-		GiveDefaultAbilites();
+		ASC->InitAbilityActorInfo(GetPlayerState(), this);
+		GiveDefaultAbilities();
 		ApplyStartUpEffects();
-	}
-}
-
-void AADCharacter::GiveDefaultAbilites()
-{
-	check(ASC);
-	
-	for (TSubclassOf<UGameplayAbility> AbilityClass : DefaultAbilities)
-	{
-		if (ASC->FindAbilitySpecFromClass(AbilityClass))
-		{
-			continue;
-		}
-		
-		FGameplayAbilitySpec Spec(AbilityClass, 1, INDEX_NONE, this);
-		
-		if (const UADGameplayAbility* ADAbility = Cast<UADGameplayAbility>(AbilityClass->GetDefaultObject()))
-		{
-			if (ADAbility->StartupInputTag.IsValid())
-			{
-				Spec.DynamicAbilityTags.AddTag(ADAbility->StartupInputTag);
-			}
-		}
-		
-		ASC->GiveAbility(Spec);
 	}
 }
 
@@ -108,7 +77,7 @@ UAbilitySystemComponent* AADCharacter::GetAbilitySystemComponent() const
 	{
 		return PS->GetAbilitySystemComponent();
 	}
-	return nullptr;
+	return Super::GetAbilitySystemComponent();
 }
 
 void AADCharacter::Move(const FInputActionValue& Value)
@@ -183,60 +152,3 @@ void AADCharacter::SetLockOnState(bool LockOnState)
 		SpringArm->TargetArmLength = LockOnState ? 450.f : 300.f;
 	}
 }
-
-void AADCharacter::GiveDefaultAbilities()
-{
-	check(ASC);
-	
-	for (TSubclassOf<UGameplayAbility> AbilityClass : DefaultAbilities)
-	{
-		if (ASC->FindAbilitySpecFromClass(AbilityClass))
-		{
-			continue;
-		}
-		
-		FGameplayAbilitySpec Spec(AbilityClass, 1, INDEX_NONE, this);
-		
-		if (const UADGameplayAbility* ADAbility = Cast<UADGameplayAbility>(AbilityClass->GetDefaultObject()))
-		{
-			if (ADAbility->StartupInputTag.IsValid())
-			{
-				Spec.DynamicAbilityTags.AddTag(ADAbility->StartupInputTag);
-			}
-		}
-		
-		ASC->GiveAbility(Spec);
-	}
-}
-
-void AADCharacter::ApplyStartUpEffects()
-{
-	for (auto& Effect : StartupEffects)
-	{
-		ApplyGameplayEffectToSelf(Effect);
-	}
-}
-
-void AADCharacter::RemoveEffectWithTag(const FGameplayTag& TagToRemove)
-{
-	if (ASC)
-	{
-		ASC->RemoveActiveEffectsWithGrantedTags(FGameplayTagContainer(TagToRemove));
-	}
-}
-
-FActiveGameplayEffectHandle AADCharacter::ApplyGameplayEffectToSelf(TSubclassOf<class UGameplayEffect> EffectClass, float Level,
-	FGameplayEffectContextHandle Context)
-{
-	if (ASC && EffectClass)
-	{
-		FGameplayEffectSpecHandle SpecHandle = ASC->MakeOutgoingSpec(EffectClass, Level, Context);
-		if (SpecHandle.IsValid())
-		{
-			return ASC->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get());
-		}
-	}
-	
-	return FActiveGameplayEffectHandle();
-}
-

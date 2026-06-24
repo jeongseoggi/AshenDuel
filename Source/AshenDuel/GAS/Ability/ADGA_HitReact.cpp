@@ -3,6 +3,7 @@
 
 #include "ADGA_HitReact.h"
 
+#include "AbilitySystemComponent.h"
 #include "Abilities/Tasks/AbilityTask_PlayMontageAndWait.h"
 #include "AshenDuel/ADGameplayTag/GameplayTags.h"
 
@@ -24,6 +25,9 @@ void UADGA_HitReact::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
 	UAbilityTask_PlayMontageAndWait* MontageTask = UAbilityTask_PlayMontageAndWait::CreatePlayMontageAndWaitProxy(
 		this, NAME_None, HitReactMontage, 1.0f, TargetSection);
 	
+	CancelAbilities();
+	ApplyDamage(TriggerEventData);
+	
 	if (MontageTask)
 	{
 		MontageTask->OnCompleted.AddDynamic(this, &UADGA_HitReact::OnHitReactMontageEnded);
@@ -33,6 +37,39 @@ void UADGA_HitReact::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
 	else
 	{
 		EndAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, true, false);
+	}
+}
+
+void UADGA_HitReact::ApplyDamage(const FGameplayEventData* TriggerEventData)
+{
+	UAbilitySystemComponent* TargetASC = CurrentActorInfo->AbilitySystemComponent.Get();
+	if (TargetASC && DamageEffectClass)
+	{
+		FGameplayEffectContextHandle EffectContext = TargetASC->MakeEffectContext();
+		
+		if (TriggerEventData->Instigator)
+		{
+			AActor* InstigatorActor = const_cast<AActor*>(TriggerEventData->Instigator.Get());
+			EffectContext.AddInstigator(InstigatorActor, InstigatorActor);
+		}
+		
+		FGameplayEffectSpecHandle SpecHandle = TargetASC->MakeOutgoingSpec(DamageEffectClass, GetAbilityLevel(), EffectContext);
+		if (SpecHandle.IsValid())
+		{
+			TargetASC->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get());
+		}
+	}
+	
+}
+
+void UADGA_HitReact::CancelAbilities()
+{
+	UAbilitySystemComponent* TargetASC = CurrentActorInfo->AbilitySystemComponent.Get();
+	if (TargetASC)
+	{
+		FGameplayTagContainer CancelTags;
+		CancelTags.AddTag(GameplayTags::Ability::Action::Attack);
+		TargetASC->CancelAbilities(&CancelTags);
 	}
 }
 

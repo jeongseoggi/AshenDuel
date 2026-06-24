@@ -9,6 +9,8 @@
 
 UADAttributeSet::UADAttributeSet()
 {
+	InitMaxHealth(100.0f);
+	InitHealth(GetMaxHealth());
 	InitMoveSpeed(300.0f);
 	InitMaxMoveSpeed(1000.0f);
 	InitStamina(50.0f);

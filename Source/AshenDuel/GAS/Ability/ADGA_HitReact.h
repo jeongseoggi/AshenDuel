@@ -16,6 +16,9 @@ class ASHENDUEL_API UADGA_HitReact : public UADGameplayAbility
 public:
 	virtual void ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData) override;
 	
+protected:
+	void ApplyDamage(const FGameplayEventData* TriggerEventData);
+	void CancelAbilities();
 	
 protected:
 	UFUNCTION()
@@ -23,4 +26,7 @@ protected:
 protected:
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<UAnimMontage> HitReactMontage;
+	
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<UGameplayEffect> DamageEffectClass;
 };

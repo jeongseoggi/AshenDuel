@@ -3,12 +3,9 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "AbilitySystemInterface.h"
-#include "AshenDuel/Interface/CombatInterface.h"
-#include "GameFramework/Character.h"
+#include "ADCharacterBase.h"
 #include "ADCharacter.generated.h"
 
-class UWeaponComponent;
 class ULockOnComponent;
 class UInputMappingContext;
 class UGameplayAbility;
@@ -19,7 +16,7 @@ class USpringArmComponent;
 struct FGameplayTag;
 
 UCLASS()
-class ASHENDUEL_API AADCharacter : public ACharacter, public IAbilitySystemInterface, public ICombatInterface
+class ASHENDUEL_API AADCharacter : public AADCharacterBase
 {
 	GENERATED_BODY()
 
@@ -31,7 +28,6 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
-	void GiveDefaultAbilites();
 	
 #pragma region Default
 protected:
@@ -42,13 +38,7 @@ protected:
 	TObjectPtr<UCameraComponent> Camera;
 	
 	UPROPERTY(EditDefaultsOnly)
-	TObjectPtr<UAbilitySystemComponent> ASC;
-	
-	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<ULockOnComponent> LockOnComponent;
-	
-	UPROPERTY(EditDefaultsOnly)
-	TObjectPtr<UWeaponComponent> WeaponComponent;
 #pragma endregion
 	
 #pragma region Input
@@ -95,24 +85,5 @@ protected:
 	
 	UPROPERTY(EditAnywhere,Category = "Input")
 	TObjectPtr<UInputMappingContext> DefaultMappingContext;
-#pragma endregion
-	
-#pragma region GAS
-protected:
-	void GiveDefaultAbilities();
-	void ApplyStartUpEffects();
-	
-protected:
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	TArray<TSubclassOf<UGameplayAbility>> DefaultAbilities;
-	
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	TArray<TSubclassOf<UGameplayEffect>> StartupEffects;
-#pragma endregion
-
-#pragma region Interface
-public:
-	virtual void RemoveEffectWithTag(const FGameplayTag& TagToRemove) override;
-	virtual FActiveGameplayEffectHandle ApplyGameplayEffectToSelf(TSubclassOf<class UGameplayEffect> EffectClass, float Level = 1, FGameplayEffectContextHandle Context = FGameplayEffectContextHandle()) override;
 #pragma endregion
 };

@@ -55,4 +55,23 @@ namespace GameplayTags
 		ASHENDUEL_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Right);
 		ASHENDUEL_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Left);
 	}
+
+	namespace Ability
+	{
+		namespace Action
+		{
+			ASHENDUEL_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Dodge);
+			ASHENDUEL_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attack);
+		}
+		
+		namespace Boss
+		{
+			ASHENDUEL_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(BasicAttack);
+		}
+	}
+	
+	namespace GameplayEvent
+	{
+		ASHENDUEL_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(HitReact);
+	}
 }
