@@ -7,6 +7,7 @@
 #include "Abilities/Tasks/AbilityTask_WaitInputRelease.h"
 #include "AshenDuel/ADGameplayTag/GameplayTags.h"
 #include "AshenDuel/GAS/AttributeSet/ADAttributeSet.h"
+#include "AshenDuel/GAS/AttributeSet/ADPlayerAttributeSet.h"
 #include "AshenDuel/Interface/CombatInterface.h"
 
 UADGA_Sprinting::UADGA_Sprinting()
@@ -29,7 +30,7 @@ void UADGA_Sprinting::ActivateAbility(const FGameplayAbilitySpecHandle Handle, c
 	if (ASC && SprintEffectClass && SprintConsumeEffectClass)
 	{
 		StaminaChangedDelegateHandle = ASC->GetGameplayAttributeValueChangeDelegate(
-		UADAttributeSet::GetStaminaAttribute()).
+		UADPlayerAttributeSet::GetStaminaAttribute()).
 		AddUObject(this, &UADGA_Sprinting::OnStaminaChanged);
 		
 		
@@ -71,7 +72,7 @@ void UADGA_Sprinting::EndAbility(const FGameplayAbilitySpecHandle Handle, const 
 		if (StaminaChangedDelegateHandle.IsValid())
 		{
 			ASC->GetGameplayAttributeValueChangeDelegate(
-				UADAttributeSet::GetStaminaAttribute()
+				UADPlayerAttributeSet::GetStaminaAttribute()
 			).Remove(StaminaChangedDelegateHandle);
 
 			StaminaChangedDelegateHandle.Reset();
@@ -93,7 +94,7 @@ bool UADGA_Sprinting::HasEnoughStamina() const
 	UAbilitySystemComponent* ASC = GetAbilitySystemComponentFromActorInfo();
 	if (!ASC) return false;
 	
-	const float Stamina = ASC->GetNumericAttribute(UADAttributeSet::GetStaminaAttribute());
+	const float Stamina = ASC->GetNumericAttribute(UADPlayerAttributeSet::GetStaminaAttribute());
 	return Stamina > 0.0f;
 }
 

@@ -3,6 +3,7 @@
 
 #include "ADDamageExecutionCalc.h"
 #include "AbilitySystemComponent.h"
+#include "AshenDuel/ADGameplayTag/GameplayTags.h"
 #include "AttributeSet/ADAttributeSet.h"
 #include "AttributeSet/ADBossAttributeSet.h"
 
@@ -10,17 +11,24 @@ struct FADDamageStatInternal
 {
 	FGameplayEffectAttributeCaptureDefinition AttackPowerDef;
 	FGameplayEffectAttributeCaptureDefinition DefenseDef;
+	FGameplayEffectAttributeCaptureDefinition HealthDef;
     
 	FADDamageStatInternal()
 	{
 		AttackPowerDef = FGameplayEffectAttributeCaptureDefinition(
-		   UADBossAttributeSet::GetAttackPowerAttribute(),
+		   UADAttributeSet::GetAttackPowerAttribute(),
 		   EGameplayEffectAttributeCaptureSource::Source, 
 		   false
 		);
 		
 		DefenseDef = FGameplayEffectAttributeCaptureDefinition(
 		   UADAttributeSet::GetDefenseAttribute(),
+		   EGameplayEffectAttributeCaptureSource::Target, 
+		   false
+		);
+		
+		HealthDef = FGameplayEffectAttributeCaptureDefinition(
+		   UADAttributeSet::GetHealthAttribute(),
 		   EGameplayEffectAttributeCaptureSource::Target, 
 		   false
 		);
@@ -38,8 +46,10 @@ UADDamageExecutionCalc::UADDamageExecutionCalc()
 {
 	RelevantAttributesToCapture.Add(DamageStatDef().AttackPowerDef);
 	RelevantAttributesToCapture.Add(DamageStatDef().DefenseDef);
+	RelevantAttributesToCapture.Add(DamageStatDef().HealthDef);
 }
 
+#pragma optimize( "", off )
 void UADDamageExecutionCalc::Execute_Implementation(const FGameplayEffectCustomExecutionParameters& ExecutionParams,
 	FGameplayEffectCustomExecutionOutput& OutExecutionOutput) const
 {
@@ -66,8 +76,17 @@ void UADDamageExecutionCalc::Execute_Implementation(const FGameplayEffectCustomE
 	float DamageDone = SourceAttackPower - TargetDefense;
 	DamageDone = FMath::Max(DamageDone, 1.0f);
 	
+	float CurrentHealth = 0.0f;
+	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(DamageStatDef().HealthDef, FAggregatorEvaluateParameters(), CurrentHealth);
+	
+	if (CurrentHealth <= DamageDone)
+	{
+		TargetASC->AddLooseGameplayTag(GameplayTags::State::Death);
+	}
+	
 	if (DamageDone > 0.0f)
 	{
 		OutExecutionOutput.AddOutputModifier(FGameplayModifierEvaluatedData(UADAttributeSet::GetHealthAttribute(), EGameplayModOp::Additive, -DamageDone));
 	}
 }
+#pragma optimize( "", on )

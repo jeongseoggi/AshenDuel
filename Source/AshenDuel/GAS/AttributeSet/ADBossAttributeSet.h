@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "AbilitySystemComponent.h"
+#include "ADAttributeSet.h"
 #include "AttributeSet.h"
 #include "ADBossAttributeSet.generated.h"
 
@@ -17,7 +18,7 @@ GAMEPLAYATTRIBUTE_VALUE_INITTER(PropertyName)
  * 
  */
 UCLASS()
-class ASHENDUEL_API UADBossAttributeSet : public UAttributeSet
+class ASHENDUEL_API UADBossAttributeSet : public UADAttributeSet
 {
 	GENERATED_BODY()
 	
@@ -30,26 +31,9 @@ public:
 	
 	
 public:
-	ATTRIBUTE_ACCESSORS(UADBossAttributeSet, Health)
-	ATTRIBUTE_ACCESSORS(UADBossAttributeSet, MaxHealth)
 	ATTRIBUTE_ACCESSORS(UADBossAttributeSet, PhaseTreshold)
-	ATTRIBUTE_ACCESSORS(UADBossAttributeSet, AttackPower)
-	ATTRIBUTE_ACCESSORS(UADBossAttributeSet, Defense)
 	
 protected:
 	UPROPERTY(BlueprintReadOnly, Category = "Primary Attributes")
-	FGameplayAttributeData Health;
-	
-	UPROPERTY(BlueprintReadOnly, Category = "Primary Attributes")
-	FGameplayAttributeData MaxHealth;
-	
-	UPROPERTY(BlueprintReadOnly, Category = "Primary Attributes")
 	FGameplayAttributeData PhaseTreshold;
-	
-	UPROPERTY(BlueprintReadOnly, Category = "Primary Attributes")
-	FGameplayAttributeData AttackPower;
-	
-	UPROPERTY(BlueprintReadOnly, Category = "Primary Attributes")
-	FGameplayAttributeData Defense;
-	
 };

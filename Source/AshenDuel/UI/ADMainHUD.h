@@ -6,6 +6,7 @@
 #include "Blueprint/UserWidget.h"
 #include "ADMainHUD.generated.h"
 
+class UADBossHealthBar;
 class UADStaminaBar;
 class UADHealthBar;
 class UAbilitySystemComponent;
@@ -19,6 +20,7 @@ class ASHENDUEL_API UADMainHUD : public UUserWidget
 
 public:
 	void InitAbilitySystem(UAbilitySystemComponent* InASC);
+	void InitBossAbilitySystem(UAbilitySystemComponent* InASC);
 	
 protected:
 	UPROPERTY(meta = (BindWidget))
@@ -26,6 +28,9 @@ protected:
 	
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UADStaminaBar> StaminaBar;
+	
+	UPROPERTY(meta = (BindWidget))
+	TObjectPtr<UADBossHealthBar> BossHealthBar;
 	
 private:
 	UPROPERTY()

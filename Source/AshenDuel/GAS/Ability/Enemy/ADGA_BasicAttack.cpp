@@ -86,8 +86,10 @@ void UADGA_BasicAttack::UpdateWarpTargetLoop()
 
 	AADAIController* AIController = Cast<AADAIController>(AvatarActor->GetInstigatorController());
 	if (!AIController) return;
-
-	UMotionWarpingComponent* MotionWarpingComp = AvatarActor->FindComponentByClass<UMotionWarpingComponent>();
+	
+	AADBossCharacter* BossCharacter = Cast<AADBossCharacter>(AvatarActor);
+	
+	UMotionWarpingComponent* MotionWarpingComp = BossCharacter->GetMotionWarpingComponent();
 	AActor* TargetActor = AIController->GetTargetActor();
 
 	if (MotionWarpingComp && TargetActor)

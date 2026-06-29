@@ -7,6 +7,8 @@
 #include "WeaponComponent.generated.h"
 
 
+class UAbilitySystemComponent;
+class UGameplayEffect;
 class ASwordWeapon;
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
@@ -30,5 +32,32 @@ protected:
 	
 	UPROPERTY(EditDefaultsOnly)
 	FName SocketName = FName(TEXT("WeaponSocket"));
+	
+#pragma region Attack
+public:
+	void BeginWeaponTrace(USkeletalMeshComponent* SkelMesh, FName StartSocket, FName EndSocket);
+	void TickWeaponTrace(FName StartSocketName, FName EndSocketName, float TraceRad, bool bDrawDebug);
+
+protected:
+	void DebugAttackTrace(FVector CapsuleCenter, float CapsuleHalfHeight, float TraceRad, FQuat CapsuleRotation, bool bHit);
+	void HitAttackTargetApplyGE(TArray<FHitResult>& OutHits);
+private:
+	UPROPERTY()
+	TSet<TObjectPtr<AActor>> AlreadyApplyDamageActors;
+	
+	UPROPERTY()
+	TObjectPtr<USkeletalMeshComponent> OwnerMesh;
+	
+	bool bIsFirstTick;
+	FVector PreviousStartLocation;
+	FVector PreviousEndLocation;
+#pragma endregion
+	
+	
+#pragma region GameplayEffect
+protected:
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<UGameplayEffect> DamageEffectClass;
+#pragma endregion
 };
 

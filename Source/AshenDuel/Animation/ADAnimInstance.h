@@ -58,4 +58,7 @@ protected:
 	
 	UPROPERTY(VisibleAnywhere,BlueprintReadOnly)
 	bool bIsSprinting;
+	
+	UPROPERTY(VisibleAnywhere,BlueprintReadOnly)
+	bool bIsDead;
 };

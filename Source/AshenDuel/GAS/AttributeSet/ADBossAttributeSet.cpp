@@ -9,7 +9,7 @@ UADBossAttributeSet::UADBossAttributeSet()
 {
 	InitMaxHealth(2500.0f);
 	InitHealth(GetMaxHealth());
-	InitAttackPower(20.0f);
+	InitAttackPower(70.0f);
 	InitDefense(5.0f);
 	InitPhaseTreshold(0.5f);
 }
@@ -17,11 +17,6 @@ UADBossAttributeSet::UADBossAttributeSet()
 void UADBossAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue)
 {
 	Super::PreAttributeChange(Attribute, NewValue);
-	
-	if (Attribute == GetHealthAttribute())
-	{
-		NewValue = FMath::Clamp(NewValue, 0.f,GetMaxHealth());
-	}
 }
 
 void UADBossAttributeSet::PostGameplayEffectExecute(const struct FGameplayEffectModCallbackData& Data)

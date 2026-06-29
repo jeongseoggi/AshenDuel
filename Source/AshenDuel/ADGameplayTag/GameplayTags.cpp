@@ -8,6 +8,8 @@ namespace GameplayTags
 		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(Sprinting, "State.Sprinting");
 		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(Dodge, "State.Dodge");
 		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(Invincible, "State.Invincible");
+		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(Death, "State.Death");
+		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(IsGoingToDie, "State.IsGoingToDie");
 
 		namespace Combat
 		{
@@ -17,6 +19,11 @@ namespace GameplayTags
 		namespace Stamina
 		{
 			ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(RegenBlocked, "State.Stamina.RegenBlocked");
+		}
+		
+		namespace Setup
+		{
+			ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(Completed, "State.Setup.Completed");
 		}
 	}
 	
@@ -31,10 +38,16 @@ namespace GameplayTags
 	{
 		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(Dodge_End, "Event.Dodge_End");
 		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(HitReact, "Event.HitReact");
+		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(Death, "Event.Death");
 		namespace Combo
 		{
 			ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(WindowOpen, "Event.Combo.WindowOpen");
 			ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(InputPressed, "Event.Combo.InputPressed");
+		}
+		
+		namespace Character
+		{
+			ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(Ragdoll, "Event.Character.Ragdoll");
 		}
 	}
 	

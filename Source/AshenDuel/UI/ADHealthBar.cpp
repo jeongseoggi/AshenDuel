@@ -3,9 +3,9 @@
 
 #include "ADHealthBar.h"
 
-#include "AshenDuel/GAS/AttributeSet/ADAttributeSet.h"
 #include "Components/ProgressBar.h"
 #include "AbilitySystemComponent.h"
+#include "AshenDuel/GAS/AttributeSet/ADAttributeSet.h"
 
 void UADHealthBar::InitAbilitySystem(UAbilitySystemComponent* InASC)
 {

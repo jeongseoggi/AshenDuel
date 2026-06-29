@@ -22,11 +22,20 @@ void UADGA_HitReact::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
 		else if (TriggerEventData->TargetTags.HasTagExact(GameplayTags::HitReact::Left)) TargetSection = TEXT("LeftReaction");
 	}
 	
+	UAbilitySystemComponent* ASC = GetAbilitySystemComponentFromActorInfo();
+	if (ASC->HasMatchingGameplayTag(GameplayTags::State::Death))
+	{
+		CancelAbilities();
+		//ApplyDamage(TriggerEventData);
+		EndAbility(Handle, ActorInfo, ActivationInfo, true, false);
+		return;
+	}
+	
 	UAbilityTask_PlayMontageAndWait* MontageTask = UAbilityTask_PlayMontageAndWait::CreatePlayMontageAndWaitProxy(
 		this, NAME_None, HitReactMontage, 1.0f, TargetSection);
 	
 	CancelAbilities();
-	ApplyDamage(TriggerEventData);
+	//ApplyDamage(TriggerEventData);
 	
 	if (MontageTask)
 	{
@@ -69,6 +78,7 @@ void UADGA_HitReact::CancelAbilities()
 	{
 		FGameplayTagContainer CancelTags;
 		CancelTags.AddTag(GameplayTags::Ability::Action::Attack);
+		CancelTags.AddTag(GameplayTags::Ability::Action::Dodge);
 		TargetASC->CancelAbilities(&CancelTags);
 	}
 }

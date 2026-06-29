@@ -4,7 +4,7 @@
 #include "ADStaminaBar.h"
 
 #include "AbilitySystemComponent.h"
-#include "AshenDuel/GAS/AttributeSet/ADAttributeSet.h"
+#include "AshenDuel/GAS/AttributeSet/ADPlayerAttributeSet.h"
 #include "Components/ProgressBar.h"
 
 void UADStaminaBar::InitAbilitySystem(UAbilitySystemComponent* InASC)
@@ -17,11 +17,11 @@ void UADStaminaBar::InitAbilitySystem(UAbilitySystemComponent* InASC)
 	}
 
 	ASC->GetGameplayAttributeValueChangeDelegate(
-		UADAttributeSet::GetStaminaAttribute()
+		UADPlayerAttributeSet::GetStaminaAttribute()
 	).AddUObject(this, &UADStaminaBar::OnStaminaChanged);
 
 	ASC->GetGameplayAttributeValueChangeDelegate(
-		UADAttributeSet::GetMaxStaminaAttribute()
+		UADPlayerAttributeSet::GetMaxStaminaAttribute()
 	).AddUObject(this, &UADStaminaBar::OnMaxStaminaChanged);
 
 	UpdateStaminaBar();
@@ -60,8 +60,8 @@ void UADStaminaBar::UpdateStaminaBar()
 		return;
 	}
 
-	const float Stamina = ASC->GetNumericAttribute(UADAttributeSet::GetStaminaAttribute());
-	const float MaxStamina = ASC->GetNumericAttribute(UADAttributeSet::GetMaxStaminaAttribute());
+	const float Stamina = ASC->GetNumericAttribute(UADPlayerAttributeSet::GetStaminaAttribute());
+	const float MaxStamina = ASC->GetNumericAttribute(UADPlayerAttributeSet::GetMaxStaminaAttribute());
 
 	const float NewPercent = MaxStamina > 0.0f ? Stamina / MaxStamina : 0.0f;
 	TargetPercent = FMath::Clamp(NewPercent, 0.0f, 1.0f);

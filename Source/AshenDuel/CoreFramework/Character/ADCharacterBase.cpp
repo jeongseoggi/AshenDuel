@@ -1,6 +1,7 @@
 ﻿#include "ADCharacterBase.h"
 
 #include "AbilitySystemComponent.h"
+#include "AshenDuel/ADGameplayTag/GameplayTags.h"
 #include "AshenDuel/CoreFramework/ADPlayerState.h"
 #include "AshenDuel/GAS/Ability/ADGameplayAbility.h"
 #include "Component/ReactorComponent.h"
@@ -23,7 +24,6 @@ UAbilitySystemComponent* AADCharacterBase::GetAbilitySystemComponent() const
 void AADCharacterBase::BeginPlay()
 {
 	Super::BeginPlay();
-	ASC = GetAbilitySystemComponent();
 }
 
 void AADCharacterBase::GiveDefaultAbilities()
@@ -57,6 +57,8 @@ void AADCharacterBase::ApplyStartUpEffects()
 	{
 		ApplyGameplayEffectToSelf(Effect);
 	}
+	
+	GetAbilitySystemComponent()->AddLooseGameplayTag(GameplayTags::State::Setup::Completed);
 }
 
 void AADCharacterBase::RemoveEffectWithTag(const FGameplayTag& TagToRemove)

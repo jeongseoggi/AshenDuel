@@ -3,6 +3,7 @@
 
 #include "ADMainHUD.h"
 
+#include "ADBossHealthBar.h"
 #include "ADHealthBar.h"
 #include "ADStaminaBar.h"
 
@@ -14,14 +15,15 @@ void UADMainHUD::InitAbilitySystem(UAbilitySystemComponent* InASC)
 	{
 		return;
 	}
+	
+	if (!HealthBar || !StaminaBar || !BossHealthBar) return;
 
-	if (HealthBar)
-	{
-		HealthBar->InitAbilitySystem(ASC);
-	}
+	HealthBar->InitAbilitySystem(ASC);
+	StaminaBar->InitAbilitySystem(ASC);
+}
 
-	if (StaminaBar)
-	{
-		StaminaBar->InitAbilitySystem(ASC);
-	}
+void UADMainHUD::InitBossAbilitySystem(UAbilitySystemComponent* InASC)
+{
+	BossHealthBar->InitAbilitySystem(InASC);
+	BossHealthBar->SetVisibility(ESlateVisibility::Visible);
 }

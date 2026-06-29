@@ -22,11 +22,11 @@ public:
 	AADAIController();
 	EBossAttackDirection CheckPlayerLocation();
 	AActor* GetTargetActor();
+	void InitializeTargetActor();
 
 protected:
 	virtual void BeginPlay() override;
 	virtual void OnPossess(APawn* InPawn) override;
-	void InitializeTargetActor();
 	
 #pragma region Default
 	UPROPERTY(EditDefaultsOnly, Category = "AI")

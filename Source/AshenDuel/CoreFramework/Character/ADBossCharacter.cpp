@@ -3,6 +3,7 @@
 #include "AbilitySystemComponent.h"
 #include "MotionWarpingComponent.h"
 #include "AshenDuel/AshenDuel.h"
+#include "AshenDuel/CoreFramework/ADPlayerController.h"
 #include "AshenDuel/GAS/AttributeSet/ADBossAttributeSet.h"
 #include "Components/SphereComponent.h"
 
@@ -25,11 +26,13 @@ AADBossCharacter::AADBossCharacter()
 void AADBossCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+	ASC = GetAbilitySystemComponent();
 	
 	if (ASC)
 	{
 		ASC->InitAbilityActorInfo(this, this);
 		GiveDefaultAbilities();
+		ShowBossUI();
 	}
 }
 
@@ -41,6 +44,15 @@ void AADBossCharacter::OnTargeted(bool bTargeted)
 bool AADBossCharacter::CanBeTargeted()
 {
 	return true;
+}
+
+void AADBossCharacter::ShowBossUI()
+{
+	AADPlayerController* PC = Cast<AADPlayerController>(GetWorld()->GetFirstPlayerController());
+	if (PC)
+	{
+		PC->RegisterBossToHUD(this);
+	}
 }
 
 

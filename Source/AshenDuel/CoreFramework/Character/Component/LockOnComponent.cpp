@@ -28,11 +28,18 @@ void ULockOnComponent::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	OwnerASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(GetOwner());
 	OwnerChar = Cast<AADCharacter>(GetOwner());
 	OwnerCamera = OwnerChar->GetCameraComponent();
 }
 
+UAbilitySystemComponent* ULockOnComponent::GetOwnerASC()
+{
+	if (!IsValid(OwnerASC))
+	{
+		OwnerASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(GetOwner());
+	}
+	return OwnerASC;
+}
 
 void ULockOnComponent::TickComponent(float DeltaTime, ELevelTick TickType,
 									 FActorComponentTickFunction* ThisTickFunction)
@@ -43,6 +50,15 @@ void ULockOnComponent::TickComponent(float DeltaTime, ELevelTick TickType,
 	{
 		StopLockOn();
 		return;
+	}
+	
+	if (GetOwnerASC())
+	{
+		if (OwnerASC->HasMatchingGameplayTag(GameplayTags::State::Death))
+		{
+			StopLockOn();
+			return;
+		}
 	}
 	
 	const float Dist = FVector::Distance(OwnerChar->GetActorLocation(), LockOnTargetActor->GetActorLocation());
@@ -187,8 +203,11 @@ void ULockOnComponent::StopLockOn()
 	OwnerChar->GetCharacterMovement()->bOrientRotationToMovement = true;
 	OwnerChar->GetCharacterMovement()->bUseControllerDesiredRotation = false;
 	
-	OwnerASC->RemoveLooseGameplayTag(GameplayTags::State::LockOn);
-	OwnerChar->SetLockOnState(false);
+	if (GetOwnerASC())
+	{
+		OwnerASC->RemoveLooseGameplayTag(GameplayTags::State::LockOn);
+		OwnerChar->SetLockOnState(false);
+	}
 }
 
 

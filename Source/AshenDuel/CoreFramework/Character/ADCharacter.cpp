@@ -28,6 +28,7 @@ void AADCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	SetLockOnState(false);
+	ASC = GetAbilitySystemComponent();
 	if (ASC)
 	{
 		ASC->InitAbilityActorInfo(GetPlayerState(), this);

@@ -22,14 +22,12 @@ public:
 	virtual void PostInitProperties() override;
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType,
 							   FActorComponentTickFunction* ThisTickFunction) override;
+	void ToggleLockOn();
 	
 protected:
 	virtual void BeginPlay() override;
-	
-	
-public:
-	void ToggleLockOn();
-	
+	UAbilitySystemComponent* GetOwnerASC();
+
 private:
 	TArray<AActor*> FindTargets();
 	

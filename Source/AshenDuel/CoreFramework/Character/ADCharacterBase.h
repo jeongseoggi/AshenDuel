@@ -19,6 +19,7 @@ class ASHENDUEL_API AADCharacterBase : public ACharacter, public IAbilitySystemI
 public:
 	AADCharacterBase();
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
+	FORCEINLINE UWeaponComponent* GetWeaponComponent() const {return WeaponComponent;} 
 protected:
 	virtual void BeginPlay() override;
 	

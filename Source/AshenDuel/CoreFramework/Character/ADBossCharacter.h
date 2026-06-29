@@ -7,8 +7,8 @@
 #include "AshenDuel/Interface/EnemyHelper.h"
 #include "ADBossCharacter.generated.h"
 
+class UADAttributeSet;
 class UMotionWarpingComponent;
-class UADBossAttributeSet;
 class USphereComponent;
 
 UCLASS()
@@ -40,6 +40,11 @@ protected:
 	
 #pragma region ASC
 	UPROPERTY(EditDefaultsOnly)
-	TObjectPtr<UADBossAttributeSet> BossAttributeSet;
+	TObjectPtr<UADAttributeSet> BossAttributeSet;
+#pragma endregion
+	
+#pragma region UI
+protected:
+	void ShowBossUI();
 #pragma endregion
 };

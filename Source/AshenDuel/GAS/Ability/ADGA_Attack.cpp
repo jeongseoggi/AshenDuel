@@ -7,10 +7,8 @@
 #include "Abilities/Tasks/AbilityTask_PlayMontageAndWait.h"
 #include "Abilities/Tasks/AbilityTask_WaitGameplayEvent.h"
 #include "AshenDuel/ADGameplayTag/GameplayTags.h"
-#include "AshenDuel/GAS/AttributeSet/ADAttributeSet.h"
+#include "AshenDuel/GAS/AttributeSet/ADPlayerAttributeSet.h"
 #include "AshenDuel/Interface/CombatInterface.h"
-#include "GameFramework/Character.h"
-
 
 UADGA_Attack::UADGA_Attack()
 {
@@ -120,7 +118,7 @@ bool UADGA_Attack::ApplyComboStaminaCost(int32 ComboIndex)
 	UAbilitySystemComponent* ASC = GetAbilitySystemComponentFromActorInfo();
 	if (!ASC) return false;
 	
-	const float CurrentStamina = ASC->GetNumericAttribute(UADAttributeSet::GetStaminaAttribute());
+	const float CurrentStamina = ASC->GetNumericAttribute(UADPlayerAttributeSet::GetStaminaAttribute());
 	if (CurrentStamina < Cost) return false;
 	
 	FGameplayEffectSpecHandle SpecHandle = MakeOutgoingGameplayEffectSpec(ComboStaminaCostEffect, GetAbilityLevel());

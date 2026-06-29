@@ -26,7 +26,6 @@ EBossAttackDirection AADAIController::CheckPlayerLocation()
 	
 	FVector CrossProduct = FVector::CrossProduct(BossForwad, DirectionToPlayer);
 	
-	UE_LOG(LogTemp, Warning, TEXT("%f"), CrossProduct.Z);
 	if (CrossProduct.Z > 0.1f) return EBossAttackDirection::Left;
 	else if (CrossProduct.Z < -0.1f) return EBossAttackDirection::Right;
 	
@@ -62,9 +61,6 @@ void AADAIController::OnPossess(APawn* InPawn)
 					UE_LOG(LogTemp, Error, TEXT("AADAIController: RunBehaviorTree Failed!"));
 				}
 			}
-			
-			FTimerHandle TargetInitTimerHandle;
-			GetWorldTimerManager().SetTimer(TargetInitTimerHandle, this, &AADAIController::InitializeTargetActor, 0.1f, false);
 		}
 	}
 }

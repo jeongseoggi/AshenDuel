@@ -7,7 +7,6 @@
 #include "GameFramework/PlayerState.h"
 #include "ADPlayerState.generated.h"
 
-class UAttributeSet;
 class UADAttributeSet;
 class UADAbilitySystemComponent;
 /**
@@ -28,6 +27,6 @@ protected:
 	TObjectPtr<UADAbilitySystemComponent> AbilitySystemComponent;
 	
 	UPROPERTY()
-	TObjectPtr<UAttributeSet> BasicAttributeSet;
+	TObjectPtr<UADAttributeSet> BasicAttributeSet;
 #pragma endregion
 };

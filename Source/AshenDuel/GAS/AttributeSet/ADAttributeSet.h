@@ -27,8 +27,6 @@ public:
 	virtual void PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue) override;
 	virtual void PostGameplayEffectExecute(const struct FGameplayEffectModCallbackData& Data) override;
 	virtual void PostAttributeChange(const FGameplayAttribute& Attribute, float OldValue, float NewValue) override;
-	void OwnerCharacterMoveSpeedSet(const struct FGameplayEffectModCallbackData& Data);
-	void OwnerCharacterMoveSpeedSet(float NewValue);
 
 public:
 	ATTRIBUTE_ACCESSORS(UADAttributeSet, Health)
@@ -36,8 +34,7 @@ public:
 	ATTRIBUTE_ACCESSORS(UADAttributeSet, MoveSpeed)
 	ATTRIBUTE_ACCESSORS(UADAttributeSet, MaxMoveSpeed)
 	ATTRIBUTE_ACCESSORS(UADAttributeSet, Defense)
-	ATTRIBUTE_ACCESSORS(UADAttributeSet, Stamina)
-	ATTRIBUTE_ACCESSORS(UADAttributeSet, MaxStamina)
+	ATTRIBUTE_ACCESSORS(UADAttributeSet, AttackPower)
 	
 protected:
 	UPROPERTY(BlueprintReadOnly, Category = "Primary Attributes")
@@ -56,12 +53,7 @@ protected:
 	FGameplayAttributeData Defense;
 	
 	UPROPERTY(BlueprintReadOnly, Category = "Primary Attributes")
-	FGameplayAttributeData Stamina;
-	
-	UPROPERTY(BlueprintReadOnly, Category = "Primary Attributes")
-	FGameplayAttributeData MaxStamina;
-	
-	
+	FGameplayAttributeData AttackPower;
 
 	
 };
