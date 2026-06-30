@@ -20,6 +20,7 @@ public:
 	AADCharacterBase();
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	FORCEINLINE UWeaponComponent* GetWeaponComponent() const {return WeaponComponent;} 
+	FORCEINLINE UReactorComponent* GetReactorComponent() const {return ReactorComponent;}
 protected:
 	virtual void BeginPlay() override;
 	

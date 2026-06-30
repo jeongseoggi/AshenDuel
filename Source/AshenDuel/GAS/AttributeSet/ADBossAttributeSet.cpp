@@ -4,6 +4,7 @@
 #include "ADBossAttributeSet.h"
 
 #include "GameplayEffectExtension.h"
+#include "AshenDuel/ADGameplayTag/GameplayTags.h"
 
 UADBossAttributeSet::UADBossAttributeSet()
 {
@@ -27,7 +28,12 @@ void UADBossAttributeSet::PostGameplayEffectExecute(const struct FGameplayEffect
 	{
 		if (GetHealth() <= 0.0f)
 		{
-			//TODO : 보스 사망 트리거
+			UAbilitySystemComponent* TargetASC = GetOwningAbilitySystemComponent();
+			if (TargetASC)
+			{
+				FGameplayEventData EventData;
+				TargetASC->HandleGameplayEvent(GameplayTags::Event::Boss_Death, &EventData);
+			}
 		}
 	}
 }

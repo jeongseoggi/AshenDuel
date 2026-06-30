@@ -39,6 +39,7 @@ namespace GameplayTags
 		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(Dodge_End, "Event.Dodge_End");
 		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(HitReact, "Event.HitReact");
 		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(Death, "Event.Death");
+		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(Boss_Death, "Event.Boss_Death");
 		namespace Combo
 		{
 			ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(WindowOpen, "Event.Combo.WindowOpen");
@@ -48,6 +49,11 @@ namespace GameplayTags
 		namespace Character
 		{
 			ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(Ragdoll, "Event.Character.Ragdoll");
+		}
+
+		namespace Boss
+		{
+			ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(DeathCompleted, "Event.Boss.DeathCompleted");
 		}
 	}
 	

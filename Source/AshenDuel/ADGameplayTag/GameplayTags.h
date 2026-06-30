@@ -41,6 +41,7 @@ namespace GameplayTags
 		ASHENDUEL_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Dodge_End);
 		ASHENDUEL_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(HitReact);
 		ASHENDUEL_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Death);
+		ASHENDUEL_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Boss_Death);
 		namespace Combo
 		{
 			ASHENDUEL_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(WindowOpen);
@@ -49,6 +50,10 @@ namespace GameplayTags
 		namespace Character
 		{
 			ASHENDUEL_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Ragdoll);
+		}
+		namespace Boss
+		{
+			ASHENDUEL_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(DeathCompleted);
 		}
 	}
 

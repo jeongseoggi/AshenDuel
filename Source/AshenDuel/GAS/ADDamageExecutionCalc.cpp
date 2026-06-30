@@ -49,7 +49,7 @@ UADDamageExecutionCalc::UADDamageExecutionCalc()
 	RelevantAttributesToCapture.Add(DamageStatDef().HealthDef);
 }
 
-#pragma optimize( "", off )
+
 void UADDamageExecutionCalc::Execute_Implementation(const FGameplayEffectCustomExecutionParameters& ExecutionParams,
 	FGameplayEffectCustomExecutionOutput& OutExecutionOutput) const
 {
@@ -89,4 +89,3 @@ void UADDamageExecutionCalc::Execute_Implementation(const FGameplayEffectCustomE
 		OutExecutionOutput.AddOutputModifier(FGameplayModifierEvaluatedData(UADAttributeSet::GetHealthAttribute(), EGameplayModOp::Additive, -DamageDone));
 	}
 }
-#pragma optimize( "", on )

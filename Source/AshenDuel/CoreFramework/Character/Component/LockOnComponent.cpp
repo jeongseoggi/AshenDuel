@@ -61,6 +61,15 @@ void ULockOnComponent::TickComponent(float DeltaTime, ELevelTick TickType,
 		}
 	}
 	
+	if (IEnemyHelper* EnemyHelper = Cast<IEnemyHelper>(LockOnTargetActor))
+	{
+		if (!EnemyHelper->CanBeTargeted())
+		{
+			StopLockOn();
+			return;
+		}
+	}
+	
 	const float Dist = FVector::Distance(OwnerChar->GetActorLocation(), LockOnTargetActor->GetActorLocation());
 	
 	if (Dist > LockOnReleaseDist)

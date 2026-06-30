@@ -3,6 +3,7 @@
 
 #include "ADBossHealthBar.h"
 
+#include "AshenDuel/CoreFramework/Character/ADBossCharacter.h"
 #include "AshenDuel/GAS/AttributeSet/ADBossAttributeSet.h"
 #include "Components/ProgressBar.h"
 

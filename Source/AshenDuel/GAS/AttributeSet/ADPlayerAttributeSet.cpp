@@ -6,20 +6,22 @@
 #include "AbilitySystemBlueprintLibrary.h"
 #include "GameplayEffectExtension.h"
 #include "AshenDuel/ADGameplayTag/GameplayTags.h"
+#include "AshenDuel/CoreFramework/Character/ADCharacterBase.h"
+#include "AshenDuel/CoreFramework/Character/Component/ReactorComponent.h"
 #include "GameFramework/Character.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/PlayerState.h"
 
 UADPlayerAttributeSet::UADPlayerAttributeSet()
 {
-	InitMaxHealth(100.0f);
-	InitHealth(GetMaxHealth());
-	InitAttackPower(20.0f);
-	InitDefense(0.5f);
-	InitStamina(50.0f);
-	InitMaxStamina(50.0f);
-	InitMoveSpeed(300.0f);
-	InitMaxMoveSpeed(1000.0f);
+	// InitMaxHealth(100.0f);
+	// InitHealth(GetMaxHealth());
+	// InitAttackPower(20.0f);
+	// InitDefense(0.5f);
+	// InitStamina(50.0f);
+	// InitMaxStamina(50.0f);
+	// InitMoveSpeed(300.0f);
+	// InitMaxMoveSpeed(1000.0f);
 }
 
 void UADPlayerAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue)
@@ -45,7 +47,34 @@ void UADPlayerAttributeSet::PostGameplayEffectExecute(const struct FGameplayEffe
 	{
 		if (GetHealth() <= 0.0f)
 		{
-			PlayerDeathProcessing(Data);
+			if (UAbilitySystemComponent* ASC = GetOwningAbilitySystemComponent())
+			{
+				if (ASC->HasMatchingGameplayTag(GameplayTags::State::Setup::Completed))
+				{
+					PlayerDeathProcessing(Data);
+				}
+			}
+		}
+		else
+		{
+			float HealthChangeAmount = Data.EvaluatedData.Magnitude;
+			if (HealthChangeAmount < 0.0f)
+			{
+				AADCharacterBase* TargetActor = Cast<AADCharacterBase>(Data.Target.GetAvatarActor());
+				
+				FGameplayEffectContextHandle Context = Data.EffectSpec.GetContext();
+				AActor* AttackerActor = Context.GetInstigator();
+				
+				if (TargetActor && AttackerActor)
+				{
+					FVector AttackerLocation = AttackerActor->GetActorLocation();
+					
+					if (UReactorComponent* ReactComp = TargetActor->GetReactorComponent())
+					{
+						ReactComp->PlayHitReaction(AttackerLocation);
+					}
+				}
+			}
 		}
 	}
 	

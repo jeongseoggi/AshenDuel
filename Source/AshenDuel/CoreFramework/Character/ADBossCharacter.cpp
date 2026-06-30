@@ -23,6 +23,11 @@ AADBossCharacter::AADBossCharacter()
 	MotionWarpingComponent = CreateDefaultSubobject<UMotionWarpingComponent>(TEXT("MotionWarpingComponent"));
 }
 
+void AADBossCharacter::SetBossDeath()
+{
+	bIsDeath = !bIsDeath;
+}
+
 void AADBossCharacter::BeginPlay()
 {
 	Super::BeginPlay();
@@ -43,6 +48,10 @@ void AADBossCharacter::OnTargeted(bool bTargeted)
 
 bool AADBossCharacter::CanBeTargeted()
 {
+	if (bIsDeath)
+	{
+		return false;
+	}
 	return true;
 }
 
@@ -52,6 +61,14 @@ void AADBossCharacter::ShowBossUI()
 	if (PC)
 	{
 		PC->RegisterBossToHUD(this);
+	}
+}
+
+void AADBossCharacter::InitiateDeathRow()
+{
+	if (OnBossDied.IsBound())
+	{
+		OnBossDied.Broadcast();
 	}
 }
 

@@ -19,7 +19,7 @@ class ASHENDUEL_API UADBossHealthBar : public UUserWidget
 	
 public:
 	void InitAbilitySystem(UAbilitySystemComponent* InASC);
-	
+
 private:
 	void UpdateHealthBar();
 	void InitializeHealthBar(float Health, float MaxHealth);

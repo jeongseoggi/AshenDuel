@@ -28,10 +28,16 @@ void AADCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	SetLockOnState(false);
+}
+
+void AADCharacter::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
+	
 	ASC = GetAbilitySystemComponent();
 	if (ASC)
 	{
-		ASC->InitAbilityActorInfo(GetPlayerState(), this);
+		ASC->InitAbilityActorInfo(this, this);
 		GiveDefaultAbilities();
 		ApplyStartUpEffects();
 	}

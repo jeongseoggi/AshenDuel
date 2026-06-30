@@ -4,6 +4,7 @@
 #include "ADPlayerController.h"
 
 #include "AbilitySystemBlueprintLibrary.h"
+#include "ADGameMode.h"
 #include "AshenDuel/UI/ADMainHUD.h"
 #include "Character/ADBossCharacter.h"
 #include "Character/ADCharacter.h"
@@ -28,33 +29,15 @@ void AADPlayerController::RespawnPlayer()
 	UWorld* World = GetWorld();
 	if (!World) return;
 	
-	APawn* OldCharPawn = GetPawn();
-	AActor* SpawnPoint = UGameplayStatics::GetActorOfClass(World, APlayerStart::StaticClass());
-	if (!SpawnPoint) return;
+	AADGameMode* ADGM = Cast<AADGameMode>(World->GetAuthGameMode());
+	if (!ADGM) return;
 	
-	FVector SpawnLoc = SpawnPoint->GetActorLocation();
-	FRotator SpawnRot = SpawnPoint->GetActorRotation();
+	ACharacter* MyChar = Cast<ACharacter>(GetPawn());
 	
-	UnPossess();
+	SetIgnoreMoveInput(true);
+	SetIgnoreLookInput(true);
 	
-	if (OldCharPawn)
-	{
-		OldCharPawn->Destroy();
-	}
-	
-	FActorSpawnParameters SpawnParams;
-	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
-
-	APawn* NewPawn = World->SpawnActor<APawn>(RespawnPlayerChar, SpawnLoc, SpawnRot, SpawnParams);
-
-	if (NewPawn)
-	{
-		Possess(NewPawn);
-		
-		SetIgnoreMoveInput(false);
-		SetIgnoreLookInput(false);
-	}
-	
+	ADGM->OnPlayerDied(MyChar);
 }
 
 void AADPlayerController::BeginPlay()

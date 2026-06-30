@@ -7,6 +7,8 @@
 #include "AshenDuel/Interface/EnemyHelper.h"
 #include "ADBossCharacter.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnBossBossDiedDelegate);
+
 class UADAttributeSet;
 class UMotionWarpingComponent;
 class USphereComponent;
@@ -19,9 +21,13 @@ class ASHENDUEL_API AADBossCharacter : public AADCharacterBase, public IEnemyHel
 public:
 	AADBossCharacter();
 	FORCEINLINE UMotionWarpingComponent* GetMotionWarpingComponent() const { return MotionWarpingComponent; }
-
+	void SetBossDeath();
 protected:
 	virtual void BeginPlay() override;
+	
+protected:
+	UPROPERTY(EditDefaultsOnly)
+	bool bIsDeath = false;
 	
 #pragma region Component
 protected:
@@ -34,8 +40,8 @@ protected:
 #pragma endregion
 
 #pragma region EnemyHelperInterface
-	virtual void OnTargeted(bool bTargeted);
-	virtual bool CanBeTargeted();
+	virtual void OnTargeted(bool bTargeted) override;
+	virtual bool CanBeTargeted() override;
 #pragma endregion
 	
 #pragma region ASC
@@ -46,5 +52,14 @@ protected:
 #pragma region UI
 protected:
 	void ShowBossUI();
+#pragma endregion
+	
+#pragma region Delegate
+public:
+	UPROPERTY(BlueprintAssignable, Category = "DelegateEvents")
+	FOnBossBossDiedDelegate OnBossDied;
+	
+	void InitiateDeathRow();
+
 #pragma endregion
 };

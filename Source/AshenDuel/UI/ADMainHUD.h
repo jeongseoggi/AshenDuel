@@ -23,6 +23,10 @@ public:
 	void InitBossAbilitySystem(UAbilitySystemComponent* InASC);
 	
 protected:
+	UFUNCTION()
+	void HandleBossHealthBar();
+	
+protected:
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UADHealthBar> HealthBar;
 	
