@@ -30,6 +30,8 @@ void AADCharacterBase::GiveDefaultAbilities()
 {
 	check(ASC);
 	
+	int32 TemporaryInputID = 0;
+	
 	for (TSubclassOf<UGameplayAbility> AbilityClass : DefaultAbilities)
 	{
 		if (ASC->FindAbilitySpecFromClass(AbilityClass))
@@ -44,6 +46,7 @@ void AADCharacterBase::GiveDefaultAbilities()
 			if (ADAbility->StartupInputTag.IsValid())
 			{
 				Spec.DynamicAbilityTags.AddTag(ADAbility->StartupInputTag);
+				Spec.InputID = TemporaryInputID++;
 			}
 		}
 		

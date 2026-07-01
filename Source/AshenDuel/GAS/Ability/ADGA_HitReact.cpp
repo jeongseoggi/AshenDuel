@@ -13,6 +13,7 @@ void UADGA_HitReact::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
 {
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 	
+	
 	FName TargetSection = TEXT("FrontReaction");
 	
 	if (TriggerEventData)
@@ -26,16 +27,36 @@ void UADGA_HitReact::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
 	if (ASC->HasMatchingGameplayTag(GameplayTags::State::Death))
 	{
 		CancelAbilities();
-		//ApplyDamage(TriggerEventData);
 		EndAbility(Handle, ActorInfo, ActivationInfo, true, false);
 		return;
 	}
 	
+	bool bIsGuardBroken = ASC->HasMatchingGameplayTag(GameplayTags::State::IsGuardBroken);
+	if (bIsGuardBroken)
+	{
+		FGameplayTagContainer CancelTags;
+		CancelTags.AddTag(GameplayTags::State::Block);
+		ASC->CancelAbilities(&CancelTags);
+		
+		UAbilityTask_PlayMontageAndWait* GuardBrokenTask = UAbilityTask_PlayMontageAndWait::CreatePlayMontageAndWaitProxy(
+			this, NAME_None, GuardBrokenMontage);
+		
+		if (GuardBrokenTask)
+		{
+			GuardBrokenTask->OnCompleted.AddDynamic(this, &UADGA_HitReact::OnGuardHitMontageEnded);
+			GuardBrokenTask->OnInterrupted.AddDynamic(this, &UADGA_HitReact::OnGuardHitMontageEnded);
+			GuardBrokenTask->ReadyForActivation();
+			return;
+		}
+	}
+	
+	
+	bool bIsBlocking = ASC->HasMatchingGameplayTag(GameplayTags::State::Block);
+	
 	UAbilityTask_PlayMontageAndWait* MontageTask = UAbilityTask_PlayMontageAndWait::CreatePlayMontageAndWaitProxy(
-		this, NAME_None, HitReactMontage, 1.0f, TargetSection);
+		this, NAME_None, bIsBlocking  ? BlockHitMontage : HitReactMontage, 1.0f, bIsBlocking ? TEXT("Default") : TargetSection);
 	
 	CancelAbilities();
-	//ApplyDamage(TriggerEventData);
 	
 	if (MontageTask)
 	{
@@ -49,27 +70,6 @@ void UADGA_HitReact::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
 	}
 }
 
-void UADGA_HitReact::ApplyDamage(const FGameplayEventData* TriggerEventData)
-{
-	UAbilitySystemComponent* TargetASC = CurrentActorInfo->AbilitySystemComponent.Get();
-	if (TargetASC && DamageEffectClass)
-	{
-		FGameplayEffectContextHandle EffectContext = TargetASC->MakeEffectContext();
-		
-		if (TriggerEventData->Instigator)
-		{
-			AActor* InstigatorActor = const_cast<AActor*>(TriggerEventData->Instigator.Get());
-			EffectContext.AddInstigator(InstigatorActor, InstigatorActor);
-		}
-		
-		FGameplayEffectSpecHandle SpecHandle = TargetASC->MakeOutgoingSpec(DamageEffectClass, GetAbilityLevel(), EffectContext);
-		if (SpecHandle.IsValid())
-		{
-			TargetASC->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get());
-		}
-	}
-	
-}
 
 void UADGA_HitReact::CancelAbilities()
 {
@@ -86,4 +86,14 @@ void UADGA_HitReact::CancelAbilities()
 void UADGA_HitReact::OnHitReactMontageEnded()
 {
 	EndAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, true, false);
+}
+
+void UADGA_HitReact::OnGuardHitMontageEnded()
+{
+	UAbilitySystemComponent* ASC = GetAbilitySystemComponentFromActorInfo();
+	if (ASC)
+	{
+		ASC->RemoveLooseGameplayTag(GameplayTags::State::IsGuardBroken);
+		EndAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, true, false);
+	}
 }

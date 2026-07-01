@@ -41,6 +41,11 @@ void UADAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		Direction = CalculateDirection(Velocity, OwnerCharacter->GetActorRotation());
 		bIsStarting = GroundSpeed >= 0.01f && PrevGroundSpeed < 0.01f;
 		bIsSprinting = GroundSpeed > 300.0f;
+		
+		if (OwnerASC)
+		{
+			bIsBlocking = OwnerASC->HasMatchingGameplayTag(GameplayTags::State::Block);
+		}
 	}
 	
 }

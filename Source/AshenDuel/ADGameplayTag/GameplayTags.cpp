@@ -10,6 +10,9 @@ namespace GameplayTags
 		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(Invincible, "State.Invincible");
 		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(Death, "State.Death");
 		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(IsGoingToDie, "State.IsGoingToDie");
+		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(Block, "State.Block");
+		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(IsParrying, "State.IsParrying");
+		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(IsGuardBroken, "State.IsGuardBroken");
 
 		namespace Combat
 		{
@@ -32,6 +35,7 @@ namespace GameplayTags
 		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(Sprinting, "Input.Sprinting");
 		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(Attack, "Input.Attack");
 		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(Dodge, "Input.Dodge");
+		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(Block, "Input.Block");
 	}
 	
 	namespace Event

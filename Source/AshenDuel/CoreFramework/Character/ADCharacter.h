@@ -82,6 +82,9 @@ protected:
 	TObjectPtr<UInputAction> DodgeAction;
 	
 	UPROPERTY(EditAnywhere,Category = "Input")
+	TObjectPtr<UInputAction> BlockAction;
+	
+	UPROPERTY(EditAnywhere,Category = "Input")
 	TObjectPtr<UADInputData> InputData;
 	
 	UPROPERTY(EditAnywhere,Category = "Input")

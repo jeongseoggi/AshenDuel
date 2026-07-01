@@ -17,15 +17,25 @@ public:
 	virtual void ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData) override;
 	
 protected:
-	void ApplyDamage(const FGameplayEventData* TriggerEventData);
 	void CancelAbilities();
 	
 protected:
 	UFUNCTION()
 	void OnHitReactMontageEnded();
+	
+	UFUNCTION()
+	void OnGuardHitMontageEnded();
+	
+	
 protected:
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<UAnimMontage> HitReactMontage;
+	
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<UAnimMontage> BlockHitMontage;
+	
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<UAnimMontage> GuardBrokenMontage;
 	
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<UGameplayEffect> DamageEffectClass;

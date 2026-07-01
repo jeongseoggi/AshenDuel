@@ -61,4 +61,7 @@ protected:
 	
 	UPROPERTY(VisibleAnywhere,BlueprintReadOnly)
 	bool bIsDead;
+	
+	UPROPERTY(VisibleAnywhere,BlueprintReadOnly)
+	bool bIsBlocking;
 };
