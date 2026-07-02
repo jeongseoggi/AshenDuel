@@ -13,7 +13,8 @@ public class AshenDuel : ModuleRules
 			"GameplayTasks",
 			"NavigationSystem", 
 			"AIModule", 
-			"Niagara"
+			"Niagara",
+			"DeveloperSettings"
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore", "AnimGraphRuntime", "MotionWarping" });

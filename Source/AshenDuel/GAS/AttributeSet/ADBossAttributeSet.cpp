@@ -13,11 +13,19 @@ UADBossAttributeSet::UADBossAttributeSet()
 	InitAttackPower(70.0f);
 	InitDefense(5.0f);
 	InitPhaseTreshold(0.5f);
+	InitGroggyGauge(0.0f);
+	InitMaxGroggyGauge(100.0f);
 }
 
 void UADBossAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue)
 {
 	Super::PreAttributeChange(Attribute, NewValue);
+	
+	if (Attribute == GetMaxHealthAttribute())
+	{
+		NewValue = FMath::Clamp(NewValue, 0.0f, GetMaxGroggyGauge());
+	}
+	
 }
 
 void UADBossAttributeSet::PostGameplayEffectExecute(const struct FGameplayEffectModCallbackData& Data)

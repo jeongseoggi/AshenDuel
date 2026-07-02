@@ -9,6 +9,7 @@
 #include "AshenDuel/ADGameplayTag/GameplayTags.h"
 #include "AshenDuel/GAS/AttributeSet/ADPlayerAttributeSet.h"
 #include "AshenDuel/Interface/CombatInterface.h"
+#include "AshenDuel/System/ADDataManagerSubSystem.h"
 
 UADGA_Attack::UADGA_Attack()
 {
@@ -27,6 +28,12 @@ void UADGA_Attack::ActivateAbility(const FGameplayAbilitySpecHandle Handle, cons
 	}
 	
 	CurrentComboIndex = 1;
+	
+	UAbilitySystemComponent* ASC = GetAbilitySystemComponentFromActorInfo();
+	if (!ASC) return;
+	
+	ASC->AddLooseGameplayTag(CurrentComboTag);
+	
 	if (!ApplyComboStaminaCost(CurrentComboIndex))
 	{
 		EndAbility(Handle, ActorInfo, ActivationInfo, true, true);
@@ -76,6 +83,7 @@ void UADGA_Attack::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGa
 	{
 		CombatInterface->RemoveEffectWithTag(GameplayTags::State::Stamina::RegenBlocked);
 	}
+	RemoveComboTag();
 	
 	Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
 }
@@ -88,14 +96,15 @@ void UADGA_Attack::ExecuteComboJump()
 	}
 
 	const int32 NextComboIndex = CurrentComboIndex + 1;
-
+	
 	if (!ApplyComboStaminaCost(NextComboIndex))
 	{
 		bComboBuffer = false;
 		bIsComboWindowOpen = false;
 		return;
 	}
-
+	
+	ComboAttackTagAttach(NextComboIndex);
 	CurrentComboIndex = NextComboIndex;
 
 	FName NextSection = FName(*FString::Printf(TEXT("Attack%d"), CurrentComboIndex));
@@ -107,13 +116,20 @@ void UADGA_Attack::ExecuteComboJump()
 
 bool UADGA_Attack::ApplyComboStaminaCost(int32 ComboIndex)
 {
-	if (!ComboStaminaCostEffect) return true;
+
+	UWorld* World = GetWorld();
+	if (!World) return false;
 	
-	const int32 CostIndex = ComboIndex - 1;
+	UGameInstance* GI = GetWorld()->GetGameInstance();
+	if (!GI) return false;
 	
-	if (!ComboStaminaCosts.IsValidIndex(CostIndex)) return false;
+	UADDataManagerSubSystem* DataManager = GI->GetSubsystem<UADDataManagerSubSystem>();
+	if (!DataManager) return false;
 	
-	const float Cost = ComboStaminaCosts[CostIndex];
+	FComboAttackData Data = DataManager->GetAttackDataByTag(CurrentComboTag);
+	if (Data.StaminaCost <= 0) return false;
+	
+	const float Cost = Data.StaminaCost;
 	
 	UAbilitySystemComponent* ASC = GetAbilitySystemComponentFromActorInfo();
 	if (!ASC) return false;
@@ -137,6 +153,36 @@ bool UADGA_Attack::ApplyComboStaminaCost(int32 ComboIndex)
  );
 	
 	return true;
+}
+
+void UADGA_Attack::ComboAttackTagAttach(const int32 NextComboCount)
+{
+	UAbilitySystemComponent* ASC = GetAbilitySystemComponentFromActorInfo();
+	if (!ASC) return;
+	
+	FString TagNameStr = FString::Printf(TEXT("Attack.AttackCombo%d"), NextComboCount);
+	FGameplayTag ComboTag = FGameplayTag::RequestGameplayTag(*TagNameStr);
+	
+	ASC->RemoveLooseGameplayTag(CurrentComboTag);
+	ASC->AddLooseGameplayTag(ComboTag);
+	
+	CurrentComboTag = ComboTag;
+}
+
+void UADGA_Attack::RemoveComboTag()
+{
+	UAbilitySystemComponent* ASC = GetAbilitySystemComponentFromActorInfo();
+	for (int32 i = 1; i <= MaxComboCount; i++)
+	{
+		FString TagNameStr = FString::Printf(TEXT("Attack.AttackCombo%d"), i);
+		FGameplayTag ComboTag = FGameplayTag::RequestGameplayTag(*TagNameStr);
+		
+		if (ComboTag.IsValid() && ASC->HasMatchingGameplayTag(ComboTag))
+		{
+			ASC->RemoveLooseGameplayTag(ComboTag);
+			break;
+		}
+	}
 }
 
 void UADGA_Attack::OnComboWindowOpened(FGameplayEventData Payload)

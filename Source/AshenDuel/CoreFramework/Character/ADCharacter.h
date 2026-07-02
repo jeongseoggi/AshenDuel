@@ -85,6 +85,9 @@ protected:
 	TObjectPtr<UInputAction> BlockAction;
 	
 	UPROPERTY(EditAnywhere,Category = "Input")
+	TObjectPtr<UInputAction> HeavyAttckAction;
+	
+	UPROPERTY(EditAnywhere,Category = "Input")
 	TObjectPtr<UADInputData> InputData;
 	
 	UPROPERTY(EditAnywhere,Category = "Input")

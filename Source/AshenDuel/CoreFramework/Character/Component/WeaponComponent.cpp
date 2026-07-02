@@ -5,6 +5,7 @@
 #include "AshenDuel/AshenDuel.h"
 #include "AshenDuel/ADGameplayTag/GameplayTags.h"
 #include "AshenDuel/CoreFramework/Character/ADCharacter.h"
+#include "AshenDuel/System/ADDataManagerSubSystem.h"
 #include "AshenDuel/Weapon/SwordWeapon.h"
 #include "Kismet/KismetSystemLibrary.h"
 
@@ -132,10 +133,48 @@ void UWeaponComponent::HitAttackTargetApplyGE(TArray<FHitResult>& OutHits)
 			{
 				FGameplayEffectContextHandle EffectContext = SourceASC->MakeEffectContext();
 				EffectContext.AddHitResult(Hit);
-
+				
 				FGameplayEffectSpecHandle NewHandle = SourceASC->MakeOutgoingSpec(DamageEffectClass, 1.0f, EffectContext);
 				if (NewHandle.IsValid())
 				{
+					FGameplayTag FoundComboTag;
+					const int32 MaxComboIndex = 4;
+					
+					for (int32 i = 1; i <= MaxComboIndex; i++)
+					{
+						FString TagStr = FString::Printf(TEXT("Attack.AttackCombo%d"), i);
+						FGameplayTag ComboTag = FGameplayTag::RequestGameplayTag(*TagStr);
+						
+						if (ComboTag.IsValid() && SourceASC->HasMatchingGameplayTag(ComboTag))
+						{
+							FoundComboTag = ComboTag;
+							break;
+						}
+					}
+					
+					float GroggyDamageToSend = 0.0f;
+					if (FoundComboTag.IsValid())
+					{
+						UWorld* World = GetWorld();
+						if (!World) return;
+						
+						UGameInstance* GI = World->GetGameInstance();
+						if (!GI) return;
+						
+						UADDataManagerSubSystem* DataManager = GI->GetSubsystem<UADDataManagerSubSystem>();
+						if (!DataManager) return;
+						
+						FComboAttackData Data = DataManager->GetAttackDataByTag(FoundComboTag);
+						GroggyDamageToSend = Data.GroggyDamage;
+					}
+					
+					if (GroggyDamageToSend > 0.0f)
+					{
+						NewHandle.Data.Get()->SetSetByCallerMagnitude(
+							GameplayTags::Data::GroggyDamage,
+							GroggyDamageToSend);
+					}
+					
 					SourceASC->ApplyGameplayEffectSpecToTarget(*NewHandle.Data.Get(), TargetASC);
 				}
 			}

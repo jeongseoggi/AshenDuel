@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "ADGameplayAbility.h"
+#include "AshenDuel/ADGameplayTag/GameplayTags.h"
 #include "ADGA_Attack.generated.h"
 
 class UAbilityTask_WaitGameplayEvent;
@@ -25,6 +26,10 @@ protected:
 	void ExecuteComboJump();
 	
 	bool ApplyComboStaminaCost(int32 ComboIndex);
+	
+	void ComboAttackTagAttach(const int32 NextComboCount);
+	
+	void RemoveComboTag();
 	
 	UFUNCTION() 
 	void OnComboWindowOpened(FGameplayEventData Payload);
@@ -53,7 +58,11 @@ protected:
 	
 	UPROPERTY(EditDefaultsOnly, Category = "Cost")
 	TArray<float> ComboStaminaCosts = {5.f, 7.f, 10.f, 15.f};
+
+	UPROPERTY(EditDefaultsOnly, Category = "Tag")
+	FGameplayTag CurrentComboTag = GameplayTags::Attack::AttackCombo1;
 	
+
 private:
 	int32 CurrentComboIndex;
 	bool bIsComboWindowOpen;

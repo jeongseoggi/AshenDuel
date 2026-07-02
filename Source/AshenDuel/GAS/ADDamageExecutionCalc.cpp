@@ -4,6 +4,7 @@
 #include "ADDamageExecutionCalc.h"
 #include "AbilitySystemComponent.h"
 #include "AshenDuel/ADGameplayTag/GameplayTags.h"
+#include "AshenDuel/System/ADDataManagerSubSystem.h"
 #include "AttributeSet/ADAttributeSet.h"
 #include "AttributeSet/ADBossAttributeSet.h"
 #include "AttributeSet/ADPlayerAttributeSet.h"
@@ -14,6 +15,7 @@ struct FADDamageStatInternal
 	FGameplayEffectAttributeCaptureDefinition DefenseDef;
 	FGameplayEffectAttributeCaptureDefinition HealthDef;
 	FGameplayEffectAttributeCaptureDefinition StaminaDef;
+	FGameplayEffectAttributeCaptureDefinition GroggyDef;
     
 	FADDamageStatInternal()
 	{
@@ -40,6 +42,12 @@ struct FADDamageStatInternal
 		   EGameplayEffectAttributeCaptureSource::Target, 
 		   false
 		);
+		
+		GroggyDef = FGameplayEffectAttributeCaptureDefinition(
+		   UADBossAttributeSet::GetGroggyGaugeAttribute(),
+		   EGameplayEffectAttributeCaptureSource::Target, 
+		   false
+		);
 	}
 };
 
@@ -56,9 +64,11 @@ UADDamageExecutionCalc::UADDamageExecutionCalc()
 	RelevantAttributesToCapture.Add(DamageStatDef().DefenseDef);
 	RelevantAttributesToCapture.Add(DamageStatDef().HealthDef);
 	RelevantAttributesToCapture.Add(DamageStatDef().StaminaDef);
+	RelevantAttributesToCapture.Add(DamageStatDef().GroggyDef);
 }
 
 
+#pragma optimize ("", off)
 void UADDamageExecutionCalc::Execute_Implementation(const FGameplayEffectCustomExecutionParameters& ExecutionParams,
 	FGameplayEffectCustomExecutionOutput& OutExecutionOutput) const
 {
@@ -82,7 +92,7 @@ void UADDamageExecutionCalc::Execute_Implementation(const FGameplayEffectCustomE
 	float TargetDefense = 0.0f;
 	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(DamageStatDef().DefenseDef, EvaluationParameters, TargetDefense);
 	
-	float DamageDone = SourceAttackPower - TargetDefense;
+	float DamageDone = SourceAttackPower - TargetDefense; 
 	DamageDone = FMath::Max(DamageDone, 1.0f);
 	
 	float CurrentHealth = 0.0f;
@@ -91,6 +101,11 @@ void UADDamageExecutionCalc::Execute_Implementation(const FGameplayEffectCustomE
 	float CurrentStamina = 0.0f;
 	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(DamageStatDef().StaminaDef, FAggregatorEvaluateParameters(), CurrentStamina);
 	
+	float CurrentGroggy = 0.0f;
+	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(DamageStatDef().GroggyDef, EvaluationParameters, CurrentGroggy);
+	
+	float GroggyDmg = Spec.GetSetByCallerMagnitude(GameplayTags::Data::GroggyDamage, false, 0.0f);
+	
 	bool bIsBlocking = TargetASC->HasMatchingGameplayTag(GameplayTags::State::Block);
 	bool bIsParrying = TargetASC->HasMatchingGameplayTag(GameplayTags::State::IsParrying);
 	float FinalDamageToApply = DamageDone;
@@ -98,6 +113,11 @@ void UADDamageExecutionCalc::Execute_Implementation(const FGameplayEffectCustomE
 	if (bIsParrying)
 	{
 		FinalDamageToApply = 0.0f;
+		GroggyDmg = 20.0f;
+		if (SourceASC)
+		{
+			CurrentGroggy = SourceASC->GetNumericAttribute(UADBossAttributeSet::GetGroggyGaugeAttribute());
+		}
 		UE_LOG(LogTemp, Error, TEXT("퍼펙트 패링 성공 메시지"));
 	}
 	else if (bIsBlocking)
@@ -127,4 +147,24 @@ void UADDamageExecutionCalc::Execute_Implementation(const FGameplayEffectCustomE
 	{
 		OutExecutionOutput.AddOutputModifier(FGameplayModifierEvaluatedData(UADAttributeSet::GetHealthAttribute(), EGameplayModOp::Additive, -DamageDone));
 	}
+	
+	if (GroggyDmg > 0.0f && TargetASC)
+	{
+		if (bIsParrying)
+		{
+			SourceASC->SetNumericAttributeBase(UADBossAttributeSet::GetGroggyGaugeAttribute(), CurrentGroggy + GroggyDmg);
+			
+		}
+		else
+		{
+			OutExecutionOutput.AddOutputModifier(FGameplayModifierEvaluatedData(
+				UADBossAttributeSet::GetGroggyGaugeAttribute(), 
+				EGameplayModOp::Additive, 
+				GroggyDmg
+			));
+		}
+		
+		UE_LOG(LogTemp, Log, TEXT("그로기 데미지 적용: %f (현재 예측 잔여량: %f)"), GroggyDmg, CurrentGroggy + GroggyDmg);
+	}
 }
+#pragma optimize ("", on)

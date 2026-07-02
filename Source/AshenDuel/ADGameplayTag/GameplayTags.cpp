@@ -13,6 +13,8 @@ namespace GameplayTags
 		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(Block, "State.Block");
 		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(IsParrying, "State.IsParrying");
 		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(IsGuardBroken, "State.IsGuardBroken");
+		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(IsHeavyAttack, "State.IsHeavyAttack");
+		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(HeavyAttackCharageEnd, "State.HeavyAttackCharageEnd");
 
 		namespace Combat
 		{
@@ -36,6 +38,7 @@ namespace GameplayTags
 		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(Attack, "Input.Attack");
 		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(Dodge, "Input.Dodge");
 		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(Block, "Input.Block");
+		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(HeavyAttack, "Input.HeavyAttack");
 	}
 	
 	namespace Event
@@ -63,6 +66,7 @@ namespace GameplayTags
 	
 	namespace Data
 	{
+		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(GroggyDamage, "Data.GroggyDamage");
 		namespace Cost
 		{
 			ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(Stamina, "Data.Cost.Stamina");
@@ -94,5 +98,13 @@ namespace GameplayTags
 	namespace GameplayEvent
 	{
 		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(HitReact, "GameplayEvent.HitReact");
+	}
+
+	namespace Attack
+	{
+		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(AttackCombo1, "Attack.AttackCombo1");
+		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(AttackCombo2, "Attack.AttackCombo2");
+		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(AttackCombo3, "Attack.AttackCombo3");
+		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(AttackCombo4, "Attack.AttackCombo4");
 	}
 }

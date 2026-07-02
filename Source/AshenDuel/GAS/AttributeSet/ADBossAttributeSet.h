@@ -32,8 +32,16 @@ public:
 	
 public:
 	ATTRIBUTE_ACCESSORS(UADBossAttributeSet, PhaseTreshold)
+	ATTRIBUTE_ACCESSORS(UADBossAttributeSet, GroggyGauge)
+	ATTRIBUTE_ACCESSORS(UADBossAttributeSet, MaxGroggyGauge)
 	
 protected:
 	UPROPERTY(BlueprintReadOnly, Category = "Primary Attributes")
 	FGameplayAttributeData PhaseTreshold;
+	
+	UPROPERTY(BlueprintReadOnly, Category = "Primary Attributes")
+	FGameplayAttributeData GroggyGauge;
+	
+	UPROPERTY(BlueprintReadOnly, Category = "Primary Attributes")
+	FGameplayAttributeData MaxGroggyGauge;
 };
