@@ -131,6 +131,7 @@ void UWeaponComponent::HitAttackTargetApplyGE(TArray<FHitResult>& OutHits)
         
 			if (TargetASC && SourceASC)
 			{
+				GroggyAttackChecking(SourceASC, TargetASC);
 				FGameplayEffectContextHandle EffectContext = SourceASC->MakeEffectContext();
 				EffectContext.AddHitResult(Hit);
 				
@@ -140,19 +141,27 @@ void UWeaponComponent::HitAttackTargetApplyGE(TArray<FHitResult>& OutHits)
 					FGameplayTag FoundComboTag;
 					const int32 MaxComboIndex = 4;
 					
-					for (int32 i = 1; i <= MaxComboIndex; i++)
+					if (SourceASC->HasMatchingGameplayTag(GameplayTags::Input::HeavyAttack))
 					{
-						FString TagStr = FString::Printf(TEXT("Attack.AttackCombo%d"), i);
-						FGameplayTag ComboTag = FGameplayTag::RequestGameplayTag(*TagStr);
-						
-						if (ComboTag.IsValid() && SourceASC->HasMatchingGameplayTag(ComboTag))
+						FoundComboTag = GameplayTags::Input::HeavyAttack;
+					}
+					else
+					{
+						for (int32 i = 1; i <= MaxComboIndex; i++)
 						{
-							FoundComboTag = ComboTag;
-							break;
+							FString TagStr = FString::Printf(TEXT("Attack.AttackCombo%d"), i);
+							FGameplayTag ComboTag = FGameplayTag::RequestGameplayTag(*TagStr);
+						
+							if (ComboTag.IsValid() && SourceASC->HasMatchingGameplayTag(ComboTag))
+							{
+								FoundComboTag = ComboTag;
+								break;
+							}
 						}
 					}
 					
 					float GroggyDamageToSend = 0.0f;
+					float AttackDmg = 0.0f;
 					if (FoundComboTag.IsValid())
 					{
 						UWorld* World = GetWorld();
@@ -166,6 +175,7 @@ void UWeaponComponent::HitAttackTargetApplyGE(TArray<FHitResult>& OutHits)
 						
 						FComboAttackData Data = DataManager->GetAttackDataByTag(FoundComboTag);
 						GroggyDamageToSend = Data.GroggyDamage;
+						AttackDmg = Data.AttackDmg;
 					}
 					
 					if (GroggyDamageToSend > 0.0f)
@@ -175,6 +185,13 @@ void UWeaponComponent::HitAttackTargetApplyGE(TArray<FHitResult>& OutHits)
 							GroggyDamageToSend);
 					}
 					
+					if (AttackDmg > 0.0f)
+					{
+						NewHandle.Data.Get()->SetSetByCallerMagnitude(
+							GameplayTags::Data::AttackDamage,
+							AttackDmg);
+					}
+					
 					SourceASC->ApplyGameplayEffectSpecToTarget(*NewHandle.Data.Get(), TargetASC);
 				}
 			}
@@ -182,5 +199,26 @@ void UWeaponComponent::HitAttackTargetApplyGE(TArray<FHitResult>& OutHits)
 	}
 }
 
+void UWeaponComponent::GroggyAttackChecking(UAbilitySystemComponent* SourceASC, UAbilitySystemComponent* TargetASC)
+{
+	if (!SourceASC || !TargetASC) return;
+
+	if (SourceASC->HasMatchingGameplayTag(GameplayTags::Attack::GroggyAttack) && 
+		TargetASC->HasMatchingGameplayTag(GameplayTags::State::IsGroggy))
+	{
+		if (!TargetASC->HasMatchingGameplayTag(GameplayTags::State::KnockDown))
+		{
+			FGameplayEventData Data;
+		
+			Data.EventTag = GameplayTags::Event::Boss::KnockDown;
+			Data.Instigator = SourceASC->GetAvatarActor();
+			Data.Target = TargetASC->GetAvatarActor();
+		
+			TargetASC->HandleGameplayEvent(GameplayTags::Event::Boss::KnockDown, &Data);
+       
+			UE_LOG(LogTemp, Log, TEXT("🎯 그로기 막타 적중! 보스에게 KnockDown 이벤트 발송 완료."));
+		}
+	}
+}
 
 

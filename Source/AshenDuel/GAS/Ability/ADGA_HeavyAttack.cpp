@@ -14,8 +14,6 @@ void UADGA_HeavyAttack::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
 {
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 	
-	UE_LOG(LogTemp, Warning, TEXT("Heavy 활성화"));
-	
 	AADCharacter* PlayerCharacter = Cast<AADCharacter>(GetAvatarActorFromActorInfo());
 	if (!PlayerCharacter) return;
 	
@@ -72,6 +70,11 @@ void UADGA_HeavyAttack::EndAbility(const FGameplayAbilitySpecHandle Handle, cons
 		if (CombatInterface)
 		{
 			CombatInterface->RemoveEffectWithTag(GameplayTags::State::HeavyAttackCharageEnd);
+		}
+		
+		if (ASC->HasMatchingGameplayTag(GameplayTags::Attack::GroggyAttack))
+		{
+			ASC->RemoveLooseGameplayTag(GameplayTags::Attack::GroggyAttack);
 		}
 	}
 	if (bWasCancelled && ASC)

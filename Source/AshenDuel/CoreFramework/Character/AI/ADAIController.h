@@ -28,6 +28,9 @@ protected:
 	virtual void BeginPlay() override;
 	virtual void OnPossess(APawn* InPawn) override;
 	
+	UFUNCTION()
+	void OnKnockDownTagChanged(const FGameplayTag Tag, int32 NewCount);
+	
 #pragma region Default
 	UPROPERTY(EditDefaultsOnly, Category = "AI")
 	TObjectPtr<UBlackboardComponent> BlackboardComp;
@@ -40,5 +43,6 @@ protected:
 	
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<ACharacter> PlayerChar;
+
 #pragma endregion
 };

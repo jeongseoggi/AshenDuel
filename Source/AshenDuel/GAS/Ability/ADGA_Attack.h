@@ -56,12 +56,8 @@ protected:
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<UGameplayEffect> ComboStaminaCostEffect;
 	
-	UPROPERTY(EditDefaultsOnly, Category = "Cost")
-	TArray<float> ComboStaminaCosts = {5.f, 7.f, 10.f, 15.f};
-
 	UPROPERTY(EditDefaultsOnly, Category = "Tag")
 	FGameplayTag CurrentComboTag = GameplayTags::Attack::AttackCombo1;
-	
 
 private:
 	int32 CurrentComboIndex;

@@ -7,6 +7,8 @@
 #include "AshenDuel/Interface/EnemyHelper.h"
 #include "ADBossCharacter.generated.h"
 
+class UFatalZoneComponent;
+class UBoxComponent;
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnBossBossDiedDelegate);
 
 class UADAttributeSet;
@@ -20,11 +22,22 @@ class ASHENDUEL_API AADBossCharacter : public AADCharacterBase, public IEnemyHel
 
 public:
 	AADBossCharacter();
+	
 	FORCEINLINE UMotionWarpingComponent* GetMotionWarpingComponent() const { return MotionWarpingComponent; }
+	
 	void SetBossDeath();
+	
+	void ApplyGroggy();
+	
+	void SetFatalZoneEnabled(bool bEnable);
+	
 protected:
 	virtual void BeginPlay() override;
 	
+	UFUNCTION()
+	void OnGameplayEffectRemoved(const FGameplayEffectRemovalInfo& EffectRemoved);
+	
+	void ResetGroggy();
 protected:
 	UPROPERTY(EditDefaultsOnly)
 	bool bIsDeath = false;
@@ -37,6 +50,12 @@ protected:
 	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<UMotionWarpingComponent> MotionWarpingComponent;
 	
+	UPROPERTY(EditDefaultsOnly)
+	TObjectPtr<UFatalZoneComponent> FrontFatalZone;
+	
+	UPROPERTY(EditDefaultsOnly)
+	TObjectPtr<UFatalZoneComponent> BackFatalZone;
+	
 #pragma endregion
 
 #pragma region EnemyHelperInterface
@@ -47,6 +66,9 @@ protected:
 #pragma region ASC
 	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<UADAttributeSet> BossAttributeSet;
+	
+	UPROPERTY(EditDefaultsOnly, Category = "Effects")
+	TSubclassOf<UGameplayEffect> GroggyEffectClass;
 #pragma endregion
 	
 #pragma region UI

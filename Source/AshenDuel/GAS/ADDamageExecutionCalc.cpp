@@ -4,6 +4,7 @@
 #include "ADDamageExecutionCalc.h"
 #include "AbilitySystemComponent.h"
 #include "AshenDuel/ADGameplayTag/GameplayTags.h"
+#include "AshenDuel/CoreFramework/Character/ADBossCharacter.h"
 #include "AshenDuel/System/ADDataManagerSubSystem.h"
 #include "AttributeSet/ADAttributeSet.h"
 #include "AttributeSet/ADBossAttributeSet.h"
@@ -89,6 +90,8 @@ void UADDamageExecutionCalc::Execute_Implementation(const FGameplayEffectCustomE
 	float SourceAttackPower = 0.0f;
 	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(DamageStatDef().AttackPowerDef,EvaluationParameters,SourceAttackPower);
 	
+	SourceAttackPower += Spec.GetSetByCallerMagnitude(GameplayTags::Data::AttackDamage, false, 0.0f);
+	
 	float TargetDefense = 0.0f;
 	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(DamageStatDef().DefenseDef, EvaluationParameters, TargetDefense);
 	
@@ -145,26 +148,45 @@ void UADDamageExecutionCalc::Execute_Implementation(const FGameplayEffectCustomE
 	
 	if (DamageDone > 0.0f)
 	{
+		UE_LOG(LogTemp, Log, TEXT("데미지 적용: %f"), DamageDone);
 		OutExecutionOutput.AddOutputModifier(FGameplayModifierEvaluatedData(UADAttributeSet::GetHealthAttribute(), EGameplayModOp::Additive, -DamageDone));
 	}
 	
 	if (GroggyDmg > 0.0f && TargetASC)
 	{
-		if (bIsParrying)
+		UAbilitySystemComponent* BossASC = bIsParrying ? SourceASC : TargetASC;
+		if (!BossASC->HasMatchingGameplayTag(GameplayTags::State::IsGroggy))
 		{
-			SourceASC->SetNumericAttributeBase(UADBossAttributeSet::GetGroggyGaugeAttribute(), CurrentGroggy + GroggyDmg);
-			
-		}
-		else
-		{
-			OutExecutionOutput.AddOutputModifier(FGameplayModifierEvaluatedData(
-				UADBossAttributeSet::GetGroggyGaugeAttribute(), 
-				EGameplayModOp::Additive, 
-				GroggyDmg
-			));
-		}
+			AActor* BossActor = BossASC ? BossASC->GetAvatarActor() : nullptr;
 		
-		UE_LOG(LogTemp, Log, TEXT("그로기 데미지 적용: %f (현재 예측 잔여량: %f)"), GroggyDmg, CurrentGroggy + GroggyDmg);
+			AADBossCharacter* BossCharacter = Cast<AADBossCharacter>(BossActor);
+			float MaxGroggy = 0.0f;
+		
+			if (BossCharacter)
+			{
+				MaxGroggy = BossASC->GetNumericAttribute(UADBossAttributeSet::GetMaxGroggyGaugeAttribute());
+			}
+		
+			float PredictedGroggy = CurrentGroggy - GroggyDmg;
+			
+			if (bIsParrying)
+			{
+				SourceASC->SetNumericAttributeBase(UADBossAttributeSet::GetGroggyGaugeAttribute(), PredictedGroggy);
+			}
+			else
+			{
+				OutExecutionOutput.AddOutputModifier(FGameplayModifierEvaluatedData(
+					UADBossAttributeSet::GetGroggyGaugeAttribute(), 
+					EGameplayModOp::Additive, 
+					-GroggyDmg
+				));
+			}
+			
+			if (BossASC && BossCharacter && (PredictedGroggy <= 0.0f))
+			{
+				BossCharacter->ApplyGroggy();
+			}
+		}
 	}
 }
 #pragma optimize ("", on)

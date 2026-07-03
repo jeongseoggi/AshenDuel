@@ -19,6 +19,9 @@ struct FComboAttackData
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
 	float StaminaCost = 0.0f;
 	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
+	float AttackDmg = 0.0f;
+	
 };
 
 

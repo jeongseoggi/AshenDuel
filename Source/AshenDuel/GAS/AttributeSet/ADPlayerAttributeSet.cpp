@@ -14,14 +14,6 @@
 
 UADPlayerAttributeSet::UADPlayerAttributeSet()
 {
-	// InitMaxHealth(100.0f);
-	// InitHealth(GetMaxHealth());
-	// InitAttackPower(20.0f);
-	// InitDefense(0.5f);
-	// InitStamina(50.0f);
-	// InitMaxStamina(50.0f);
-	// InitMoveSpeed(300.0f);
-	// InitMaxMoveSpeed(1000.0f);
 }
 
 void UADPlayerAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue)

@@ -1,5 +1,7 @@
 ﻿#include "ADAIController.h"
 
+#include "AbilitySystemComponent.h"
+#include "AshenDuel/ADGameplayTag/GameplayTags.h"
 #include "AshenDuel/CoreFramework/Character/ADBossCharacter.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "GameFramework/Character.h"
@@ -62,6 +64,27 @@ void AADAIController::OnPossess(APawn* InPawn)
 				}
 			}
 		}
+	}
+	
+	if (AADBossCharacter* BossChar = Cast<AADBossCharacter>(InPawn))
+	{
+		UAbilitySystemComponent* ASC = BossChar->GetAbilitySystemComponent();
+		if (ASC && BlackboardComp)
+		{
+			ASC->RegisterGameplayTagEvent(GameplayTags::State::KnockDown, EGameplayTagEventType::NewOrRemoved)
+			.AddUObject(this, &AADAIController::OnKnockDownTagChanged);
+		}
+	}
+}
+
+void AADAIController::OnKnockDownTagChanged(const FGameplayTag Tag, int32 NewCount)
+{
+	if (BlackboardComp)
+	{
+		bool bIsKnockDown = (NewCount > 0);
+		Blackboard->SetValueAsBool(TEXT("bIsKnockDown"), bIsKnockDown);
+        
+		UE_LOG(LogTemp, Log, TEXT("BT 블랙보드 싱크 - bIsKnockDown 변경: %s"), bIsKnockDown ? TEXT("True") : TEXT("False"));
 	}
 }
 

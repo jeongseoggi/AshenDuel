@@ -15,6 +15,9 @@ namespace GameplayTags
 		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(IsGuardBroken, "State.IsGuardBroken");
 		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(IsHeavyAttack, "State.IsHeavyAttack");
 		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(HeavyAttackCharageEnd, "State.HeavyAttackCharageEnd");
+		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(IsGroggy, "State.IsGroggy");
+		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(KnockDown, "State.KnockDown");
+		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(CanFatal, "State.CanFatal");
 
 		namespace Combat
 		{
@@ -39,6 +42,7 @@ namespace GameplayTags
 		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(Dodge, "Input.Dodge");
 		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(Block, "Input.Block");
 		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(HeavyAttack, "Input.HeavyAttack");
+		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(FatalAttack, "Input.FatalAttack");
 	}
 	
 	namespace Event
@@ -61,12 +65,14 @@ namespace GameplayTags
 		namespace Boss
 		{
 			ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(DeathCompleted, "Event.Boss.DeathCompleted");
+			ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(KnockDown, "Event.Boss.KnockDown");
 		}
 	}
 	
 	namespace Data
 	{
 		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(GroggyDamage, "Data.GroggyDamage");
+		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(AttackDamage, "Data.AttackDamage");
 		namespace Cost
 		{
 			ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(Stamina, "Data.Cost.Stamina");
@@ -106,5 +112,7 @@ namespace GameplayTags
 		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(AttackCombo2, "Attack.AttackCombo2");
 		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(AttackCombo3, "Attack.AttackCombo3");
 		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(AttackCombo4, "Attack.AttackCombo4");
+		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(HeavyAttack, "Attack.HeavyAttack");
+		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(GroggyAttack, "Attack.GroggyAttack");
 	}
 }

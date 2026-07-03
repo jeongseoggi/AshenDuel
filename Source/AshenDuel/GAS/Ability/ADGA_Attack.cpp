@@ -28,6 +28,7 @@ void UADGA_Attack::ActivateAbility(const FGameplayAbilitySpecHandle Handle, cons
 	}
 	
 	CurrentComboIndex = 1;
+	CurrentComboTag = GameplayTags::Attack::AttackCombo1;
 	
 	UAbilitySystemComponent* ASC = GetAbilitySystemComponentFromActorInfo();
 	if (!ASC) return;
@@ -174,7 +175,7 @@ void UADGA_Attack::RemoveComboTag()
 	UAbilitySystemComponent* ASC = GetAbilitySystemComponentFromActorInfo();
 	for (int32 i = 1; i <= MaxComboCount; i++)
 	{
-		FString TagNameStr = FString::Printf(TEXT("Attack.AttackCombo%d"), i);
+ 		FString TagNameStr = FString::Printf(TEXT("Attack.AttackCombo%d"), i);
 		FGameplayTag ComboTag = FGameplayTag::RequestGameplayTag(*TagNameStr);
 		
 		if (ComboTag.IsValid() && ASC->HasMatchingGameplayTag(ComboTag))

@@ -13,8 +13,8 @@ UADBossAttributeSet::UADBossAttributeSet()
 	InitAttackPower(70.0f);
 	InitDefense(5.0f);
 	InitPhaseTreshold(0.5f);
-	InitGroggyGauge(0.0f);
 	InitMaxGroggyGauge(100.0f);
+	InitGroggyGauge(GetMaxGroggyGauge());
 }
 
 void UADBossAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue)
@@ -43,6 +43,11 @@ void UADBossAttributeSet::PostGameplayEffectExecute(const struct FGameplayEffect
 				TargetASC->HandleGameplayEvent(GameplayTags::Event::Boss_Death, &EventData);
 			}
 		}
+	}
+	
+	if (Data.EvaluatedData.Attribute == GetGroggyGaugeAttribute())
+	{
+		UE_LOG(LogTemp, Warning, TEXT("CurrentGroggy : %f"), GetGroggyGauge());
 	}
 }
 
