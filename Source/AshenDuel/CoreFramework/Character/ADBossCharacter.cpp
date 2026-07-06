@@ -31,7 +31,6 @@ AADBossCharacter::AADBossCharacter()
 	
 	ASC = CreateDefaultSubobject<UAbilitySystemComponent>(TEXT("ASC"));
 	BossAttributeSet = CreateDefaultSubobject<UADBossAttributeSet>(TEXT("BossAttributeSet"));
-	MotionWarpingComponent = CreateDefaultSubobject<UMotionWarpingComponent>(TEXT("MotionWarpingComponent"));
 }
 
 void AADBossCharacter::SetBossDeath()
@@ -65,6 +64,30 @@ void AADBossCharacter::SetFatalZoneEnabled(bool bEnable)
 	}
 
 	UE_LOG(LogTemp, Log, TEXT("보스 페이탈 존 활성화 상태 변경: %s"), bEnable ? TEXT("True") : TEXT("False"));
+}
+
+FVector AADBossCharacter::GetFatalZoneLocation()
+{
+	if (FrontFatalZone->GetFatalZoneEnabled())
+	{
+		return FrontFatalZone->GetComponentLocation();
+	}
+	else
+	{
+		return BackFatalZone->GetComponentLocation();
+	}
+}
+
+FRotator AADBossCharacter::GetFatalZoneRotation()
+{
+	if (FrontFatalZone->GetFatalZoneEnabled())
+	{
+		return FrontFatalZone->GetComponentRotation();
+	}
+	else
+	{
+		return BackFatalZone->GetComponentRotation();
+	}
 }
 
 void AADBossCharacter::BeginPlay()

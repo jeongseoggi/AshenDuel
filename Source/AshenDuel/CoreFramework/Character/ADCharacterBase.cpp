@@ -1,6 +1,7 @@
 ﻿#include "ADCharacterBase.h"
 
 #include "AbilitySystemComponent.h"
+#include "MotionWarpingComponent.h"
 #include "AshenDuel/ADGameplayTag/GameplayTags.h"
 #include "AshenDuel/CoreFramework/ADPlayerState.h"
 #include "AshenDuel/GAS/Ability/ADGameplayAbility.h"
@@ -14,6 +15,7 @@ AADCharacterBase::AADCharacterBase()
 	
 	WeaponComponent = CreateDefaultSubobject<UWeaponComponent>(TEXT("WeaponComponent"));
 	ReactorComponent = CreateDefaultSubobject<UReactorComponent>(TEXT("ReactorComponent"));
+	MotionWarpingComponent = CreateDefaultSubobject<UMotionWarpingComponent>(TEXT("MotionWarpingComponent"));
 }
 
 UAbilitySystemComponent* AADCharacterBase::GetAbilitySystemComponent() const

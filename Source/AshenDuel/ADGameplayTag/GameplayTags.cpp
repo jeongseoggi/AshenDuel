@@ -18,6 +18,7 @@ namespace GameplayTags
 		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(IsGroggy, "State.IsGroggy");
 		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(KnockDown, "State.KnockDown");
 		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(CanFatal, "State.CanFatal");
+		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(IsLockMovement, "State.IsLockMovement");
 
 		namespace Combat
 		{
@@ -114,5 +115,6 @@ namespace GameplayTags
 		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(AttackCombo4, "Attack.AttackCombo4");
 		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(HeavyAttack, "Attack.HeavyAttack");
 		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(GroggyAttack, "Attack.GroggyAttack");
+		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(FatalAttack, "Attack.FatalAttack");
 	}
 }

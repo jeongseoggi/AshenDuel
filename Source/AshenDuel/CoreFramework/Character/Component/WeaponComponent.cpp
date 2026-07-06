@@ -145,6 +145,10 @@ void UWeaponComponent::HitAttackTargetApplyGE(TArray<FHitResult>& OutHits)
 					{
 						FoundComboTag = GameplayTags::Input::HeavyAttack;
 					}
+					else if (SourceASC->HasMatchingGameplayTag(GameplayTags::Attack::FatalAttack))
+					{
+						FoundComboTag = GameplayTags::Attack::FatalAttack;
+					}
 					else
 					{
 						for (int32 i = 1; i <= MaxComboIndex; i++)

@@ -28,6 +28,12 @@ void AADCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	SetLockOnState(false);
+	
+	if (ASC)
+	{
+		ASC->RegisterGameplayTagEvent(GameplayTags::State::IsLockMovement).AddUObject(
+			this, &AADCharacter::OnMoveLockTagChanged);
+	}
 }
 
 void AADCharacter::PossessedBy(AController* NewController)
@@ -146,6 +152,22 @@ void AADCharacter::Input_AbilityInputTagReleased(FGameplayTag InputTag)
 	if (UADAbilitySystemComponent* ADASC = Cast<UADAbilitySystemComponent>(GetAbilitySystemComponent()))
 	{
 		ADASC->AbilityInputTagReleased(InputTag);
+	}
+}
+
+void AADCharacter::OnMoveLockTagChanged(const FGameplayTag Tag, int32 NewCount)
+{
+	UCharacterMovementComponent* MoveComp = GetCharacterMovement();
+	if (!MoveComp) return;
+	
+	if (NewCount > 0)
+	{
+		MoveComp->StopMovementImmediately();
+		MoveComp->DisableMovement();
+	}
+	else
+	{
+		MoveComp->SetMovementMode(MOVE_Walking);
 	}
 }
 

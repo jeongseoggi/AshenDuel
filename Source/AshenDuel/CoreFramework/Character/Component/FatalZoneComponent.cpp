@@ -19,10 +19,8 @@ UFatalZoneComponent::UFatalZoneComponent()
 
 void UFatalZoneComponent::SetZoneEnabled(bool bEnable)
 {
-	//ECollisionEnabled::QueryOnl
-	SetCollisionEnabled(ECollisionEnabled::QueryOnly);
-	// if (bEnable) SetCollisionProfileName(TEXT("OverlapAllDynamic"));
-	// else SetCollisionProfileName(TEXT("NoCollision"));
+	if (bEnable) SetCollisionProfileName(TEXT("OverlapAllDynamic"));
+	else SetCollisionProfileName(TEXT("NoCollision"));
 	
 	SetComponentTickEnabled(bEnable);
 }
@@ -45,6 +43,7 @@ void UFatalZoneComponent::BeginPlay()
 {
 	Super::BeginPlay();
 	OnComponentBeginOverlap.AddDynamic(this, &UFatalZoneComponent::OnZoneOverlapBegin);
+	OnComponentEndOverlap.AddDynamic(this, &UFatalZoneComponent::OnZoneOverlapEnd);
 }
 
 void UFatalZoneComponent::OnZoneOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
@@ -60,6 +59,22 @@ void UFatalZoneComponent::OnZoneOverlapBegin(UPrimitiveComponent* OverlappedComp
 		UAbilitySystemComponent* ASC = PlayerChar->GetAbilitySystemComponent();
 		if (!ASC) return;
 		ASC->AddLooseGameplayTag(GameplayTags::State::CanFatal);
+		PlayerChar->SetFatalTargetActor(Cast<AADCharacterBase>(GetOwner()));
+		bIsFatalZoneActive = true;
+	}
+}
+
+void UFatalZoneComponent::OnZoneOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
+	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+{
+	if (!OtherActor || OtherActor == GetOwner()) return;
+	
+	if (AADCharacter* PlayerChar = Cast<AADCharacter>(OtherActor))
+	{
+		UAbilitySystemComponent* ASC = PlayerChar->GetAbilitySystemComponent();
+		if (!ASC) return;
+		ASC->RemoveLooseGameplayTag(GameplayTags::State::CanFatal);
+		bIsFatalZoneActive = false;
 	}
 }
 

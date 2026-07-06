@@ -9,11 +9,10 @@
 
 class UFatalZoneComponent;
 class UBoxComponent;
+class UADAttributeSet;
+class USphereComponent;
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnBossBossDiedDelegate);
 
-class UADAttributeSet;
-class UMotionWarpingComponent;
-class USphereComponent;
 
 UCLASS()
 class ASHENDUEL_API AADBossCharacter : public AADCharacterBase, public IEnemyHelper
@@ -23,13 +22,15 @@ class ASHENDUEL_API AADBossCharacter : public AADCharacterBase, public IEnemyHel
 public:
 	AADBossCharacter();
 	
-	FORCEINLINE UMotionWarpingComponent* GetMotionWarpingComponent() const { return MotionWarpingComponent; }
-	
 	void SetBossDeath();
 	
 	void ApplyGroggy();
 	
 	void SetFatalZoneEnabled(bool bEnable);
+	
+	FVector GetFatalZoneLocation();
+	
+	FRotator GetFatalZoneRotation();
 	
 protected:
 	virtual void BeginPlay() override;
@@ -46,9 +47,6 @@ protected:
 protected:
 	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<USphereComponent> TargetingSphereComponent;
-
-	UPROPERTY(EditDefaultsOnly)
-	TObjectPtr<UMotionWarpingComponent> MotionWarpingComponent;
 	
 	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<UFatalZoneComponent> FrontFatalZone;

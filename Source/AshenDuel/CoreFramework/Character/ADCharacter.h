@@ -93,4 +93,18 @@ protected:
 	UPROPERTY(EditAnywhere,Category = "Input")
 	TObjectPtr<UInputMappingContext> DefaultMappingContext;
 #pragma endregion
+	
+#pragma region Event
+protected:
+	void OnMoveLockTagChanged(const FGameplayTag Tag, int32 NewCount);
+#pragma endregion
+	
+#pragma region Fatal
+public:
+	FORCEINLINE void SetFatalTargetActor(AADCharacterBase* Target) {TargetCharacter = Target;}
+	FORCEINLINE AADCharacterBase* GetFatalTargetActor() const {return TargetCharacter;}
+protected:
+	UPROPERTY(EditDefaultsOnly)
+	TObjectPtr<AADCharacterBase> TargetCharacter;
+#pragma endregion
 };

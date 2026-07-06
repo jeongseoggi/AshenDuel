@@ -24,4 +24,7 @@ protected:
 protected:
 	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<UAnimMontage> FatalAttackMontage;
+	
+	UPROPERTY(EditDefaultsOnly, Category = "Effects")
+	TSubclassOf<UGameplayEffect> FatalTargetEffect;
 };

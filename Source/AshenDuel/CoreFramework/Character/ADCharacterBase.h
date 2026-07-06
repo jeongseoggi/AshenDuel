@@ -10,6 +10,7 @@
 
 class UWeaponComponent;
 class UReactorComponent;
+class UMotionWarpingComponent;
 
 UCLASS()
 class ASHENDUEL_API AADCharacterBase : public ACharacter, public IAbilitySystemInterface, public ICombatInterface
@@ -21,6 +22,7 @@ public:
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	FORCEINLINE UWeaponComponent* GetWeaponComponent() const {return WeaponComponent;} 
 	FORCEINLINE UReactorComponent* GetReactorComponent() const {return ReactorComponent;}
+	FORCEINLINE UMotionWarpingComponent* GetMotionWarpingComponent() const { return MotionWarpingComponent; }
 protected:
 	virtual void BeginPlay() override;
 	
@@ -34,6 +36,10 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Combat")
 	TObjectPtr<UReactorComponent> ReactorComponent;
+	
+	UPROPERTY(EditDefaultsOnly)
+	TObjectPtr<UMotionWarpingComponent> MotionWarpingComponent;
+	
 #pragma endregion
 	
 #pragma region GAS
