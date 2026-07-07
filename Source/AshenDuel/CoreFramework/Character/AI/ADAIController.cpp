@@ -9,8 +9,9 @@
 
 AADAIController::AADAIController()
 {
-	PrimaryActorTick.bCanEverTick = false;
+	PrimaryActorTick.bCanEverTick = true;
 	BlackboardComp = CreateDefaultSubobject<UBlackboardComponent>(TEXT("Blackboard"));
+	bAllowStrafe = true;
 }
 
 EBossAttackDirection AADAIController::CheckPlayerLocation()
@@ -96,6 +97,22 @@ void AADAIController::InitializeTargetActor()
 	{
 		BlackboardComp->SetValueAsObject(TEXT("TargetActor"), PlayerChar);
 		SetFocus(PlayerChar);
+	}
+}
+
+void AADAIController::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+	
+	if (BlackboardComp) return;
+	
+	if (BlackboardComp->GetValueAsBool(TEXT("bIsChasing")))
+	{
+		if (PlayerChar) SetFocus(PlayerChar);
+	}
+	else
+	{
+		if (PlayerChar) ClearFocus(EAIFocusPriority::Gameplay);
 	}
 }
 

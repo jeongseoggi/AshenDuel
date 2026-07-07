@@ -41,4 +41,7 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	float Direction;
 	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	bool bIsChasing;
+	
 };

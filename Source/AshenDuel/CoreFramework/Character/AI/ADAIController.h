@@ -23,6 +23,8 @@ public:
 	EBossAttackDirection CheckPlayerLocation();
 	AActor* GetTargetActor();
 	void InitializeTargetActor();
+	
+	virtual void Tick(float DeltaTime) override;
 
 protected:
 	virtual void BeginPlay() override;

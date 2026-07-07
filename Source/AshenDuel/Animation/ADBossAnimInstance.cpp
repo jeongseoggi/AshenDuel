@@ -5,6 +5,8 @@
 
 #include "KismetAnimationLibrary.h"
 #include "AshenDuel/CoreFramework/Character/ADBossCharacter.h"
+#include "AshenDuel/CoreFramework/Character/AI/ADAIController.h"
+#include "BehaviorTree/BlackboardComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
 void UADBossAnimInstance::NativeInitializeAnimation()
@@ -29,6 +31,10 @@ void UADBossAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		GroundSpeed = FVector(Velocity.X, Velocity.Y, 0.0f).Size();
 		bHasAcceleration = !OwnerMovementComp->GetCurrentAcceleration().IsNearlyZero();
 		bShouldMove = bHasAcceleration || (GroundSpeed > 5.0f);
-		Direction = UKismetAnimationLibrary::CalculateDirection(Velocity, OwnerCharacter->GetActorRotation());
+		if (AADAIController* AIController = Cast<AADAIController>(OwnerCharacter->GetController()))
+		{
+			bIsChasing = AIController->GetBlackboardComponent()->GetValueAsBool("bIsChasing");
+		}
+		Direction = bIsChasing ? 0.0f : UKismetAnimationLibrary::CalculateDirection(Velocity, OwnerCharacter->GetActorRotation());
 	}
 }

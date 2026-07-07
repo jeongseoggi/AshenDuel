@@ -8,6 +8,7 @@
 #include "Component/FatalZoneComponent.h"
 #include "Components/BoxComponent.h"
 #include "Components/SphereComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 
 AADBossCharacter::AADBossCharacter()
@@ -31,6 +32,11 @@ AADBossCharacter::AADBossCharacter()
 	
 	ASC = CreateDefaultSubobject<UAbilitySystemComponent>(TEXT("ASC"));
 	BossAttributeSet = CreateDefaultSubobject<UADBossAttributeSet>(TEXT("BossAttributeSet"));
+	
+	bUseControllerRotationYaw = false;
+	GetCharacterMovement()->bOrientRotationToMovement = false;
+	GetCharacterMovement()->bUseControllerDesiredRotation = true;
+	GetCharacterMovement()->RotationRate = FRotator(0.f, 240.f, 0.f);
 }
 
 void AADBossCharacter::SetBossDeath()
