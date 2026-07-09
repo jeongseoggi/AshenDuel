@@ -19,17 +19,14 @@ void UADGA_BasicAttack::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
 	AADAIController* AIController = Cast<AADAIController>(ActorInfo->GetAnimInstance()->GetOwningActor()->GetInstigatorController());
 	if (!AIController) return;
 	
-	EBossAttackDirection EBossAttackDirection = AIController->CheckPlayerLocation();
+	AIController->GetBlackboardComponent()->SetValueAsFloat("OptimalAttackDistance", OptimalAttackDistance);
 	
-	FName StartSection;
-	if (EBossAttackDirection == EBossAttackDirection::Left) StartSection = TEXT("AttackLeft");
-	else StartSection = TEXT("AttackRight");
 	
 	GetWorld()->GetTimerManager().SetTimer(WarpUpdateTimerHandle, this, &UADGA_BasicAttack::UpdateWarpTargetLoop, 0.02f, true);
 	UpdateWarpTargetLoop();
 
 	UAbilityTask_PlayMontageAndWait* MontageTask = UAbilityTask_PlayMontageAndWait::CreatePlayMontageAndWaitProxy(
-		this, NAME_None, AttackMontage, 1.0f, StartSection);
+		this, NAME_None, AttackMontage, 1.0f);
 	
 	if (MontageTask)
 	{

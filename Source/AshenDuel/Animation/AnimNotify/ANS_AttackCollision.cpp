@@ -12,8 +12,8 @@
 
 UANS_AttackCollision::UANS_AttackCollision()
 {
-	StartSocketName = TEXT("Hand_L_Start");
-	EndSocketName = TEXT("Hand_L_End");
+	StartSocketName = TEXT("Hand_R_Start");
+	EndSocketName = TEXT("Hand_R_End");
 	TraceRadius = 20.0f;
 	bDrawDebug = true;
 }

@@ -98,7 +98,9 @@ namespace GameplayTags
 		
 		namespace Boss
 		{
-			ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(BasicAttack, "Ability.Boss.BasicAttack");
+			ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(BasicAttack1, "Ability.Boss.BasicAttack1");
+			ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(BasicAttack2, "Ability.Boss.BasicAttack2");
+			ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(BasicAttack3, "Ability.Boss.BasicAttack3");
 		}
 	}
 	

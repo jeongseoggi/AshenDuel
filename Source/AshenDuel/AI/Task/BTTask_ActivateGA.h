@@ -24,4 +24,7 @@ protected:
 protected:
 	UPROPERTY(EditAnywhere, Category = "GAS")
 	FGameplayTag GameplayAbilityTag;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Attack", meta = (AllowPrivateAccess = "true"))
+	FBlackboardKeySelector SelectedAttackTagKey;
 };

@@ -31,7 +31,7 @@ void UWeaponComponent::SpawnAndAttachWeapon()
 	
 	WeaponActorInst = GetWorld()->SpawnActor<ASwordWeapon>(WeaponActorClass, SpawnParams);
 	
-	AADCharacter* OwnerCharacter = Cast<AADCharacter>(GetOwner());
+	AADCharacterBase* OwnerCharacter = Cast<AADCharacterBase>(GetOwner());
 	checkf(OwnerCharacter, TEXT("Cast Failed Character"));
 	
 	WeaponActorInst->AttachToComponent(OwnerCharacter->GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, SocketName);

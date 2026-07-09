@@ -31,7 +31,10 @@ EBTNodeResult::Type UBTTask_ActivateGA::ExecuteTask(UBehaviorTreeComponent& Owne
 	if (!ASC) return EBTNodeResult::Failed;
 	
 	BBComp->SetValueAsBool(TEXT("IsAttacking"), true);
-	FGameplayAbilitySpecHandle TargetAbilityHandle;
+	
+	FName TagName = BBComp->GetValueAsName(SelectedAttackTagKey.SelectedKeyName);
+	GameplayAbilityTag = FGameplayTag::RequestGameplayTag(TagName);
+	
 	bool bSuccess = ASC->TryActivateAbilitiesByTag(FGameplayTagContainer(GameplayAbilityTag));
 	
 	if (bSuccess)
