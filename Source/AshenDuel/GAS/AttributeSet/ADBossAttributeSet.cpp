@@ -5,6 +5,7 @@
 
 #include "GameplayEffectExtension.h"
 #include "AshenDuel/ADGameplayTag/GameplayTags.h"
+#include "AshenDuel/CoreFramework/Character/ADBossCharacter.h"
 
 UADBossAttributeSet::UADBossAttributeSet()
 {
@@ -27,7 +28,7 @@ void UADBossAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute
 	}
 	
 }
-
+#pragma optimize("", off)
 void UADBossAttributeSet::PostGameplayEffectExecute(const struct FGameplayEffectModCallbackData& Data)
 {
 	Super::PostGameplayEffectExecute(Data);
@@ -43,6 +44,30 @@ void UADBossAttributeSet::PostGameplayEffectExecute(const struct FGameplayEffect
 				TargetASC->HandleGameplayEvent(GameplayTags::Event::Boss_Death, &EventData);
 			}
 		}
+		else
+		{
+			float CurrentHealth = GetHealth();
+			float MaxHealthValue = GetMaxHealth();
+			
+			if (MaxHealthValue > 0.0f)
+			{
+				float HealthRatio = CurrentHealth / MaxHealthValue;
+				float PhaseTresholdValue = GetPhaseTreshold();
+				if (HealthRatio <= PhaseTresholdValue)
+				{
+					if (AADBossCharacter* BossChar = Cast<AADBossCharacter>(Data.Target.GetAvatarActor()))
+					{
+						if (!BossChar->GetPhase2Triggered())
+						{
+							BossChar->SetPhase2Triggered(true);
+							Data.Target.TryActivateAbilitiesByTag(FGameplayTagContainer(GameplayTags::Event::Boss::Phase2Changed));
+							
+							UE_LOG(LogTemp, Log, TEXT("보스 체력 50프로 이하 감지! 2페이즈 어빌리티 발동!"));
+						}
+					}
+				}
+			}
+		}
 	}
 	
 	if (Data.EvaluatedData.Attribute == GetGroggyGaugeAttribute())
@@ -50,7 +75,7 @@ void UADBossAttributeSet::PostGameplayEffectExecute(const struct FGameplayEffect
 		UE_LOG(LogTemp, Warning, TEXT("CurrentGroggy : %f"), GetGroggyGauge());
 	}
 }
-
+#pragma optimize("", on)
 void UADBossAttributeSet::PostAttributeChange(const FGameplayAttribute& Attribute, float OldValue, float NewValue)
 {
 	Super::PostAttributeChange(Attribute, OldValue, NewValue);

@@ -25,6 +25,7 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	FORCEINLINE UCameraComponent* GetCameraComponent() const { return Camera; }
+	FORCEINLINE ULockOnComponent* GetLockOnComponent() const { return LockOnComponent; }
 
 protected:
 	virtual void BeginPlay() override;

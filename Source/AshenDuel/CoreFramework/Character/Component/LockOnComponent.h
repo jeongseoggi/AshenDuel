@@ -24,6 +24,8 @@ public:
 							   FActorComponentTickFunction* ThisTickFunction) override;
 	void ToggleLockOn();
 	
+	FORCEINLINE AActor* GetLockOnTargetActor() const { return LockOnTargetActor; }
+	
 protected:
 	virtual void BeginPlay() override;
 	UAbilitySystemComponent* GetOwnerASC();

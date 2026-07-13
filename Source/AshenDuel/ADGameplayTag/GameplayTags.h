@@ -21,6 +21,7 @@ namespace GameplayTags
 		ASHENDUEL_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(KnockDown);
 		ASHENDUEL_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(CanFatal);
 		ASHENDUEL_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(IsLockMovement);
+		ASHENDUEL_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Launch);
 
 		namespace Combat
 		{
@@ -35,6 +36,11 @@ namespace GameplayTags
 		namespace Setup
 		{
 			ASHENDUEL_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Completed);
+		}
+		
+		namespace Boss
+		{
+			ASHENDUEL_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Phase2Change);
 		}
 	}
 	
@@ -62,11 +68,13 @@ namespace GameplayTags
 		namespace Character
 		{
 			ASHENDUEL_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Ragdoll);
+			ASHENDUEL_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Launch);
 		}
 		namespace Boss
 		{
 			ASHENDUEL_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(DeathCompleted);
 			ASHENDUEL_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(KnockDown);
+			ASHENDUEL_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Phase2Changed);
 		}
 	}
 

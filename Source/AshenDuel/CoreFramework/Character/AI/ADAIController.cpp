@@ -73,19 +73,33 @@ void AADAIController::OnPossess(APawn* InPawn)
 		if (ASC && BlackboardComp)
 		{
 			ASC->RegisterGameplayTagEvent(GameplayTags::State::KnockDown, EGameplayTagEventType::NewOrRemoved)
-			.AddUObject(this, &AADAIController::OnKnockDownTagChanged);
+			.AddUObject(this, &AADAIController::UpdateAIState);
+			
+			ASC->RegisterGameplayTagEvent(GameplayTags::State::Boss::Phase2Change, EGameplayTagEventType::NewOrRemoved)
+			.AddUObject(this, &AADAIController::UpdateAIState);
 		}
 	}
 }
 
-void AADAIController::OnKnockDownTagChanged(const FGameplayTag Tag, int32 NewCount)
+void AADAIController::UpdateAIState(const FGameplayTag Tag, int32 NewCount)
 {
-	if (BlackboardComp)
+	if (BlackboardComp && GetPawn())
 	{
-		bool bIsKnockDown = (NewCount > 0);
-		Blackboard->SetValueAsBool(TEXT("bIsKnockDown"), bIsKnockDown);
-        
-		UE_LOG(LogTemp, Log, TEXT("BT 블랙보드 싱크 - bIsKnockDown 변경: %s"), bIsKnockDown ? TEXT("True") : TEXT("False"));
+		if (AADBossCharacter* BossChar = Cast<AADBossCharacter>(GetPawn()))
+		{
+			UAbilitySystemComponent* ASC = BossChar->GetAbilitySystemComponent();
+			if (ASC)
+			{
+				bool bIsKnockDown = ASC->HasMatchingGameplayTag(GameplayTags::State::KnockDown);
+				bool bIsPhase2 = ASC->HasMatchingGameplayTag(GameplayTags::State::Boss::Phase2Change);
+                
+				bool bShouldDisableAI = bIsKnockDown || bIsPhase2;
+				
+				Blackboard->SetValueAsBool(TEXT("bIsAIDisabled"), bShouldDisableAI);
+                
+				UE_LOG(LogTemp, Log, TEXT("BT 블랙보드 싱크 - bIsAIDisabled 변경: %s"), bShouldDisableAI ? TEXT("True") : TEXT("False"));
+			}
+		}
 	}
 }
 

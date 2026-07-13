@@ -7,6 +7,7 @@
 #include "AshenDuel/Interface/EnemyHelper.h"
 #include "ADBossCharacter.generated.h"
 
+class URadialForceComponent;
 class UFatalZoneComponent;
 class UBoxComponent;
 class UADAttributeSet;
@@ -32,6 +33,8 @@ public:
 	
 	FRotator GetFatalZoneRotation();
 	
+	FORCEINLINE URadialForceComponent* GetRadialForceComponent() const { return RadialForceComponent; }
+	
 protected:
 	virtual void BeginPlay() override;
 	
@@ -53,6 +56,9 @@ protected:
 	
 	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<UFatalZoneComponent> BackFatalZone;
+	
+	UPROPERTY(EditDefaultsOnly)
+	TObjectPtr<URadialForceComponent> RadialForceComponent;
 	
 #pragma endregion
 
@@ -81,5 +87,14 @@ public:
 	
 	void InitiateDeathRow();
 
+#pragma endregion
+	
+#pragma region PhaseVar
+public:
+	FORCEINLINE bool GetPhase2Triggered() const {return bIsPhase2Triggered;}
+	FORCEINLINE void SetPhase2Triggered(bool bTriggered) {bIsPhase2Triggered = bTriggered;}
+	
+protected:
+	bool bIsPhase2Triggered = false;
 #pragma endregion
 };

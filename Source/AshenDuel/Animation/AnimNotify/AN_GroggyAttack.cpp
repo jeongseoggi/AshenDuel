@@ -7,8 +7,9 @@
 #include "AbilitySystemComponent.h"
 #include "AshenDuel/ADGameplayTag/GameplayTags.h"
 
-void UAN_GroggyAttack::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation,
-                              const FAnimNotifyEventReference& EventReference)
+
+void UAN_GroggyAttack::NotifyBegin(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, float TotalDuration,
+	const FAnimNotifyEventReference& EventReference)
 {
 	if (!MeshComp) return;
 	
@@ -16,6 +17,15 @@ void UAN_GroggyAttack::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBas
 	if (!ASC) return;
 	
 	ASC->AddLooseGameplayTag(GameplayTags::Attack::GroggyAttack);
+}
+
+void UAN_GroggyAttack::NotifyEnd(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation,
+	const FAnimNotifyEventReference& EventReference)
+{
+	if (!MeshComp) return;
 	
+	UAbilitySystemComponent* ASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(MeshComp->GetOwner());
+	if (!ASC) return;
 	
+	ASC->RemoveLooseGameplayTag(GameplayTags::Attack::GroggyAttack);
 }

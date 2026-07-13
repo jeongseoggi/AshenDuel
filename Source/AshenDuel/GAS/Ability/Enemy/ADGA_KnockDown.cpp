@@ -38,12 +38,9 @@ void UADGA_KnockDown::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
 	if (AnimInst)
 	{
 		AnimInst->Montage_Play(KnockDownMontage);
-		AnimInst->Montage_JumpToSection(TEXT("KnockDown"));
 	}
-	
-	
+
 	EnableFatalZone(true);
-	
 }
 
 void UADGA_KnockDown::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
@@ -71,5 +68,15 @@ void UADGA_KnockDown::EnableFatalZone(bool bEnable)
 void UADGA_KnockDown::OnKnockDownDurationExpired()
 {
 	UE_LOG(LogTemp, Log, TEXT("OnKnockDownDurationExpired"));
+	
+	AADBossCharacter* BossChar = Cast<AADBossCharacter>(GetAvatarActorFromActorInfo());
+	if (!BossChar) return;
+	
+	UAnimInstance* AnimInst = BossChar->GetMesh()->GetAnimInstance();
+	if (AnimInst)
+	{
+		AnimInst->Montage_JumpToSection(TEXT("End"));
+	}
+	
 	EndAbility(CurrentSpecHandle, CurrentActorInfo ,CurrentActivationInfo, false, false);
 }

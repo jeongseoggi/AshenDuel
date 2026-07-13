@@ -19,6 +19,7 @@ namespace GameplayTags
 		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(KnockDown, "State.KnockDown");
 		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(CanFatal, "State.CanFatal");
 		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(IsLockMovement, "State.IsLockMovement");
+		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(Launch, "State.Launch");
 
 		namespace Combat
 		{
@@ -33,6 +34,11 @@ namespace GameplayTags
 		namespace Setup
 		{
 			ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(Completed, "State.Setup.Completed");
+		}
+
+		namespace Boss
+		{
+			ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(Phase2Change, "State.Boss.Phase2Change");
 		}
 	}
 	
@@ -61,12 +67,14 @@ namespace GameplayTags
 		namespace Character
 		{
 			ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(Ragdoll, "Event.Character.Ragdoll");
+			ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(Launch, "Event.Character.Launch");
 		}
 
 		namespace Boss
 		{
 			ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(DeathCompleted, "Event.Boss.DeathCompleted");
 			ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(KnockDown, "Event.Boss.KnockDown");
+			ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(Phase2Changed, "Event.Boss.Phase2Changed");
 		}
 	}
 	

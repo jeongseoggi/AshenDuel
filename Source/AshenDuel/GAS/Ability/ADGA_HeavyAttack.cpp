@@ -4,9 +4,11 @@
 #include "ADGA_HeavyAttack.h"
 
 #include "AbilitySystemComponent.h"
+#include "MotionWarpingComponent.h"
 #include "Abilities/Tasks/AbilityTask_PlayMontageAndWait.h"
 #include "AshenDuel/ADGameplayTag/GameplayTags.h"
 #include "AshenDuel/CoreFramework/Character/ADCharacter.h"
+#include "AshenDuel/CoreFramework/Character/Component/LockOnComponent.h"
 
 void UADGA_HeavyAttack::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
                                         const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo,
@@ -50,6 +52,7 @@ void UADGA_HeavyAttack::InputReleased(const FGameplayAbilitySpecHandle Handle,
     
 	if (ASC->HasMatchingGameplayTag(GameplayTags::State::HeavyAttackCharageEnd))
 	{
+		MotionWarpingSettings(PlayerCharacter);
 		PlayerAnimInst->Montage_JumpToSection(TEXT("End"));
 	}
 	else
@@ -94,4 +97,24 @@ void UADGA_HeavyAttack::OnMontageFinished()
 void UADGA_HeavyAttack::OnMontageInterrupted()
 {
 	EndAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, false,  true);
+}
+
+void UADGA_HeavyAttack::MotionWarpingSettings(AADCharacter* PlayerChar)
+{
+	if (!PlayerChar) return;
+	UMotionWarpingComponent* MC = PlayerChar->GetMotionWarpingComponent();
+	if (!MC) return;
+	ULockOnComponent* LockOnComponent = PlayerChar->GetLockOnComponent();
+	if (!LockOnComponent) return;
+	
+	AActor* TargetActor = LockOnComponent->GetLockOnTargetActor();
+	if (!TargetActor) return;
+	
+	FVector WarpLocation = TargetActor->GetActorLocation();
+	FRotator WarpRotation = (WarpLocation - PlayerChar->GetActorLocation()).Rotation();
+	WarpRotation.Pitch = 0.f;
+	WarpRotation.Roll = 0.f;
+	
+	FName WarpTargetName = TEXT("HeavyAttackTarget");
+	MC->AddOrUpdateWarpTargetFromLocationAndRotation(WarpTargetName, WarpLocation, WarpRotation);
 }

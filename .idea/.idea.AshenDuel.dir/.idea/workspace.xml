@@ -8,33 +8,49 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d26e5f4f-5117-46aa-80ae-debdf6796bdc" name="변경" comment="">
-      <change afterPath="$PROJECT_DIR$/Source/AshenDuel/AI/Task/BTTask_SelectRandomAttack.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Source/AshenDuel/AI/Task/BTTask_SelectRandomAttack.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.AshenDuel.dir/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.AshenDuel.dir/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.AshenDuel.dir/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.AshenDuel/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.AshenDuel/.idea/encodings.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.AshenDuel/.idea/indexLayout.xml" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/AshenDuel/AI/BlackBoard/BT_MainBoss.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/AshenDuel/Animation/Montage/Boss/AM_PhaseChange.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Source/AshenDuel/Animation/AnimNotify/AN_Phase2_Burst.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Source/AshenDuel/Animation/AnimNotify/AN_Phase2_Burst.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Source/AshenDuel/GAS/Ability/ADGA_Launch.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Source/AshenDuel/GAS/Ability/ADGA_Launch.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Source/AshenDuel/GAS/Ability/Enemy/ADGA_PhaseChange.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Source/AshenDuel/GAS/Ability/Enemy/ADGA_PhaseChange.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.AshenDuel.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.AshenDuel.dir/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Config/DefaultEngine.ini" beforeDir="false" afterPath="$PROJECT_DIR$/Config/DefaultEngine.ini" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Content/AshenDuel/AI/BP_ADAIController.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/AshenDuel/AI/BP_ADAIController.uasset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Content/AshenDuel/AI/BlackBoard/BB_Boss.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/AshenDuel/AI/BlackBoard/BB_Boss.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/AshenDuel/AI/BlackBoard/BT_Boss.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/AshenDuel/AI/BlackBoard/BT_Boss.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/AshenDuel/AI/BlackBoard/EQC_TargetActor.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/AshenDuel/AI/EQS_FindStrafePos.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/AshenDuel/Animation/ABP_Boss.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/AshenDuel/Animation/ABP_Boss.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/AshenDuel/Character/BP_ADBoss.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/AshenDuel/Character/BP_ADBoss.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/AshenDuel/GAS/Ability/Enemy/GA_BossBasicAttack.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/AshenDuel/AI/BlackBoard/BT_Test.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/AshenDuel/Animation/Montage/Boss/AM_BossDeath.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/AshenDuel/Animation/Montage/Boss/AM_BossDeath.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/AshenDuel/Animation/Montage/Boss/AM_KnockDown.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/AshenDuel/Animation/Montage/Boss/AM_KnockDown.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/AshenDuel/Animation/Montage/Player/AM_HeavyAttack.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/AshenDuel/Animation/Montage/Player/AM_HeavyAttack.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/AshenDuel/Character/BP_ADCharacter.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/AshenDuel/Character/BP_ADCharacter.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/AshenDuel/Character/BP_EQSBoss.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/AshenDuel/Character/BP_EQSBoss.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/AshenDuel/Data/DA_AttackData.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/AshenDuel/Data/DA_AttackData.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/AshenDuel/GAS/Ability/Enemy/GA_BossDeath.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/AshenDuel/GAS/Ability/Enemy/GA_BossDeath.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/AshenDuel/GAS/Ability/Enemy/GA_KnockDown.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/AshenDuel/GAS/Ability/Enemy/GA_KnockDown.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/AshenDuel/GAS/Ability/GA_Attack.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/AshenDuel/GAS/Ability/GA_Attack.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/AshenDuel/GAS/Ability/GA_Block.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/AshenDuel/GAS/Ability/GA_Block.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/AshenDuel/GAS/Ability/GA_Dodge.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/AshenDuel/GAS/Ability/GA_Dodge.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/AshenDuel/GAS/Ability/GA_HeavyAttack.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/AshenDuel/GAS/Ability/GA_HeavyAttack.uasset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Content/AshenDuel/Level/TestLevel.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/AshenDuel/Level/TestLevel.umap" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/AshenDuel/Resources/Sword_Animations/Animations/Sequence1/02_Attack/02_Combo_Attack_02/Combo_Attack_02_04_Seq.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/AshenDuel/Resources/Sword_Animations/Animations/Sequence1/02_Attack/02_Combo_Attack_02/Combo_Attack_02_04_Seq.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/AshenDuel/Resources/Sword_Animations/Animations/Sequence1/02_Attack/05_Combo_Attack_Wave_05/Combo_Attack_Wave_05_01_Seq.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/AshenDuel/Resources/Sword_Animations/Animations/Sequence1/02_Attack/05_Combo_Attack_Wave_05/Combo_Attack_Wave_05_01_Seq.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/AshenDuel/Resources/Sword_Animations/Animations/Sequence1/02_Attack/11_Attack_Up/Attack_Up_01_Seq.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/AshenDuel/Resources/Sword_Animations/Animations/Sequence1/02_Attack/11_Attack_Up/Attack_Up_01_Seq.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/AshenDuel/Resources/Sword_Animations/Animations/Sequence1/02_Attack/16_Power_Attack/Power_Attack_End_Seq.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/AshenDuel/Resources/Sword_Animations/Animations/Sequence1/02_Attack/16_Power_Attack/Power_Attack_End_Seq.uasset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/AshenDuel/ADGameplayTag/GameplayTags.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/AshenDuel/ADGameplayTag/GameplayTags.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/AshenDuel/ADGameplayTag/GameplayTags.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/AshenDuel/ADGameplayTag/GameplayTags.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/AshenDuel/AI/Task/BTTask_ActivateGA.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/AshenDuel/AI/Task/BTTask_ActivateGA.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/AshenDuel/AI/Task/BTTask_ActivateGA.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/AshenDuel/AI/Task/BTTask_ActivateGA.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/AshenDuel/Animation/AnimNotify/ANS_AttackCollision.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/AshenDuel/Animation/AnimNotify/ANS_AttackCollision.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/AshenDuel/CoreFramework/Character/Component/WeaponComponent.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/AshenDuel/CoreFramework/Character/Component/WeaponComponent.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/AshenDuel/GAS/Ability/Enemy/ADGA_BasicAttack.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/AshenDuel/GAS/Ability/Enemy/ADGA_BasicAttack.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/AshenDuel/GAS/Ability/Enemy/ADGA_BasicAttack.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/AshenDuel/GAS/Ability/Enemy/ADGA_BasicAttack.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/AshenDuel/Animation/AnimNotify/AN_GroggyAttack.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/AshenDuel/Animation/AnimNotify/AN_GroggyAttack.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/AshenDuel/Animation/AnimNotify/AN_GroggyAttack.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/AshenDuel/Animation/AnimNotify/AN_GroggyAttack.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/AshenDuel/CoreFramework/Character/ADBossCharacter.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/AshenDuel/CoreFramework/Character/ADBossCharacter.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/AshenDuel/CoreFramework/Character/ADBossCharacter.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/AshenDuel/CoreFramework/Character/ADBossCharacter.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/AshenDuel/CoreFramework/Character/ADCharacter.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/AshenDuel/CoreFramework/Character/ADCharacter.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/AshenDuel/CoreFramework/Character/AI/ADAIController.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/AshenDuel/CoreFramework/Character/AI/ADAIController.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/AshenDuel/CoreFramework/Character/AI/ADAIController.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/AshenDuel/CoreFramework/Character/AI/ADAIController.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/AshenDuel/CoreFramework/Character/Component/LockOnComponent.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/AshenDuel/CoreFramework/Character/Component/LockOnComponent.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/AshenDuel/GAS/ADDamageExecutionCalc.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/AshenDuel/GAS/ADDamageExecutionCalc.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/AshenDuel/GAS/ADDamageExecutionCalc.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/AshenDuel/GAS/ADDamageExecutionCalc.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/AshenDuel/GAS/Ability/ADGA_HeavyAttack.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/AshenDuel/GAS/Ability/ADGA_HeavyAttack.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/AshenDuel/GAS/Ability/ADGA_HeavyAttack.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/AshenDuel/GAS/Ability/ADGA_HeavyAttack.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/AshenDuel/GAS/Ability/Enemy/ADGA_KnockDown.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/AshenDuel/GAS/Ability/Enemy/ADGA_KnockDown.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/AshenDuel/GAS/AttributeSet/ADBossAttributeSet.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/AshenDuel/GAS/AttributeSet/ADBossAttributeSet.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -60,10 +76,24 @@
   }
 }</component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="cidr-memory-view://4" root0="FORCE_HIGHLIGHTING" />
+    <setting file="cidr-memory-view://5" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../UE_5.7/Engine/Source/Editor/UnrealEd/Classes/Exporters/TextureExporterTGA.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../UE_5.7/Engine/Source/Runtime/AIModule/Classes/AIController.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../UE_5.7/Engine/Source/Runtime/Core/Private/Tests/WarnFilterScope.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../UE_5.7/Engine/Source/Runtime/Core/Public/GenericPlatform/GenericPlatformFile.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../UE_5.7/Engine/Source/Runtime/Engine/Classes/Kismet/KismetArrayLibrary.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../UE_5.7/Engine/Source/Runtime/Engine/Private/Animation/AnimNotifyState.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../UE_5.7/Engine/Source/Runtime/GameplayTasks/Classes/GameplayTasksComponent.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../UE_5.7/Engine/Source/Runtime/MovieScene/Public/EntitySystem/MovieSceneEntitySystemTask.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/AshenDuel/AI/Task/BTTask_SelectRandomAttack.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/AshenDuel/AI/Task/BTTask_SelectRandomAttack.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/AshenDuel/Animation/AnimNotify/AN_Phase2_Burst.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/AshenDuel/Animation/AnimNotify/AN_Phase2_Burst.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/AshenDuel/GAS/Ability/ADGA_Launch.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/AshenDuel/GAS/Ability/ADGA_Launch.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/AshenDuel/GAS/Ability/Enemy/ADGA_PhaseChange.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/AshenDuel/GAS/Ability/Enemy/ADGA_PhaseChange.h" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;customColor&quot;: &quot;&quot;,
@@ -179,6 +209,7 @@
       <updated>1783496865011</updated>
       <workItem from="1783496865910" duration="2990000" />
       <workItem from="1783577338996" duration="7615000" />
+      <workItem from="1783917832104" duration="11838000" />
     </task>
     <servers />
   </component>

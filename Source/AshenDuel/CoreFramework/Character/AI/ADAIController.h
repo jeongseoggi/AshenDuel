@@ -31,7 +31,7 @@ protected:
 	virtual void OnPossess(APawn* InPawn) override;
 	
 	UFUNCTION()
-	void OnKnockDownTagChanged(const FGameplayTag Tag, int32 NewCount);
+	void UpdateAIState(const FGameplayTag Tag, int32 NewCount);
 	
 #pragma region Default
 	UPROPERTY(EditDefaultsOnly, Category = "AI")
