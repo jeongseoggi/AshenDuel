@@ -67,7 +67,7 @@ void UADGA_Death::DisableInput()
 	AADPlayerController* ADPC = Cast<AADPlayerController>(ADChar->GetController());
 	if (!ADPC) return;
 	
-	ADPC->SetDeathInputState();
+	ADPC->SetInputState(true, false);
 }
 
 void UADGA_Death::OnRagdollEventReceived(FGameplayEventData Payload)

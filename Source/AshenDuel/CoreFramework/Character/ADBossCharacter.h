@@ -34,6 +34,7 @@ public:
 	FRotator GetFatalZoneRotation();
 	
 	FORCEINLINE URadialForceComponent* GetRadialForceComponent() const { return RadialForceComponent; }
+	FORCEINLINE USphereComponent* GetTargetingSphereComponent() const { return TargetingSphereComponent; }
 	
 protected:
 	virtual void BeginPlay() override;

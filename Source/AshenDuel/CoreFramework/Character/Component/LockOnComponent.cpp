@@ -4,9 +4,11 @@
 #include "AbilitySystemComponent.h"
 #include "AshenDuel/AshenDuel.h"
 #include "AshenDuel/ADGameplayTag/GameplayTags.h"
+#include "AshenDuel/CoreFramework/Character/ADBossCharacter.h"
 #include "AshenDuel/CoreFramework/Character/ADCharacter.h"
 #include "AshenDuel/Interface/EnemyHelper.h"
 #include "Camera/CameraComponent.h"
+#include "Components/SphereComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/KismetMathLibrary.h"
 
@@ -132,10 +134,13 @@ AActor* ULockOnComponent::FindClosestTarget(const TArray<AActor*>& TargetActors)
 	AActor* ClosestTargetActor = nullptr;
 	FHitResult OutHit;
 	
-	for (const AActor* TargetActor : TargetActors)
+	for (AActor* TargetActor : TargetActors)
 	{
+		AADBossCharacter* BossChar = Cast<AADBossCharacter>(TargetActor);
+		if (!BossChar) continue;
+		
 		const FVector Start = OwnerCamera->GetComponentLocation();
-		const FVector End = TargetActor->GetActorLocation();
+		const FVector End = BossChar->GetTargetingSphereComponent()->GetComponentLocation();
 		
 		const bool bHit = UKismetSystemLibrary::LineTraceSingle(
 			GetOwner(),

@@ -19,7 +19,7 @@ class ASHENDUEL_API AADPlayerController : public APlayerController
 
 public:
 	void RegisterBossToHUD(AADBossCharacter* BossCharacter);
-	void SetDeathInputState();
+	void SetInputState(bool bSetMoveInput, bool bSetLookInput);
 	void RespawnPlayer();
 	
 protected:

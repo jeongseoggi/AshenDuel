@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GameplayTagContainer.h"
 #include "Animation/AnimNotifies/AnimNotifyState.h"
 #include "ANS_AttackCollision.generated.h"
 
@@ -33,4 +34,7 @@ protected:
 	
 	UPROPERTY(EditAnywhere, Category = "Collision")
 	bool bDrawDebug;
+	
+	UPROPERTY(EditAnywhere, Category = "Collision")
+	FGameplayTag AttackTag;
 };

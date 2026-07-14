@@ -8,6 +8,7 @@
 #include "AshenDuel/ADGameplayTag/GameplayTags.h"
 #include "AshenDuel/CoreFramework/Character/ADCharacterBase.h"
 #include "AshenDuel/CoreFramework/Character/Component/WeaponComponent.h"
+#include "AshenDuel/System/ADDataManagerSubSystem.h"
 #include "Kismet/KismetSystemLibrary.h"
 
 UANS_AttackCollision::UANS_AttackCollision()
@@ -26,8 +27,19 @@ void UANS_AttackCollision::NotifyBegin(USkeletalMeshComponent* MeshComp, UAnimSe
 	{
 		if (AADCharacterBase* ADCH = Cast<AADCharacterBase>(MeshComp->GetOwner()))
 		{
+			UWorld* World = MeshComp->GetOwner()->GetWorld();
+			if (!World) return;
+			if (World->IsPreviewWorld()) return;
+			
+			UGameInstance* GI = World->GetGameInstance();
+			if (!GI) return;
+	
+			UADDataManagerSubSystem* DataManager = GI->GetSubsystem<UADDataManagerSubSystem>();
+			if (!DataManager) return;
+	
 			if (UWeaponComponent* WeaponComp = ADCH->GetWeaponComponent())
 			{
+				WeaponComp->SetCurrentAttackData(DataManager->GetAttackDataByTag(AttackTag));
 				WeaponComp->BeginWeaponTrace(MeshComp, StartSocketName, EndSocketName);
 			}
 		}
@@ -47,6 +59,7 @@ void UANS_AttackCollision::NotifyTick(USkeletalMeshComponent* MeshComp, UAnimSeq
 		{
 			if (ADCH->GetWorld())
 			{
+			
 				WeaponComp->TickWeaponTrace(StartSocketName, EndSocketName, TraceRadius, bDrawDebug);
 			}
 		}

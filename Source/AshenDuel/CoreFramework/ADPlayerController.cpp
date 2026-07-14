@@ -19,9 +19,10 @@ void AADPlayerController::RegisterBossToHUD(AADBossCharacter* BossCharacter)
 	}
 }
 
-void AADPlayerController::SetDeathInputState()
+void AADPlayerController::SetInputState(bool bSetMoveInput, bool bSetLookInput)
 {
-	SetIgnoreMoveInput(true);
+	SetIgnoreMoveInput(bSetMoveInput);
+	SetIgnoreLookInput(bSetLookInput);
 }
 
 void AADPlayerController::RespawnPlayer()

@@ -3,6 +3,10 @@
 
 #include "BTTask_SelectRandomAttack.h"
 
+#include "AbilitySystemBlueprintLibrary.h"
+#include "AbilitySystemComponent.h"
+#include "AIController.h"
+#include "AshenDuel/ADGameplayTag/GameplayTags.h"
 #include "AshenDuel/GAS/Ability/ADGameplayAbility.h"
 #include "AshenDuel/GAS/Ability/Enemy/ADGA_BasicAttack.h"
 #include "BehaviorTree/BlackboardComponent.h"
@@ -17,14 +21,31 @@ UBTTask_SelectRandomAttack::UBTTask_SelectRandomAttack()
 
 EBTNodeResult::Type UBTTask_SelectRandomAttack::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
-	if (AttackAbilities.Num() == 0)
+	
+	AAIController* AIController = OwnerComp.GetAIOwner();
+	if (!AIController) return EBTNodeResult::Failed;
+
+	APawn* ControllingPawn = AIController->GetPawn();
+	if (!ControllingPawn) return EBTNodeResult::Failed;
+	
+	UAbilitySystemComponent* BossASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(ControllingPawn);
+	if (!BossASC) return EBTNodeResult::Failed;
+	
+	TArray<TSubclassOf<UADGameplayAbility>> CandidatePool = AttackAbilities;
+	
+	if (BossASC->HasMatchingGameplayTag(GameplayTags::State::Boss::Phase2))
+	{
+		CandidatePool.Append(Phase2AttackAbilities); 
+	}
+	
+	if (CandidatePool.Num() == 0)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("[BTTask] AttackAbilities 배열이 비어있습니다."));
 		return EBTNodeResult::Failed;
 	}
 	
-	int32 RandomIndex = FMath::RandRange(0, AttackAbilities.Num() - 1);
-	TSubclassOf<UADGameplayAbility> SelectedAbilityClass = AttackAbilities[RandomIndex];
+	int32 RandomIndex = FMath::RandRange(0, CandidatePool.Num() - 1);
+	TSubclassOf<UADGameplayAbility> SelectedAbilityClass = CandidatePool[RandomIndex];
 	
 	UE_LOG(LogTemp, Warning, TEXT("Random Index Log :%d"), RandomIndex);
 	

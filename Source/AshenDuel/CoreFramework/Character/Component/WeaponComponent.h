@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "AshenDuel/Data/AttackDataAsset.h"
 #include "Components/ActorComponent.h"
 #include "WeaponComponent.generated.h"
 
@@ -18,11 +19,17 @@ class ASHENDUEL_API UWeaponComponent : public UActorComponent
 
 public:
 	UWeaponComponent();
+	
+	UFUNCTION(BlueprintCallable, Category = "Combat")
+	void SetCurrentAttackData(const FComboAttackData& NewAttackData) { CurrentAttackData = NewAttackData; }
+	
+	UFUNCTION(BlueprintCallable, Category = "Combat")
+	void ClearCurrentAttackData() { CurrentAttackData = FComboAttackData(); }
 
 protected:
 	virtual void BeginPlay() override;
 	void SpawnAndAttachWeapon();
-	
+
 protected:
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<ASwordWeapon> WeaponActorClass;
@@ -32,6 +39,9 @@ protected:
 	
 	UPROPERTY(EditDefaultsOnly)
 	FName SocketName = FName(TEXT("WeaponSocket"));
+	
+	UPROPERTY(Transient)
+	FComboAttackData CurrentAttackData;
 	
 #pragma region Attack
 public:

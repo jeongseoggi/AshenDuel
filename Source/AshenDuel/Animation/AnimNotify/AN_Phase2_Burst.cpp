@@ -16,6 +16,7 @@ void UAN_Phase2_Burst::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBas
 	if (!MeshComp) return;
 	
 	AADBossCharacter* OwnerActor = Cast<AADBossCharacter>(MeshComp->GetOwner());
+	UAbilitySystemComponent* OwnerASC = OwnerActor->GetAbilitySystemComponent();
 	UWorld* World = MeshComp->GetWorld();
 	if (!OwnerActor || !World) return;
 	
@@ -58,6 +59,11 @@ void UAN_Phase2_Burst::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBas
 			FGameplayEventData Payload;
 			Payload.EventTag = GameplayTags::Event::Character::Launch;
 			PlayerASC->HandleGameplayEvent(GameplayTags::Event::Character::Launch, &Payload);
+		}
+		
+		if (OwnerASC)
+		{
+			OwnerASC->AddLooseGameplayTag(GameplayTags::State::Boss::Phase2);
 		}
 	}
 }

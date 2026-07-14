@@ -20,6 +20,7 @@ namespace GameplayTags
 		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(CanFatal, "State.CanFatal");
 		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(IsLockMovement, "State.IsLockMovement");
 		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(Launch, "State.Launch");
+		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(Hit, "State.Hit");
 
 		namespace Combat
 		{
@@ -39,6 +40,7 @@ namespace GameplayTags
 		namespace Boss
 		{
 			ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(Phase2Change, "State.Boss.Phase2Change");
+			ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(Phase2, "State.Boss.Phase2");
 		}
 	}
 	
@@ -109,6 +111,11 @@ namespace GameplayTags
 			ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(BasicAttack1, "Ability.Boss.BasicAttack1");
 			ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(BasicAttack2, "Ability.Boss.BasicAttack2");
 			ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(BasicAttack3, "Ability.Boss.BasicAttack3");
+			ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(BasicAttack4, "Ability.Boss.BasicAttack4");
+			
+			ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(SpecialAttack1, "Ability.Boss.SpecialAttack1");
+			ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(SpecialAttack2, "Ability.Boss.SpecialAttack2");
+			ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(SpecialAttack3, "Ability.Boss.SpecialAttack3");
 		}
 	}
 	
@@ -124,7 +131,52 @@ namespace GameplayTags
 		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(AttackCombo3, "Attack.AttackCombo3");
 		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(AttackCombo4, "Attack.AttackCombo4");
 		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(HeavyAttack, "Attack.HeavyAttack");
-		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(GroggyAttack, "Attack.GroggyAttack");
 		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(FatalAttack, "Attack.FatalAttack");
+		
+		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(AttackCombo3_Hit1, "Attack.AttackCombo3_Hit1");
+		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(AttackCombo3_Hit2, "Attack.AttackCombo3_Hit2");
+		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(AttackCombo4_Hit1, "Attack.AttackCombo4_Hit1");
+		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(AttackCombo4_Hit2, "Attack.AttackCombo4_Hit2");
+		
+		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(HeavyAttack_Hit1, "Attack.HeavyAttack_Hit1");
+		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(HeavyAttack_Hit2, "Attack.HeavyAttack_Hit2");
+		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(HeavyAttack_Hit3, "Attack.HeavyAttack_Hit3");
+		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(HeavyAttack_Hit4, "Attack.HeavyAttack_Hit4");
+		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(HeavyAttack_Hit5, "Attack.HeavyAttack_Hit5");
+		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(HeavyAttack_Hit6, "Attack.HeavyAttack_Hit6");
+		
+		
+		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(FatalAttack_Hit1, "Attack.FatalAttack_Hit1");
+		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(FatalAttack_Hit2, "Attack.FatalAttack_Hit2");
+		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(FatalAttack_Hit3, "Attack.FatalAttack_Hit3");
+		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(FatalAttack_Hit4, "Attack.FatalAttack_Hit4");
+		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(FatalAttack_Hit5, "Attack.FatalAttack_Hit5");
+		
+		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(GroggyAttack, "Attack.GroggyAttack");
+
+		namespace Boss
+		{
+			ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(BasicAttack1, "Attack.Boss.BasicAttack1");
+			ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(BasicAttack2, "Attack.Boss.BasicAttack2");
+			ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(BasicAttack3, "Attack.Boss.BasicAttack3");
+			
+			ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(BasicAttack4_Hit1, "Attack.Boss.BasicAttack4_Hit1");
+			ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(BasicAttack4_Hit2, "Attack.Boss.BasicAttack4_Hit2");
+			ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(BasicAttack4_Hit3, "Attack.Boss.BasicAttack4_Hit3");
+			ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(BasicAttack4_Hit4, "Attack.Boss.BasicAttack4_Hit4");
+
+			ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(SpecialAttack1_Hit1, "Attack.Boss.SpecialAttack1_Hit1");
+			ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(SpecialAttack1_Hit2, "Attack.Boss.SpecialAttack1_Hit2");
+			ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(SpecialAttack1_Hit3, "Attack.Boss.SpecialAttack1_Hit3");
+			ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(SpecialAttack1_Hit4, "Attack.Boss.SpecialAttack1_Hit4");
+			ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(SpecialAttack1_Hit5, "Attack.Boss.SpecialAttack1_Hit5");
+			ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(SpecialAttack1_Hit6, "Attack.Boss.SpecialAttack1_Hit6");
+			
+			ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(SpecialAttack2_Hit1, "Attack.Boss.SpecialAttack2_Hit1");
+			ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(SpecialAttack2_Hit2, "Attack.Boss.SpecialAttack2_Hit2");
+			ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(SpecialAttack2_Hit3, "Attack.Boss.SpecialAttack2_Hit3");
+			ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(SpecialAttack2_Hit4, "Attack.Boss.SpecialAttack2_Hit4");
+			ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(SpecialAttack2_Hit5, "Attack.Boss.SpecialAttack2_Hit5");
+		}
 	}
 }

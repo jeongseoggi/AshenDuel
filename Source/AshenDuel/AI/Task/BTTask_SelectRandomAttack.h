@@ -24,6 +24,9 @@ protected:
 	UPROPERTY(EditAnywhere)
 	TArray<TSubclassOf<UADGameplayAbility>> AttackAbilities;
 	
+	UPROPERTY(EditAnywhere)
+	TArray<TSubclassOf<UADGameplayAbility>> Phase2AttackAbilities;
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Attack", meta = (AllowPrivateAccess = "true"))
 	FBlackboardKeySelector OptimalAttackDistanceKey;
 	

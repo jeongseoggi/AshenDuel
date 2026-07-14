@@ -6,6 +6,8 @@
 #include "AbilitySystemComponent.h"
 #include "Abilities/Tasks/AbilityTask_PlayMontageAndWait.h"
 #include "AshenDuel/ADGameplayTag/GameplayTags.h"
+#include "AshenDuel/CoreFramework/ADPlayerController.h"
+#include "AshenDuel/CoreFramework/Character/ADCharacter.h"
 
 void UADGA_HitReact::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
                                      const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo,
@@ -58,6 +60,14 @@ void UADGA_HitReact::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
 	
 	CancelAbilities();
 	
+	AADCharacter* PlayerChar = Cast<AADCharacter>(GetAvatarActorFromActorInfo());
+	if (!PlayerChar) return;
+	
+	AADPlayerController* PC = Cast<AADPlayerController>(PlayerChar->GetController());
+	if (!PC) return;
+	
+	PC->SetInputState(true, false);
+	
 	if (MontageTask)
 	{
 		MontageTask->OnCompleted.AddDynamic(this, &UADGA_HitReact::OnHitReactMontageEnded);
@@ -68,6 +78,20 @@ void UADGA_HitReact::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
 	{
 		EndAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, true, false);
 	}
+}
+
+void UADGA_HitReact::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
+	const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled)
+{
+	AADCharacter* PlayerChar = Cast<AADCharacter>(GetAvatarActorFromActorInfo());
+	if (!PlayerChar) return;
+	
+	AADPlayerController* PC = Cast<AADPlayerController>(PlayerChar->GetController());
+	if (!PC) return;
+	
+	PC->SetInputState(false, false);
+	
+	Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
 }
 
 

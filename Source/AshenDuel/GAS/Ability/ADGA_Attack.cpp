@@ -109,6 +109,7 @@ void UADGA_Attack::ExecuteComboJump()
 	CurrentComboIndex = NextComboIndex;
 
 	FName NextSection = FName(*FString::Printf(TEXT("Attack%d"), CurrentComboIndex));
+	UE_LOG(LogTemp, Warning, TEXT("%s"), *NextSection.ToString());
 	MontageJumpToSection(NextSection);
 
 	bIsComboWindowOpen = false;

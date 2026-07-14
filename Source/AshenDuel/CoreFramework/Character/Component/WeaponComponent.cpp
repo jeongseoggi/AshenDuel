@@ -125,7 +125,7 @@ void UWeaponComponent::HitAttackTargetApplyGE(TArray<FHitResult>& OutHits)
 		if (HitActor && HitActor != GetOwner() && !AlreadyApplyDamageActors.Contains(HitActor))
 		{
 			AlreadyApplyDamageActors.Add(HitActor);
-			
+          
 			UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(HitActor);
 			UAbilitySystemComponent* SourceASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(GetOwner());
         
@@ -134,68 +134,27 @@ void UWeaponComponent::HitAttackTargetApplyGE(TArray<FHitResult>& OutHits)
 				GroggyAttackChecking(SourceASC, TargetASC);
 				FGameplayEffectContextHandle EffectContext = SourceASC->MakeEffectContext();
 				EffectContext.AddHitResult(Hit);
-				
+             
 				FGameplayEffectSpecHandle NewHandle = SourceASC->MakeOutgoingSpec(DamageEffectClass, 1.0f, EffectContext);
 				if (NewHandle.IsValid())
 				{
-					FGameplayTag FoundComboTag;
-					const int32 MaxComboIndex = 4;
-					
-					if (SourceASC->HasMatchingGameplayTag(GameplayTags::Input::HeavyAttack))
-					{
-						FoundComboTag = GameplayTags::Input::HeavyAttack;
-					}
-					else if (SourceASC->HasMatchingGameplayTag(GameplayTags::Attack::FatalAttack))
-					{
-						FoundComboTag = GameplayTags::Attack::FatalAttack;
-					}
-					else
-					{
-						for (int32 i = 1; i <= MaxComboIndex; i++)
-						{
-							FString TagStr = FString::Printf(TEXT("Attack.AttackCombo%d"), i);
-							FGameplayTag ComboTag = FGameplayTag::RequestGameplayTag(*TagStr);
-						
-							if (ComboTag.IsValid() && SourceASC->HasMatchingGameplayTag(ComboTag))
-							{
-								FoundComboTag = ComboTag;
-								break;
-							}
-						}
-					}
-					
-					float GroggyDamageToSend = 0.0f;
-					float AttackDmg = 0.0f;
-					if (FoundComboTag.IsValid())
-					{
-						UWorld* World = GetWorld();
-						if (!World) return;
-						
-						UGameInstance* GI = World->GetGameInstance();
-						if (!GI) return;
-						
-						UADDataManagerSubSystem* DataManager = GI->GetSubsystem<UADDataManagerSubSystem>();
-						if (!DataManager) return;
-						
-						FComboAttackData Data = DataManager->GetAttackDataByTag(FoundComboTag);
-						GroggyDamageToSend = Data.GroggyDamage;
-						AttackDmg = Data.AttackDmg;
-					}
-					
+					float GroggyDamageToSend = CurrentAttackData.GroggyDamage;
+					float AttackDmg = CurrentAttackData.AttackDmg;
+                
 					if (GroggyDamageToSend > 0.0f)
 					{
 						NewHandle.Data.Get()->SetSetByCallerMagnitude(
 							GameplayTags::Data::GroggyDamage,
 							GroggyDamageToSend);
 					}
-					
+                
 					if (AttackDmg > 0.0f)
 					{
 						NewHandle.Data.Get()->SetSetByCallerMagnitude(
 							GameplayTags::Data::AttackDamage,
 							AttackDmg);
 					}
-					
+                
 					SourceASC->ApplyGameplayEffectSpecToTarget(*NewHandle.Data.Get(), TargetASC);
 				}
 			}

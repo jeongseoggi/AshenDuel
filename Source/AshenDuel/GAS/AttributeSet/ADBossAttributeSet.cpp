@@ -11,7 +11,7 @@ UADBossAttributeSet::UADBossAttributeSet()
 {
 	InitMaxHealth(2500.0f);
 	InitHealth(GetMaxHealth());
-	InitAttackPower(70.0f);
+	InitAttackPower(30.0f);
 	InitDefense(5.0f);
 	InitPhaseTreshold(0.5f);
 	InitMaxGroggyGauge(100.0f);
