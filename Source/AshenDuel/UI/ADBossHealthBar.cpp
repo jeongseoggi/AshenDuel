@@ -3,6 +3,7 @@
 
 #include "ADBossHealthBar.h"
 
+#include "AshenDuel/ADGameplayTag/GameplayTags.h"
 #include "AshenDuel/CoreFramework/Character/ADBossCharacter.h"
 #include "AshenDuel/GAS/AttributeSet/ADBossAttributeSet.h"
 #include "Components/ProgressBar.h"
@@ -23,6 +24,9 @@ void UADBossHealthBar::InitAbilitySystem(UAbilitySystemComponent* InASC)
 	ASC->GetGameplayAttributeValueChangeDelegate(
 		UADBossAttributeSet::GetMaxHealthAttribute()
 	).AddUObject(this, &UADBossHealthBar::OnMaxHealthChanged);
+	
+	ASC->RegisterGameplayTagEvent(GameplayTags::State::IsGroggy, EGameplayTagEventType::NewOrRemoved).AddUObject(
+		this, &UADBossHealthBar::OnGroggyVulnerableTagChanged);
 	
 	UpdateHealthBar();
 }
@@ -89,4 +93,11 @@ void UADBossHealthBar::OnHealthChanged(const FOnAttributeChangeData& Data)
 void UADBossHealthBar::OnMaxHealthChanged(const FOnAttributeChangeData& Data)
 {
 	UpdateHealthBar();
+}
+
+void UADBossHealthBar::OnGroggyVulnerableTagChanged(const FGameplayTag CallbackTag, int32 NewCount)
+{
+	bool bIsVulnerable = NewCount > 0;
+	
+	PlayGroggyGlowAnimation(bIsVulnerable);
 }

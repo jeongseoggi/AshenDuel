@@ -45,7 +45,7 @@ void UADGA_FatalAttack::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
 	ICombatInterface* TargetCombatInf = Cast<ICombatInterface>(ADCharacter->GetFatalTargetActor());
 	if (!TargetCombatInf) return;
 	
-	TargetCombatInf->RemoveEffectWithTag(GameplayTags::State::KnockDown);
+	//TargetCombatInf->RemoveEffectWithTag(GameplayTags::State::KnockDown);
 	TargetCombatInf->ApplyGameplayEffectToSelf(FatalTargetEffect);
 }
 

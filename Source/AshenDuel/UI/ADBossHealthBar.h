@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GameplayTagContainer.h"
 #include "Blueprint/UserWidget.h"
 #include "ADBossHealthBar.generated.h"
 
@@ -20,12 +21,17 @@ class ASHENDUEL_API UADBossHealthBar : public UUserWidget
 public:
 	void InitAbilitySystem(UAbilitySystemComponent* InASC);
 
+protected:
+	UFUNCTION(BlueprintImplementableEvent, Category = "UI")
+	void PlayGroggyGlowAnimation(bool bPlay);
+	
 private:
 	void UpdateHealthBar();
 	void InitializeHealthBar(float Health, float MaxHealth);
 	void AnimateHealthBarIntro();
 	void OnHealthChanged(const FOnAttributeChangeData& Data);
 	void OnMaxHealthChanged(const FOnAttributeChangeData& Data);
+	void OnGroggyVulnerableTagChanged(const FGameplayTag CallbackTag, int32 NewCount);
 	
 protected:
 	UPROPERTY(meta = (BindWidget))

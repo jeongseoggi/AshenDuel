@@ -3,6 +3,7 @@
 
 #include "ADGA_PhaseChange.h"
 
+#include "AbilitySystemComponent.h"
 #include "Abilities/Tasks/AbilityTask_PlayMontageAndWait.h"
 #include "AshenDuel/ADGameplayTag/GameplayTags.h"
 #include "AshenDuel/Interface/CombatInterface.h"
@@ -16,6 +17,8 @@ void UADGA_PhaseChange::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
 	UAbilityTask_PlayMontageAndWait* MontageTask = UAbilityTask_PlayMontageAndWait::CreatePlayMontageAndWaitProxy(this,
 		NAME_None, PhaseChangedMontage);
 	
+	UAbilitySystemComponent* ASC = GetAbilitySystemComponentFromActorInfo();
+	
 	if (MontageTask)
 	{
 		MontageTask->OnCompleted.AddDynamic(this, &UADGA_PhaseChange::PhaseMontageEnded);
@@ -27,6 +30,12 @@ void UADGA_PhaseChange::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
 	if (!CombatInterface) return;
 	
 	CombatInterface->ApplyGameplayEffectToSelf(PhaseChangeEffect);
+	CombatInterface->ApplyGameplayEffectToSelf(GroggyRecoveryEffect);
+	
+	if (ASC && ASC->HasMatchingGameplayTag(GameplayTags::State::IsGroggy))
+	{
+		ASC->RemoveLooseGameplayTag(GameplayTags::State::IsGroggy);
+	}
 }
 
 void UADGA_PhaseChange::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,

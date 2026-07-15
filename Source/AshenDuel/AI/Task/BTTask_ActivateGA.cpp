@@ -15,6 +15,7 @@ UBTTask_ActivateGA::UBTTask_ActivateGA()
 {
 	NodeName = TEXT("Activate Gameplay Ability");
 	bNotifyTick = true;
+	bCreateNodeInstance = true;
 }
 
 EBTNodeResult::Type UBTTask_ActivateGA::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
@@ -41,6 +42,10 @@ EBTNodeResult::Type UBTTask_ActivateGA::ExecuteTask(UBehaviorTreeComponent& Owne
 	{
 		return EBTNodeResult::InProgress;
 	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("bSuccess Not true"));
+	}
 	
 	BBComp->SetValueAsBool(TEXT("IsAttacking"), false);
 	return EBTNodeResult::Failed;
@@ -50,7 +55,11 @@ void UBTTask_ActivateGA::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* Node
 {
 	Super::TickTask(OwnerComp, NodeMemory, dt);
 	UBlackboardComponent* BBComp = OwnerComp.GetBlackboardComponent();
-	if (!BBComp) return;
+	if (!BBComp)
+	{
+		FinishLatentTask(OwnerComp, EBTNodeResult::Failed);
+		return;
+	}
 	
 	bool bIsAttacking = BBComp->GetValueAsBool(TEXT("IsAttacking"));
 	

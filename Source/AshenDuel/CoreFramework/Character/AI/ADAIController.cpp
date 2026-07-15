@@ -77,6 +77,9 @@ void AADAIController::OnPossess(APawn* InPawn)
 			
 			ASC->RegisterGameplayTagEvent(GameplayTags::State::Boss::Phase2Change, EGameplayTagEventType::NewOrRemoved)
 			.AddUObject(this, &AADAIController::UpdateAIState);
+			
+			ASC->RegisterGameplayTagEvent(GameplayTags::State::Boss::IsGettingUp, EGameplayTagEventType::NewOrRemoved)
+			.AddUObject(this, &AADAIController::UpdateAIState);
 		}
 	}
 }
@@ -92,8 +95,18 @@ void AADAIController::UpdateAIState(const FGameplayTag Tag, int32 NewCount)
 			{
 				bool bIsKnockDown = ASC->HasMatchingGameplayTag(GameplayTags::State::KnockDown);
 				bool bIsPhase2 = ASC->HasMatchingGameplayTag(GameplayTags::State::Boss::Phase2Change);
+				bool bIsGettingUp = ASC->HasMatchingGameplayTag(GameplayTags::State::Boss::IsGettingUp);
                 
-				bool bShouldDisableAI = bIsKnockDown || bIsPhase2;
+				bool bShouldDisableAI = bIsKnockDown || bIsPhase2 || bIsGettingUp;
+				
+				if (bShouldDisableAI)
+				{
+					ClearFocus(EAIFocusPriority::Gameplay);
+				}
+				else
+				{
+					SetFocus(PlayerChar);
+				}
 				
 				Blackboard->SetValueAsBool(TEXT("bIsAIDisabled"), bShouldDisableAI);
                 
@@ -111,22 +124,6 @@ void AADAIController::InitializeTargetActor()
 	{
 		BlackboardComp->SetValueAsObject(TEXT("TargetActor"), PlayerChar);
 		SetFocus(PlayerChar);
-	}
-}
-
-void AADAIController::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-	
-	if (BlackboardComp) return;
-	
-	if (BlackboardComp->GetValueAsBool(TEXT("bIsChasing")))
-	{
-		if (PlayerChar) SetFocus(PlayerChar);
-	}
-	else
-	{
-		if (PlayerChar) ClearFocus(EAIFocusPriority::Gameplay);
 	}
 }
 

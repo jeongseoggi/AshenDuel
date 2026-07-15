@@ -21,7 +21,6 @@ namespace GameplayTags
 		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(IsLockMovement, "State.IsLockMovement");
 		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(Launch, "State.Launch");
 		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(Hit, "State.Hit");
-
 		namespace Combat
 		{
 			ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(ComboWindow, "State.Combat.ComboWindow");
@@ -41,6 +40,8 @@ namespace GameplayTags
 		{
 			ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(Phase2Change, "State.Boss.Phase2Change");
 			ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(Phase2, "State.Boss.Phase2");
+			ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(IsBeingFatalAttacked, "State.IsBeingFatalAttacked");
+			ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(IsGettingUp, "State.IsGettingUp");
 		}
 	}
 	

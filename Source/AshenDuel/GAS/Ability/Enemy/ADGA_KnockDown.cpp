@@ -4,7 +4,6 @@
 #include "ADGA_KnockDown.h"
 
 #include "AbilitySystemComponent.h"
-#include "Abilities/Tasks/AbilityTask_PlayMontageAndWait.h"
 #include "Abilities/Tasks/AbilityTask_WaitGameplayTag.h"
 #include "AshenDuel/ADGameplayTag/GameplayTags.h"
 #include "AshenDuel/CoreFramework/Character/ADBossCharacter.h"
@@ -33,7 +32,7 @@ void UADGA_KnockDown::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
 		WaitTagRemovedTask->Removed.AddDynamic(this, &UADGA_KnockDown::OnKnockDownDurationExpired);
 		WaitTagRemovedTask->ReadyForActivation();
 	}
-
+	
 	UAnimInstance* AnimInst = BossChar->GetMesh()->GetAnimInstance();
 	if (AnimInst)
 	{
@@ -69,6 +68,16 @@ void UADGA_KnockDown::OnKnockDownDurationExpired()
 {
 	UE_LOG(LogTemp, Log, TEXT("OnKnockDownDurationExpired"));
 	
+	UAbilitySystemComponent* ASC = GetAbilitySystemComponentFromActorInfo();
+	
+	if (ASC)
+	{
+		if (ASC->HasMatchingGameplayTag(GameplayTags::State::Boss::IsBeingFatalAttacked))
+		{
+			return;
+		}
+	}
+	
 	AADBossCharacter* BossChar = Cast<AADBossCharacter>(GetAvatarActorFromActorInfo());
 	if (!BossChar) return;
 	
@@ -76,6 +85,7 @@ void UADGA_KnockDown::OnKnockDownDurationExpired()
 	if (AnimInst)
 	{
 		AnimInst->Montage_JumpToSection(TEXT("End"));
+		ASC->AddLooseGameplayTag(GameplayTags::State::Boss::IsGettingUp);
 	}
 	
 	EndAbility(CurrentSpecHandle, CurrentActorInfo ,CurrentActivationInfo, false, false);

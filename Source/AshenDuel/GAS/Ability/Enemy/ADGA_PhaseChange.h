@@ -30,4 +30,7 @@ protected:
 	
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<UGameplayEffect> PhaseChangeEffect;
+	
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<UGameplayEffect> GroggyRecoveryEffect;
 };
