@@ -109,8 +109,6 @@ void AADAIController::UpdateAIState(const FGameplayTag Tag, int32 NewCount)
 				}
 				
 				Blackboard->SetValueAsBool(TEXT("bIsAIDisabled"), bShouldDisableAI);
-                
-				UE_LOG(LogTemp, Log, TEXT("BT 블랙보드 싱크 - bIsAIDisabled 변경: %s"), bShouldDisableAI ? TEXT("True") : TEXT("False"));
 			}
 		}
 	}

@@ -20,6 +20,10 @@ class ASHENDUEL_API UADHealthBar : public UUserWidget
 public:
 	void InitAbilitySystem(UAbilitySystemComponent* InASC);
 	
+protected:
+	virtual void NativeConstruct() override;
+	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
+	
 private:
 	void UpdateHealthBar();
 	
@@ -33,4 +37,10 @@ protected:
 private:
 	UPROPERTY()
 	TObjectPtr<UAbilitySystemComponent> ASC;
+	
+	float TargetPercent = 1.0f; 
+	float CurrentPercent = 1.0f;
+	
+	UPROPERTY(EditAnywhere, Category = "UI Interp")
+	float InterpSpeed = 4.0f;
 };

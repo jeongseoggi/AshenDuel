@@ -35,6 +35,7 @@ protected:
 public:
 	ATTRIBUTE_ACCESSORS(UADPlayerAttributeSet, Stamina)
 	ATTRIBUTE_ACCESSORS(UADPlayerAttributeSet, MaxStamina)
+	ATTRIBUTE_ACCESSORS(UADPlayerAttributeSet, PotionCount)
 	
 protected:
 	UPROPERTY(BlueprintReadOnly, Category = "Primary Attributes")
@@ -42,4 +43,7 @@ protected:
 	
 	UPROPERTY(BlueprintReadOnly, Category = "Primary Attributes")
 	FGameplayAttributeData MaxStamina;
+	
+	UPROPERTY(BlueprintReadOnly, Category = "Primary Attributes")
+	FGameplayAttributeData PotionCount;
 };

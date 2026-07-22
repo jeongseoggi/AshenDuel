@@ -21,6 +21,7 @@ namespace GameplayTags
 		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(IsLockMovement, "State.IsLockMovement");
 		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(Launch, "State.Launch");
 		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(Hit, "State.Hit");
+		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(UsingPotion, "State.UsingPotion");
 		namespace Combat
 		{
 			ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(ComboWindow, "State.Combat.ComboWindow");
@@ -53,6 +54,7 @@ namespace GameplayTags
 		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(Block, "Input.Block");
 		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(HeavyAttack, "Input.HeavyAttack");
 		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(FatalAttack, "Input.FatalAttack");
+		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(UsingPotion, "Input.UsingPotion");
 	}
 	
 	namespace Event
@@ -178,6 +180,11 @@ namespace GameplayTags
 			ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(SpecialAttack2_Hit3, "Attack.Boss.SpecialAttack2_Hit3");
 			ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(SpecialAttack2_Hit4, "Attack.Boss.SpecialAttack2_Hit4");
 			ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(SpecialAttack2_Hit5, "Attack.Boss.SpecialAttack2_Hit5");
+			
+			ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(SpecialAttack3_Hit1, "Attack.Boss.SpecialAttack3_Hit1");
+			ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(SpecialAttack3_Hit2, "Attack.Boss.SpecialAttack3_Hit2");
+			ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(SpecialAttack3_Hit3, "Attack.Boss.SpecialAttack3_Hit3");
+			ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(SpecialAttack3_Hit4, "Attack.Boss.SpecialAttack3_Hit4");
 		}
 	}
 }

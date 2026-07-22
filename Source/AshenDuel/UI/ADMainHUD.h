@@ -6,6 +6,7 @@
 #include "Blueprint/UserWidget.h"
 #include "ADMainHUD.generated.h"
 
+class UADPotionWidget;
 class UADBossHealthBar;
 class UADStaminaBar;
 class UADHealthBar;
@@ -35,6 +36,9 @@ protected:
 	
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UADBossHealthBar> BossHealthBar;
+	
+	UPROPERTY(meta = (BindWidget))
+	TObjectPtr<UADPotionWidget> PotionWidget;
 	
 private:
 	UPROPERTY()

@@ -27,6 +27,37 @@ void UADHealthBar::InitAbilitySystem(UAbilitySystemComponent* InASC)
 	UpdateHealthBar();
 }
 
+void UADHealthBar::NativeConstruct()
+{
+	Super::NativeConstruct();
+}
+
+void UADHealthBar::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
+{
+	Super::NativeTick(MyGeometry, InDeltaTime);
+	
+	if (!FMath::IsNearlyEqual(CurrentPercent, TargetPercent, 0.0001f))
+	{
+		CurrentPercent = FMath::FInterpTo(CurrentPercent, TargetPercent, InDeltaTime, InterpSpeed);
+
+		if (HealthBar)
+		{
+			HealthBar->SetPercent(CurrentPercent);
+		}
+	}
+	else
+	{
+		if (CurrentPercent != TargetPercent)
+		{
+			CurrentPercent = TargetPercent;
+			if (HealthBar)
+			{
+				HealthBar->SetPercent(CurrentPercent);
+			}
+		}
+	}
+}
+
 void UADHealthBar::UpdateHealthBar()
 {
 	if (!ASC || !HealthBar)
@@ -36,10 +67,7 @@ void UADHealthBar::UpdateHealthBar()
 
 	const float Health = ASC->GetNumericAttribute(UADAttributeSet::GetHealthAttribute());
 	const float MaxHealth = ASC->GetNumericAttribute(UADAttributeSet::GetMaxHealthAttribute());
-
-	const float Percent = MaxHealth > 0.0f ? Health / MaxHealth : 0.0f;
-
-	HealthBar->SetPercent(Percent);
+	TargetPercent = MaxHealth > 0.0f ? FMath::Clamp(Health / MaxHealth, 0.0f, 1.0f) : 0.0f;
 }
 
 void UADHealthBar::OnHealthChanged(const FOnAttributeChangeData& Data)

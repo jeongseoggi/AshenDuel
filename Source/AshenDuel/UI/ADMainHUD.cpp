@@ -6,6 +6,7 @@
 #include "AbilitySystemComponent.h"
 #include "ADBossHealthBar.h"
 #include "ADHealthBar.h"
+#include "ADPotionWidget.h"
 #include "ADStaminaBar.h"
 #include "AshenDuel/CoreFramework/Character/ADBossCharacter.h"
 
@@ -18,10 +19,11 @@ void UADMainHUD::InitAbilitySystem(UAbilitySystemComponent* InASC)
 		return;
 	}
 	
-	if (!HealthBar || !StaminaBar || !BossHealthBar) return;
+	if (!HealthBar || !StaminaBar || !BossHealthBar || !PotionWidget) return;
 
 	HealthBar->InitAbilitySystem(ASC);
 	StaminaBar->InitAbilitySystem(ASC);
+	PotionWidget->InitAbilitySystem(ASC);
 }
 
 void UADMainHUD::InitBossAbilitySystem(UAbilitySystemComponent* InASC)
