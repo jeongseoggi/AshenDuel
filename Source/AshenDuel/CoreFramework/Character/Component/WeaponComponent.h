@@ -25,6 +25,8 @@ public:
 	
 	UFUNCTION(BlueprintCallable, Category = "Combat")
 	void ClearCurrentAttackData() { CurrentAttackData = FComboAttackData(); }
+	
+	FORCEINLINE ASwordWeapon* GetWeaponInstance() const {return WeaponActorInst;} 
 
 protected:
 	virtual void BeginPlay() override;
