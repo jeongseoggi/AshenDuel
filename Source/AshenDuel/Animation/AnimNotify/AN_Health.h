@@ -6,6 +6,7 @@
 #include "Animation/AnimNotifies/AnimNotify.h"
 #include "AN_Health.generated.h"
 
+class AGameplayCueNotify_Actor;
 class UGameplayEffect;
 /**
  * 

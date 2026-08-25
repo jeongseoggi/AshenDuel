@@ -156,6 +156,7 @@ void UWeaponComponent::HitAttackTargetApplyGE(TArray<FHitResult>& OutHits)
 					}
                 
 					SourceASC->ApplyGameplayEffectSpecToTarget(*NewHandle.Data.Get(), TargetASC);
+					ExecuteHitGameplayCue(TargetASC, Hit);
 				}
 			}
 		}
@@ -182,6 +183,20 @@ void UWeaponComponent::GroggyAttackChecking(UAbilitySystemComponent* SourceASC, 
 			UE_LOG(LogTemp, Log, TEXT("🎯 그로기 막타 적중! 보스에게 KnockDown 이벤트 발송 완료."));
 		}
 	}
+}
+
+void UWeaponComponent::ExecuteHitGameplayCue(UAbilitySystemComponent* TargetASC, const FHitResult& HitResult)
+{
+	if (!TargetASC) return;
+
+	FGameplayCueParameters CueParams;
+	CueParams.Location = HitResult.ImpactPoint;         
+	CueParams.Normal = HitResult.ImpactNormal;         
+	CueParams.Instigator = GetOwner();                
+	CueParams.EffectCauser = GetOwner();
+	CueParams.TargetAttachComponent = HitResult.GetComponent(); 
+	
+	TargetASC->ExecuteGameplayCue(GameplayTags::GameplayCue::HitEffect, CueParams);
 }
 
 

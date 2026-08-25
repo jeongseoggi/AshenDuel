@@ -187,4 +187,10 @@ namespace GameplayTags
 			ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(SpecialAttack3_Hit4, "Attack.Boss.SpecialAttack3_Hit4");
 		}
 	}
+
+	namespace GameplayCue
+	{
+		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(HealEffect, "GameplayCue.HealEffect");
+		ASHENDUEL_API UE_DEFINE_GAMEPLAY_TAG(HitEffect, "GameplayCue.HitEffect");
+	}
 }

@@ -188,4 +188,10 @@ namespace GameplayTags
 			ASHENDUEL_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(SpecialAttack3_Hit5);
 		}
 	}
+
+	namespace GameplayCue
+	{
+		ASHENDUEL_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(HealEffect);
+		ASHENDUEL_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(HitEffect);
+	}
 }

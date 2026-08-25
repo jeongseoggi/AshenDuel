@@ -54,6 +54,10 @@ protected:
 	void DebugAttackTrace(FVector CapsuleCenter, float CapsuleHalfHeight, float TraceRad, FQuat CapsuleRotation, bool bHit);
 	void HitAttackTargetApplyGE(TArray<FHitResult>& OutHits);
 	void GroggyAttackChecking(UAbilitySystemComponent* SourceASC, UAbilitySystemComponent* TargetASC);
+
+private:
+	void ExecuteHitGameplayCue(UAbilitySystemComponent* TargetASC, const FHitResult& HitResult);
+	
 private:
 	UPROPERTY()
 	TSet<TObjectPtr<AActor>> AlreadyApplyDamageActors;
